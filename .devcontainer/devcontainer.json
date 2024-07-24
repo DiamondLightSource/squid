@@ -1,0 +1,42 @@
+{
+  "name": "DLS web utis",
+  "build": {
+    // Sets the run context to one level up instead of the .devcontainer folder.
+    "context": "..",
+    // Update the 'dockerFile' property if you aren't using the standard 'Dockerfile' filename.
+    "dockerfile": "./Dockerfile"
+  },
+  // Features to add to the dev container. More info: https://containers.dev/features.
+  // "features": {},
+  // Use 'forwardPorts' to make a list of ports inside the container available locally.
+  // "forwardPorts": [3000],
+  // // Uncomment the next line to run commands after the container is created.
+  // // "postCreateCommand": "cat /etc/os-release",
+  "initializeCommand": "bash -c 'for i in $HOME/.inputrc; do [ -f $i ] || touch $i; done'",
+  "runArgs": [
+    "--net=host",
+    "--security-opt=label=disable"
+  ],
+  "mounts": [
+    "source=${localEnv:HOME}/.ssh,target=/root/.ssh,type=bind",
+    "source=${localEnv:HOME}/.inputrc,target=/root/.inputrc,type=bind"
+  ],
+  "customizations": {
+    "vscode": {
+      // Add the IDs of extensions you want installed when the container is created.
+      "extensions": [
+        "vitest.explorer",
+        "hediet.vscode-drawio",
+        "rodrigovallades.es7-react-js",
+        "eamodio.gitlens",
+        "espenp.prettier-vscode",
+        "rvest.vs-code-prettier-eslint",
+        "christian-kohler.path-intellisense",
+        "esbenp.prettier-vscode",
+      ]
+    }
+  },
+  // make the workspace folder the same inside and outside of the container
+  "workspaceMount": "source=${localWorkspaceFolder},target=${localWorkspaceFolder},type=bind",
+  "workspaceFolder": "${localWorkspaceFolder}"
+}
