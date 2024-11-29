@@ -1,22 +1,53 @@
 "use client";
 
 import { useState } from "react";
-import { getCircles, addCircle } from "../actions/circle-actions";
-import { circleSchema } from "../schemas/circleSchema";
+import { getParameters } from "../actions/qexafs-actions";
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { z } from "zod"
+import { paramsSchema } from "../schemas/qexafs";
 
-export default function Home() {
+
+
+type ParamsSchema = z.infer<typeof paramsSchema>
+
+
+const App = () => {
+    const { register, handleSubmit } = useForm<ParamsSchema>({
+        resolver: zodResolver(paramsSchema),
+    })
+
+
+    const onSubmit = (data: ParamsSchema) => {
+        console.log(data)
+    }
+
+
+    return (
+        <form onSubmit={handleSubmit(onSubmit)}>
+            <input {...register("name")} />
+            <input {...register("age", { valueAsNumber: true })} type="number" />
+            <input type="submit" />
+        </form>
+    )
+}
+
+export default function ParametersPage() {
     const [formData, setFormData] = useState({
         diameter: 1,
         color: "red",
         title: "",
     });
 
-    const [circles, setCircles] = useState<{ diameter: number; color: string; title: string }[]>([]);
+    // todo use optimistic updates or not
+    const [params, setParams] = useState<any[]>([]);
+    // https://react-hook-form.com/docs/useform
+    // todo use the form with zod fields
 
     // Load existing circles
-    const fetchCircles = async () => {
+    const fetchParams = async () => {
         try {
-            const response = await getCircles();
+            const response = await getParameters();
             console.log(response);
             if (!response || !response.data) {
                 alert("No circles found");
@@ -26,7 +57,7 @@ export default function Home() {
             if (circles.length === 0) {
                 alert("No circles found");
             }
-            setCircles(circles);
+            setParams(circles);
         } catch (error) {
             alert("Error fetching circles");
         }
@@ -46,7 +77,7 @@ export default function Home() {
             console.log(success, circle);
 
             if (success) {
-                setCircles((prev) => [...prev, circle]);
+                setParams((prev) => [...prev, circle]);
                 setFormData({ diameter: 1, color: "red", title: "" }); // Reset form
             }
         } catch (err) {
@@ -83,11 +114,11 @@ export default function Home() {
                 <button type="submit">Add Circle</button>
             </form>
 
-            <button onClick={fetchCircles}>Load Circles</button>
+            <button onClick={fetchParams}>Load Circles</button>
 
             <h2>Existing Circles</h2>
             <ul>
-                {circles.map((circle, index) => (
+                {params.map((circle, index) => (
                     <li key={index}>
                         {circle.title} - {circle.diameter} - {circle.color}
                     </li>
