@@ -43,7 +43,8 @@
         "espenp.prettier-vscode",
         "rvest.vs-code-prettier-eslint",
         "christian-kohler.path-intellisense",
-        "esbenp.prettier-vscode"
+        "esbenp.prettier-vscode",
+        "eamodio.gitlens"
       ]
     }
   },
