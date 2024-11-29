@@ -35,6 +35,7 @@
     "vscode": {
       // Add the IDs of extensions you want installed when the container is created.
       "extensions": [
+        "foxundermoon.shell-format",
         "vitest.explorer",
         "hediet.vscode-drawio",
         "rodrigovallades.es7-react-js",
