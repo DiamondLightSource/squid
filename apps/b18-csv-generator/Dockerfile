@@ -8,7 +8,7 @@ ARG API_ENDPOINT="http://localhost:8000/"
 # not used now
 ARG AUTH_ENDPOINT="http://localhost:8050/" 
 
-ARG STAGING_HOST="ebic-pato-staging.diamond.ac.uk"
+# ARG STAGING_HOST="test.diamond.ac.uk"
 ARG DEV_CONTACT="stanislaw.malinowski@diamond.ac.uk"
 ARG VERSION=0.1.0
 
