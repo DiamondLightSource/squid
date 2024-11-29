@@ -18,9 +18,9 @@
       "upgradePackages": false
     }
   },
-  "initializeCommand": "bash -c 'for i in $HOME/.inputrc; do [ -f $i ] || touch $i; done'",
+  // "initializeCommand": "bash -c 'for i in $HOME/.inputrc; do [ -f $i ] || touch $i; done'",
   "runArgs": [
-    "--net=host",
+    // "--net=host",
     "--security-opt=label=disable",
     // Mount the user sockets folder
     "-v${localEnv:XDG_RUNTIME_DIR}:${localEnv:XDG_RUNTIME_DIR}",
@@ -47,7 +47,7 @@
     }
   },
   // make the workspace folder the same inside and outside of the container
-  "workspaceMount": "source=${localWorkspaceFolder},target=${localWorkspaceFolder},type=bind",
+  // "workspaceMount": "source=${localWorkspaceFolder},target=${localWorkspaceFolder},type=bind",
   "workspaceFolder": "${localWorkspaceFolder}",
   // for rootless we must not to mess with user ids inside the container
   "updateRemoteUserUID": false,
