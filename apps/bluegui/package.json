@@ -14,20 +14,21 @@
     "arkit": "npx arkit  -c ./config/arkit.config.json"
   },
   "dependencies": {
+    "@jsonforms/material-renderers": "^3.3.0",
+    "@jsonforms/react": "^3.3.0",
     "@mui/icons-material": "^5.15.15",
     "@mui/material": "^5.15.15",
+    "@repo/eslint-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
     "@repo/ui": "workspace:*",
     "@repo/vite-config": "workspace:*",
     "@testing-library/react": "^15.0.2",
     "arkit": "^1.6.4",
-    "@jsonforms/material-renderers": "^3.3.0",
-    "@jsonforms/react": "^3.3.0",
+    "radix-ui": "^1.0.1",
     "react": "^18.2.0",
-    "react-joyride": "^2.8.2",
     "react-dom": "^18.2.0",
-    "@repo/eslint-config": "workspace:*",
-    "@repo/typescript-config": "workspace:*",
-    "@repo/utils": "workspace:*"
+    "react-select": "^5.8.3",
+    "react-joyride": "^2.8.2"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",
