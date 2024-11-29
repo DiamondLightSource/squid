@@ -52,5 +52,6 @@
   // for rootless we must not to mess with user ids inside the container
   "updateRemoteUserUID": false,
   // for rootless we are root inside the container
-  "remoteUser": "root"
+  "remoteUser": "root",
+  "postStartCommand": "pnpm i"
 }

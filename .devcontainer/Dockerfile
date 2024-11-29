@@ -10,6 +10,8 @@ RUN apt-get update && \
 
 RUN apt-get -y install podman
 
+RUN npm i -g pnpm
+
 # COPY . ${APP_DIR}
 WORKDIR ${APP_DIR}
 
