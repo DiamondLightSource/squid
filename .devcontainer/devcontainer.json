@@ -1,5 +1,5 @@
 {
-  "name": "DLS web utis",
+  "name": "Squid - User Interfaces",
   "build": {
     // Sets the run context to one level up instead of the .devcontainer folder.
     "context": "..",
@@ -12,10 +12,20 @@
   // "forwardPorts": [3000],
   // // Uncomment the next line to run commands after the container is created.
   // // "postCreateCommand": "cat /etc/os-release",
+  "features": {
+    // Some default things like git config, zsh and ssh keys
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "upgradePackages": false
+    }
+  },
   "initializeCommand": "bash -c 'for i in $HOME/.inputrc; do [ -f $i ] || touch $i; done'",
   "runArgs": [
     "--net=host",
-    "--security-opt=label=disable"
+    "--security-opt=label=disable",
+    // Mount the user sockets folder
+    "-v${localEnv:XDG_RUNTIME_DIR}:${localEnv:XDG_RUNTIME_DIR}",
+    // add the docker socket environment variable to the container
+    "-e=DOCKER_HOST=${localEnv:DOCKER_HOST}"
   ],
   "mounts": [
     "source=${localEnv:HOME}/.ssh,target=/root/.ssh,type=bind",
@@ -32,11 +42,15 @@
         "espenp.prettier-vscode",
         "rvest.vs-code-prettier-eslint",
         "christian-kohler.path-intellisense",
-        "esbenp.prettier-vscode",
+        "esbenp.prettier-vscode"
       ]
     }
   },
   // make the workspace folder the same inside and outside of the container
   "workspaceMount": "source=${localWorkspaceFolder},target=${localWorkspaceFolder},type=bind",
-  "workspaceFolder": "${localWorkspaceFolder}"
+  "workspaceFolder": "${localWorkspaceFolder}",
+  // for rootless we must not to mess with user ids inside the container
+  "updateRemoteUserUID": false,
+  // for rootless we are root inside the container
+  "remoteUser": "root"
 }
