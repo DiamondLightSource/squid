@@ -1,0 +1,42 @@
+FROM node:21-alpine3.18 AS base
+ 
+#  PREPARATION STAGE
+FROM base AS builder
+RUN apk add --no-cache libc6-compat
+RUN apk update
+# Set working directory
+WORKDIR /app
+RUN npm i -g turbo
+COPY .. .
+RUN npx turbo prune b18-csv-generator --docker
+
+# INSTALLER STAGE
+# Add lockfile and package.json's of isolated subworkspace
+FROM base AS installer
+RUN apk add --no-cache libc6-compat
+RUN apk update
+WORKDIR /app
+ 
+# First install the dependencies (as they change less often)
+COPY .gitignore .gitignore
+COPY --from=builder /app/out/json/ .
+COPY --from=builder /app/out/package-lock.json ./package-lock.json
+RUN npm ci
+
+# Build the project
+COPY --from=builder /app/out/full/ .
+RUN npx turbo run build --filter=b18-csv-generator...
+ 
+#  RUNNER STAGE
+FROM docker.io/nginxinc/nginx-unprivileged:alpine3.18-slim
+WORKDIR /app
+# Don't run production as root
+# RUN addgroup --system --gid 1001 nginx
+# RUN adduser --system --uid 1001 nginx
+# USER nginx
+
+COPY --from=installer /app/apps/b18-csv-generator/dist /usr/share/nginx/html
+COPY nginx.conf.d /etc/nginx/nginx.conf
+
+EXPOSE 8080
+CMD ["nginx", "-g", "daemon off;"]

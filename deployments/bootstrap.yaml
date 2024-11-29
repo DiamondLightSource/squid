@@ -1,0 +1,45 @@
+apiVersion: v1
+# at the time of writing the app lives here: http://172.23.169.56:8080/beamlines/i10/experiments
+kind: Service
+metadata:
+  name: bootstrap
+spec:
+  ports:
+    - name: web-http
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: bootstrap
+  type: LoadBalancer
+  externalTrafficPolicy: Cluster
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bootstrap
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bootstrap
+  template:
+    metadata:
+      labels:
+        app: bootstrap
+    spec:
+      containers:
+        - name: bootstrap
+          image: gcr.io/diamond-privreg/bootstrap-popout-windows:0.1.0
+          env:
+            - name: NEXT_PUBLIC_API_HOST # not used
+              value: "bootstrap.xma12127.svc.cluster.local:3001"
+          resources:
+            limits:
+              cpu: "1"
+              memory: 300M
+          ports:
+            - name: web-http
+              containerPort: 8080
+              

@@ -1,0 +1,48 @@
+FROM node:21-alpine3.18 AS base
+ 
+# this should be here http://172.23.169.113:3000/
+
+FROM base AS builder
+RUN apk add --no-cache libc6-compat
+RUN apk update
+# Set working directory
+WORKDIR /app
+RUN npm i -g turbo
+COPY . .
+# COPY .. .
+RUN npx turbo prune package-comparator --docker
+
+# Add lockfile and package.json's of isolated subworkspace
+FROM base AS installer
+RUN apk add --no-cache libc6-compat
+RUN apk update
+WORKDIR /app
+ 
+# First install the dependencies (as they change less often)
+# COPY .gitignore .gitignore
+COPY --from=builder /app/out/json/ .
+COPY --from=builder /app/out/package-lock.json ./package-lock.json
+RUN npm ci --omit=dev
+
+# Build the project
+COPY --from=builder /app/out/full/ .
+RUN npx turbo run build --filter=package-comparator...
+ 
+FROM base AS runner
+WORKDIR /app
+ 
+# Don't run production as root
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+USER nextjs
+ 
+COPY --from=installer /app/apps/package-comparator/next.config.js .
+COPY --from=installer /app/apps/package-comparator/package.json .
+ 
+# Automatically leverage output traces to reduce image size
+# https://nextjs.org/docs/advanced-features/output-file-tracing
+COPY --from=installer --chown=nextjs:nodejs /app/apps/package-comparator/.next/standalone ./
+COPY --from=installer --chown=nextjs:nodejs /app/apps/package-comparator/.next/static ./apps/package-comparator/.next/static
+COPY --from=installer --chown=nextjs:nodejs /app/apps/package-comparator/public ./apps/package-comparator/public
+ 
+CMD node apps/package-comparator/server.js
