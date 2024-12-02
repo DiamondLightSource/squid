@@ -1,9 +1,12 @@
-import React from 'react'
+import React from "react";
+import styles from "../page.module.css";
 
 function About() {
-    return (
-        <div>About page</div>
-    )
+  return (
+    <main className={styles.main}>
+      <div>About page</div>
+    </main>
+  );
 }
 
-export default About
+export default About;

@@ -3,11 +3,8 @@ import fs, { PathLike, PathOrFileDescriptor } from "fs";
 import { create } from "xmlbuilder2";
 import { actionClient } from "../clients/actionclient";
 import { paramsSchema } from "../schemas/qexafs";
+import { basePath } from "./basePath";
 
-// Path to store XML data
-const basePath: PathLike = "/tmp/qexafs/experiment_1";
-// todo we need different actions for each type of new input
-// todo for now just assuming one experiment
 
 const paramsPath: PathLike = `${basePath}/parameters.xml`;
 

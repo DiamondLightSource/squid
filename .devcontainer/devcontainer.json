@@ -49,7 +49,7 @@
     }
   },
   // make the workspace folder the same inside and outside of the container
-  // "workspaceMount": "source=${localWorkspaceFolder},target=${localWorkspaceFolder},type=bind",
+  "workspaceMount": "source=${localWorkspaceFolder},target=${localWorkspaceFolder},type=bind",
   "workspaceFolder": "${localWorkspaceFolder}",
   // for rootless we must not to mess with user ids inside the container
   "updateRemoteUserUID": false,

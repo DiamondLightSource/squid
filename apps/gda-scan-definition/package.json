@@ -10,6 +10,14 @@
   },
   "dependencies": {
     "@diamondlightsource/periodic-table": "workspace:*",
+    "@emotion/react": "^11.13.5",
+    "@emotion/styled": "^11.13.5",
+    "@hookform/resolvers": "^3.9.1",
+    "@mui/material": "^5.15.15",
+    "@mui/x-tree-view": "^7.23.0",
+    "@preact-signals/safe-react": "^0.8.1",
+    "@preact/signals-react": "^2.2.0",
+    "@preact/signals-react-transform": "^0.4.0",
     "@repo/logger": "workspace:*",
     "@repo/typescript-config": "workspace:*",
     "@repo/ui": "workspace:*",
@@ -30,7 +38,7 @@
     "@types/node": "^20.11.24",
     "@types/react": "^18.2.61",
     "@types/react-dom": "^18.2.19",
-    "eslint": "^8.57.0",
+    "eslint": "^9.16.0",
     "typescript": "^5.3.3"
   }
 }
