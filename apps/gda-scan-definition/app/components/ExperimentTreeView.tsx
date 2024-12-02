@@ -84,8 +84,10 @@ export function FilesystemTreeView() {
         alert("No items found");
         return;
       }
-      const items: TreeViewBaseItem[] = response.data.files;
+      // NOTE: this slightly odd parsing needs to be to work with the server response
+      const items: TreeViewBaseItem[] = await response.data.files;
       console.log(` response: ${JSON.stringify(response)}`);
+      console.log(`items: ${items} with length: ${items.length}`);
       if (items == undefined || items.length === 0) {
         alert("No items found");
         return;
@@ -119,6 +121,7 @@ export function FilesystemTreeView() {
         </Button>
       </ButtonGroup>
       <h3>Items: {items.length}</h3>
+      {/* todo at the moment this breaks as the items is not defined from the server response */}
       <RichTreeView items={items} />
     </Box>
   );

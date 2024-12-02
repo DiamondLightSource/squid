@@ -20,9 +20,11 @@ async function readFilesFlat(): Promise<TreeViewBaseItem[]> {
 async function readFiles(p: PathLike): Promise<TreeViewBaseItem[]> {
   const dir: string = p.toString();
   const dirPath = path.resolve(dir);
+  console.log(`dirPath: ${dirPath}`);
 
   async function getItems(currentPath: string): Promise<TreeViewBaseItem[]> {
     const entries = await fs.readdir(currentPath, { withFileTypes: true });
+    console.log(`entries: ${entries} with length: ${entries.length}`);
 
     const items = await Promise.all(
       entries.map(async (entry) => {
@@ -43,6 +45,7 @@ async function readFiles(p: PathLike): Promise<TreeViewBaseItem[]> {
         }
       })
     );
+    console.log(`items: ${items} with length: ${items.length}`);
 
     return items;
   }
