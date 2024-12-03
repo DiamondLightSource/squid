@@ -2,6 +2,7 @@
 import React from "react";
 import { useIDEState, useIDEDispatch, FileItem } from "./ideState";
 import { RichTreeView } from "@mui/x-tree-view";
+import { Typography } from "@mui/material";
 
 const FileExplorer: React.FC = () => {
   const { fileSystem, selectedFile } = useIDEState();
@@ -16,15 +17,7 @@ const FileExplorer: React.FC = () => {
 
   return (
     <div className="file-explorer">
-      {fileSystem.map((file) => (
-        <div
-          key={file.id}
-          className={`file-item ${selectedFile === file.id ? "selected" : ""}`}
-          onClick={() => handleFileClick(file)}
-        >
-          {file.label}
-        </div>
-      ))}
+      <Typography variant="h6">File Explorer</Typography>
       <RichTreeView
         items={fileSystem}
         onItemSelectionToggle={(event, itemId) => {

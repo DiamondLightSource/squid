@@ -16,39 +16,6 @@ import { RichTreeView } from "@mui/x-tree-view/RichTreeView";
 import { SyntheticEvent, useState } from "react";
 import { getFiles, makeFile } from "../actions/filesystem-actions";
 
-export enum FilePrefix {
-  QEXEAFS = "QEXEAFS",
-  Detector = "Detector",
-  Sample = "Sample",
-  Output = "Output",
-}
-
-const QEXEAFSParametersForm = () => <div>QEXEAFS Parameters Form</div>;
-const DetectorParametersForm = () => <div>Detector Parameters Form</div>;
-const SampleParametersForm = () => <div>Sample Parameters Form</div>;
-const OutputParametersForm = () => <div>Output Parameters Form</div>;
-const UnknownFileForm = () => <div>Unknown File Form</div>;
-
-type ComponentMap = {
-  [key in FilePrefix]: () => JSX.Element;
-};
-
-const componentMap: ComponentMap = {
-  [FilePrefix.QEXEAFS]: QEXEAFSParametersForm,
-  [FilePrefix.Detector]: DetectorParametersForm,
-  [FilePrefix.Sample]: SampleParametersForm,
-  [FilePrefix.Output]: OutputParametersForm,
-};
-
-export function getComponentForFilename(filename: string): () => JSX.Element {
-  const match = filename.match(/^([A-Za-z]+)_Parameters\.xml$/);
-  if (!match) return UnknownFileForm;
-
-  const prefix = match[1] as FilePrefix;
-  const r = componentMap[prefix];
-  return r || UnknownFileForm;
-}
-
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -209,10 +176,10 @@ function EditorBox({ lastSelectedItem, items }: EditorBoxProps) {
       <Box id="editor-box">
         {items.map((item, index) => {
           return (
-            <CustomTabPanel value={0} index={index}>
+            <CustomTabPanel key={index} value={0} index={index}>
               {/* todo here render the buffer */}
               {/* todo here render the relevant Form */}
-              <input type="textarea" value={item.content} />
+              <input type="textarea" value={item.label} />
               <Editor
                 height="90vh"
                 defaultLanguage="javascript"

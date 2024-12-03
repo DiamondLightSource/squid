@@ -1,10 +1,55 @@
 "use client";
 import React from "react";
 import FileExplorer from "./FileExplorer";
-import Tabs from "./Tabs";
+import EditorTabs from "./EditorTabs";
 import Editor from "./CodeEditor";
 import { FileItem, IDEProvider, useIDEDispatch, useIDEState } from "./ideState";
 import { Box, Button, ButtonGroup, Grid, Typography } from "@mui/material";
+
+function MainButtons() {
+  const { openTabs, activeTab } = useIDEState();
+  const dispatch = useIDEDispatch();
+  return (
+    <ButtonGroup
+      sx={{
+        width: "100%",
+        height: "40px",
+        backgroundColor: "#f5f5f5", // Light gray background for the bar
+        borderBottom: "1px solid #ddd", // Thin border to define the bar
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <Button
+        onClick={() => {
+          const f: FileItem = {
+            id: `file-${Date.now()}`,
+            label: "newfile",
+            type: "file",
+            path: "",
+          };
+          dispatch({ type: "ADD_FILE", payload: f });
+        }}
+      >
+        Add file
+      </Button>
+      <Button
+        onClick={() => {
+          const folder: FileItem = {
+            id: `folder-${Date.now()}`,
+            label: "newfolder",
+            type: "folder",
+            path: "",
+          };
+          dispatch({ type: "ADD_FOLDER", payload: folder });
+        }}
+      >
+        Add folder
+      </Button>
+    </ButtonGroup>
+  );
+}
 
 const IDE: React.FC = () => {
   return (
@@ -39,7 +84,7 @@ const IDE: React.FC = () => {
               >
                 {/* Tabs */}
                 <Grid item>
-                  <Tabs />
+                  <EditorTabs />
                 </Grid>
 
                 {/* Editor */}
@@ -56,50 +101,3 @@ const IDE: React.FC = () => {
 };
 
 export default IDE;
-
-function MainButtons() {
-  const { openTabs, activeTab } = useIDEState();
-  const dispatch = useIDEDispatch();
-  return (
-    <ButtonGroup
-      sx={{
-        width: "100%",
-        height: "40px",
-        backgroundColor: "#f5f5f5", // Light gray background for the bar
-        borderBottom: "1px solid #ddd", // Thin border to define the bar
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      {/* Buttons or controls can go here */}
-      <Button>Null Button</Button>
-      <Button
-        onClick={() => {
-          const f: FileItem = {
-            id: "",
-            label: "",
-            type: "file",
-            path: "",
-          };
-          dispatch({ type: "ADD_FILE", payload: f });
-        }}
-      >
-        Add file
-      </Button>
-      <Button
-        onClick={() => {
-          const folder: FileItem = {
-            id: "",
-            label: "",
-            type: "folder",
-            path: "",
-          };
-          dispatch({ type: "ADD_FOLDER", payload: folder });
-        }}
-      >
-        Add folder
-      </Button>
-    </ButtonGroup>
-  );
-}

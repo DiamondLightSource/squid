@@ -83,6 +83,7 @@ function ideReducer(state: IDEState, action: IDEAction): IDEState {
       };
 
     case "ADD_FILE":
+      console.log(`Adding file: ${JSON.stringify(action.payload)}`);
       return { ...state, fileSystem: [...state.fileSystem, action.payload] };
 
     case "ADD_FOLDER":
@@ -93,15 +94,16 @@ function ideReducer(state: IDEState, action: IDEAction): IDEState {
   }
 }
 
-const baseItem: FileItem = {
-  id: "0",
-  label: "root",
-  type: "folder",
-  path: basePath,
-};
+// const baseItem: FileItem = {
+//   id: "0",
+//   label: "root",
+//   type: "folder",
+//   path: basePath,
+// };
 
 const initialIDEState: IDEState = {
-  fileSystem: [baseItem], // Fetch or initialize this with the file explorer structure
+  // fileSystem: [baseItem], // Fetch or initialize this with the file explorer structure
+  fileSystem: [], // Fetch or initialize this with the file explorer structure
   selectedFile: null,
   openTabs: [],
   activeTab: null,

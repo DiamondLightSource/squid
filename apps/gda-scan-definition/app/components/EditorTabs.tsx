@@ -1,8 +1,11 @@
 "use client";
 import React from "react";
 import { useIDEState, useIDEDispatch } from "./ideState";
+import CloseIcon from "@mui/icons-material/Close";
+import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
 
-const Tabs: React.FC = () => {
+const EditorTabs: React.FC = () => {
   const { openTabs, activeTab } = useIDEState();
   const dispatch = useIDEDispatch();
 
@@ -15,19 +18,21 @@ const Tabs: React.FC = () => {
   };
 
   return (
-    <div className="tabs">
+    <Box className="tabs">
       {openTabs.map((tab) => (
-        <div
+        <Box
           key={tab.id}
           className={`tab ${tab.id === activeTab ? "active" : ""}`}
           onClick={() => handleTabClick(tab.id)}
         >
           {tab.label}
-          <button onClick={() => handleCloseTab(tab.id)}>x</button>
-        </div>
+          <Button onClick={() => handleCloseTab(tab.id)}>
+            <CloseIcon />
+          </Button>
+        </Box>
       ))}
-    </div>
+    </Box>
   );
 };
 
-export default Tabs;
+export default EditorTabs;
