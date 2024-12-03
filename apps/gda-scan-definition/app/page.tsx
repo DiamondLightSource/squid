@@ -1,7 +1,7 @@
 import { AppBar, Typography } from "@mui/material";
 import { BigMainComponent } from "./components/BigMainComponent";
 import styles from "./page.module.css";
-import { MyForm } from "./components/AutoFormTest";
+import { MyForm } from "./components/forms/AutoFormTest";
 import IDE from "./components/IDE";
 
 export default function Page(): JSX.Element {

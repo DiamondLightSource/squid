@@ -2,6 +2,7 @@
 import React, { createContext, useContext, useReducer } from "react";
 import { basePath } from "../actions/basePath";
 import { makeFile } from "../actions/filesystem-actions";
+import { get } from "http";
 
 export interface FileItem {
   id: string;
@@ -12,7 +13,6 @@ export interface FileItem {
 
 export interface Tab {
   id: string; // Match with `FileItem.id`
-  label: string; // Display name of the tab
   content: string; // Editor content
   isDirty: boolean; // True if there are unsaved changes
 }
@@ -49,7 +49,6 @@ function ideReducer(state: IDEState, action: IDEAction): IDEState {
 
       const newTab: Tab = {
         id: action.payload.id,
-        label: action.payload.label,
         content: "", // Load content from your backend or initial state
         isDirty: false,
       };

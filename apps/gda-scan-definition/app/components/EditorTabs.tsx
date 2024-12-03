@@ -1,13 +1,20 @@
 "use client";
-import React from "react";
+import React, { useMemo } from "react";
 import { useIDEState, useIDEDispatch } from "./ideState";
 import CloseIcon from "@mui/icons-material/Close";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 
 const EditorTabs: React.FC = () => {
-  const { openTabs, activeTab } = useIDEState();
+  const { openTabs, activeTab, fileSystem } = useIDEState();
   const dispatch = useIDEDispatch();
+
+  const tabsWithLabels = useMemo(() => {
+    return openTabs.map((tab) => ({
+      ...tab,
+      label: fileSystem.find((file) => file.id === tab.id)?.label || tab.id,
+    }));
+  }, [openTabs, fileSystem]);
 
   const handleTabClick = (id: string) => {
     dispatch({ type: "SET_ACTIVE_TAB", payload: id });
@@ -18,19 +25,22 @@ const EditorTabs: React.FC = () => {
   };
 
   return (
-    <Box className="tabs">
-      {openTabs.map((tab) => (
-        <Box
-          key={tab.id}
-          className={`tab ${tab.id === activeTab ? "active" : ""}`}
-          onClick={() => handleTabClick(tab.id)}
-        >
-          {tab.label}
-          <Button onClick={() => handleCloseTab(tab.id)}>
-            <CloseIcon />
-          </Button>
-        </Box>
-      ))}
+    <Box className="tabs" sx={{ display: "flex", flexDirection: "row" }}>
+      {tabsWithLabels.map((tab) => {
+        const label = fileSystem.find((file) => file.id === tab.id)?.label;
+        return (
+          <Box
+            key={tab.id}
+            className={`tab ${tab.id === activeTab ? "active" : ""}`}
+            onClick={() => handleTabClick(tab.id)}
+          >
+            {label}
+            <Button onClick={() => handleCloseTab(tab.id)}>
+              <CloseIcon />
+            </Button>
+          </Box>
+        );
+      })}
     </Box>
   );
 };

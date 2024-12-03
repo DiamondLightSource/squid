@@ -4,54 +4,36 @@ import FileExplorer from "./FileExplorer";
 import EditorTabs from "./EditorTabs";
 import Editor from "./CodeEditor";
 import { FileItem, IDEProvider, useIDEDispatch, useIDEState } from "./ideState";
-import { Box, Button, ButtonGroup, Grid, Typography } from "@mui/material";
-
-function MainButtons() {
-  const { openTabs, activeTab } = useIDEState();
-  const dispatch = useIDEDispatch();
-  return (
-    <ButtonGroup
-      sx={{
-        width: "100%",
-        height: "40px",
-        backgroundColor: "#f5f5f5", // Light gray background for the bar
-        borderBottom: "1px solid #ddd", // Thin border to define the bar
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <Button
-        onClick={() => {
-          const f: FileItem = {
-            id: `file-${Date.now()}`,
-            label: "newfile",
-            type: "file",
-            path: "",
-          };
-          dispatch({ type: "ADD_FILE", payload: f });
-        }}
-      >
-        Add file
-      </Button>
-      <Button
-        onClick={() => {
-          const folder: FileItem = {
-            id: `folder-${Date.now()}`,
-            label: "newfolder",
-            type: "folder",
-            path: "",
-          };
-          dispatch({ type: "ADD_FOLDER", payload: folder });
-        }}
-      >
-        Add folder
-      </Button>
-    </ButtonGroup>
-  );
-}
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  Container,
+  Grid,
+  Typography,
+} from "@mui/material";
+import { getParameters } from "../actions/qexafs-actions";
+import { ParamsForm } from "./forms/ParamsForm";
 
 const IDE: React.FC = () => {
+  // Load existing circles
+  const fetchParams = async () => {
+    try {
+      const response = await getParameters();
+      console.log(response);
+      if (!response || !response.data) {
+        alert("No circles found");
+        return;
+      }
+      const circles: any[] = response.data.parameters;
+      if (circles.length === 0) {
+        alert("No circles found");
+      }
+    } catch (error) {
+      alert("Error fetching circles");
+    }
+  };
+
   return (
     <IDEProvider>
       <div className="ide">
@@ -64,7 +46,9 @@ const IDE: React.FC = () => {
         >
           {/* Horizontal bar for potential buttons */}
           <Grid item>
-            <MainButtons />
+            <ButtonGroup>
+              <Button> Test</Button>
+            </ButtonGroup>
           </Grid>
 
           {/* Main layout grid: File Explorer, Tabs, and Editor */}
@@ -76,22 +60,17 @@ const IDE: React.FC = () => {
 
             {/* Tabs and Editor */}
             <Grid item xs={9}>
-              <Grid
-                container
-                direction="column"
-                spacing={2}
-                style={{ height: "100%" }}
-              >
+              <Container sx={{ display: "flex", flexDirection: "column" }}>
                 {/* Tabs */}
-                <Grid item>
-                  <EditorTabs />
-                </Grid>
+                <EditorTabs />
 
                 {/* Editor */}
-                <Grid item flex={1}>
-                  <Editor />
-                </Grid>
-              </Grid>
+                <Editor />
+              </Container>
+            </Grid>
+
+            <Grid item xs={12}>
+              <ParamsForm />
             </Grid>
           </Grid>
         </Grid>

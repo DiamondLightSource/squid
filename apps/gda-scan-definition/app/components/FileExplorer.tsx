@@ -1,8 +1,55 @@
 "use client";
+import { Button, ButtonGroup, Typography } from "@mui/material";
 import React from "react";
-import { useIDEState, useIDEDispatch, FileItem } from "./ideState";
+import { FileItem, useIDEDispatch, useIDEState } from "./ideState";
+
 import { RichTreeView } from "@mui/x-tree-view";
-import { Typography } from "@mui/material";
+
+function FileSystemButtons() {
+  const { openTabs, activeTab } = useIDEState();
+  const dispatch = useIDEDispatch();
+
+  return (
+    <ButtonGroup
+      sx={{
+        // width: "100%",
+        // height: "40px",
+        backgroundColor: "#f5f5f5", // Light gray background for the bar
+        borderBottom: "1px solid #ddd", // Thin border to define the bar
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <Button
+        onClick={() => {
+          const f: FileItem = {
+            id: `file-${Date.now()}`,
+            label: "newfile",
+            type: "file",
+            path: "",
+          };
+          dispatch({ type: "ADD_FILE", payload: f });
+        }}
+      >
+        Add file
+      </Button>
+      <Button
+        onClick={() => {
+          const folder: FileItem = {
+            id: `folder-${Date.now()}`,
+            label: "newfolder",
+            type: "folder",
+            path: "",
+          };
+          dispatch({ type: "ADD_FOLDER", payload: folder });
+        }}
+      >
+        Add folder
+      </Button>
+    </ButtonGroup>
+  );
+}
 
 const FileExplorer: React.FC = () => {
   const { fileSystem, selectedFile } = useIDEState();
@@ -17,7 +64,8 @@ const FileExplorer: React.FC = () => {
 
   return (
     <div className="file-explorer">
-      <Typography variant="h6">File Explorer</Typography>
+      <Typography> Explorer</Typography>
+      <FileSystemButtons />
       <RichTreeView
         items={fileSystem}
         onItemSelectionToggle={(event, itemId) => {

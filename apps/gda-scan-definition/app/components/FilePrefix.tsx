@@ -1,6 +1,6 @@
 "use client";
 
-import { ParamsEdition } from "./ParamsEdition";
+import { ParamsForm } from "./forms/ParamsForm";
 
 export enum FilePrefix {
   QEXEAFS = "QEXEAFS",
@@ -19,7 +19,7 @@ type ComponentMap = {
 };
 
 const componentMap: ComponentMap = {
-  [FilePrefix.QEXEAFS]: ParamsEdition,
+  [FilePrefix.QEXEAFS]: ParamsForm,
   [FilePrefix.Detector]: DetectorParametersForm,
   [FilePrefix.Sample]: SampleParametersForm,
   [FilePrefix.Output]: OutputParametersForm,

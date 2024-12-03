@@ -5,7 +5,6 @@ import { actionClient } from "../clients/actionclient";
 import { qexafsParametersSchema } from "../schemas/qexafs";
 import { basePath } from "./basePath";
 
-
 const paramsPath: PathLike = `${basePath}/parameters.xml`;
 
 // Helper to read existing data
@@ -14,9 +13,6 @@ function readParameters(): any[] {
   const data = fs.readFileSync(paramsPath, "utf-8");
   const parsed = create(data).end({ format: "object" });
   console.log("Read params xml", parsed);
-  //   todo append this correctly
-  //   const circles = parsed["circles"]?.circle;
-  //   return Array.isArray(circles) ? circles : [circles]; // Handle no or single entry cases
   return [];
 }
 
@@ -47,3 +43,4 @@ export const getParameters = actionClient.action(async () => {
   const parameters = readParameters();
   return { parameters };
 });
+

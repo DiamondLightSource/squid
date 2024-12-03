@@ -40,7 +40,7 @@ const CodeEditor: React.FC = () => {
         <Button disabled>Save is disabled because autosave is enabled</Button>
       </ButtonGroup>
       <Editor
-        height="90vh"
+        height="70vh"
         defaultLanguage="html"
         language="html"
         defaultValue="// some comment"
