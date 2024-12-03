@@ -1,17 +1,18 @@
 "use client";
 import React, { createContext, useContext, useReducer } from "react";
 import { basePath } from "../actions/basePath";
+import { makeFile } from "../actions/filesystem-actions";
 
 export interface FileItem {
   id: string;
-  name: string;
+  label: string;
   type: "file" | "folder";
   path: string; // e.g., "/src/components/Button.tsx"
 }
 
 export interface Tab {
   id: string; // Match with `FileItem.id`
-  name: string; // Display name of the tab
+  label: string; // Display name of the tab
   content: string; // Editor content
   isDirty: boolean; // True if there are unsaved changes
 }
@@ -24,6 +25,9 @@ export interface IDEState {
 }
 
 type IDEAction =
+  | { type: "SELECT_FILE"; payload: string }
+  | { type: "ADD_FILE"; payload: FileItem }
+  | { type: "ADD_FOLDER"; payload: FileItem }
   | { type: "SELECT_FILE"; payload: string }
   | { type: "OPEN_TAB"; payload: FileItem }
   | { type: "CLOSE_TAB"; payload: string }
@@ -45,7 +49,7 @@ function ideReducer(state: IDEState, action: IDEAction): IDEState {
 
       const newTab: Tab = {
         id: action.payload.id,
-        name: action.payload.name,
+        label: action.payload.label,
         content: "", // Load content from your backend or initial state
         isDirty: false,
       };
@@ -78,6 +82,12 @@ function ideReducer(state: IDEState, action: IDEAction): IDEState {
         ),
       };
 
+    case "ADD_FILE":
+      return { ...state, fileSystem: [...state.fileSystem, action.payload] };
+
+    case "ADD_FOLDER":
+      return { ...state, fileSystem: [...state.fileSystem, action.payload] };
+
     default:
       return state;
   }
@@ -85,7 +95,7 @@ function ideReducer(state: IDEState, action: IDEAction): IDEState {
 
 const baseItem: FileItem = {
   id: "0",
-  name: "root",
+  label: "root",
   type: "folder",
   path: basePath,
 };

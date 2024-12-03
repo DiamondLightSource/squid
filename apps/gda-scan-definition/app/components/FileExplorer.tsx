@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import { useIDEState, useIDEDispatch, FileItem } from "./ideState";
+import { RichTreeView } from "@mui/x-tree-view";
 
 const FileExplorer: React.FC = () => {
   const { fileSystem, selectedFile } = useIDEState();
@@ -21,9 +22,20 @@ const FileExplorer: React.FC = () => {
           className={`file-item ${selectedFile === file.id ? "selected" : ""}`}
           onClick={() => handleFileClick(file)}
         >
-          {file.name}
+          {file.label}
         </div>
       ))}
+      <RichTreeView
+        items={fileSystem}
+        onItemSelectionToggle={(event, itemId) => {
+          const item = fileSystem.find((item) => item.id === itemId);
+          if (item) {
+            handleFileClick(item);
+          }
+        }}
+        isItemEditable
+        experimentalFeatures={{ labelEditing: true }}
+      />
     </div>
   );
 };

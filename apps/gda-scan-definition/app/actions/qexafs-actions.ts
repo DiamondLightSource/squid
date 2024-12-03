@@ -2,7 +2,7 @@
 import fs, { PathLike, PathOrFileDescriptor } from "fs";
 import { create } from "xmlbuilder2";
 import { actionClient } from "../clients/actionclient";
-import { paramsSchema } from "../schemas/qexafs";
+import { qexafsParametersSchema } from "../schemas/qexafs";
 import { basePath } from "./basePath";
 
 
@@ -21,7 +21,7 @@ function readParameters(): any[] {
 }
 
 export const updateParameters = actionClient
-  .schema(paramsSchema)
+  .schema(qexafsParametersSchema)
   .action(async ({ parsedInput }) => {
     const existingParams = readParameters();
 

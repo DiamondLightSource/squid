@@ -1,9 +1,8 @@
-import diamondLogo from '/assets/images/diamond.svg'
-import './App.css'
-import { CountButton } from './components/CountButton'
+import diamondLogo from "/assets/images/diamond.svg";
+import "./App.css";
+import { CountButton } from "./components/CountButton";
 
 function App() {
-
   return (
     <>
       <div>
@@ -22,9 +21,7 @@ function App() {
         Click on the Vite and React logos to learn more
       </p>
     </>
-  )
+  );
 }
 
-export default App
-
-
+export default App;

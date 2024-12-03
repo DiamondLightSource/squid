@@ -5,13 +5,13 @@ import { getParameters } from "../actions/qexafs-actions";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { paramsSchema } from "../schemas/qexafs";
+import { qexafsParametersSchema } from "../schemas/qexafs";
 
-type ParamsSchema = z.infer<typeof paramsSchema>;
+type ParamsSchema = z.infer<typeof qexafsParametersSchema>;
 
 const App = () => {
   const { register, handleSubmit } = useForm<ParamsSchema>({
-    resolver: zodResolver(paramsSchema),
+    resolver: zodResolver(qexafsParametersSchema),
   });
 
   const onSubmit = (data: ParamsSchema) => {
@@ -20,8 +20,11 @@ const App = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <input {...register("name")} />
-      <input {...register("age", { valueAsNumber: true })} type="number" />
+      <input {...register("element")} />
+      <input
+        {...register("edgeEnergy", { valueAsNumber: true })}
+        type="number"
+      />
       <input type="submit" />
     </form>
   );

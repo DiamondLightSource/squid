@@ -22,7 +22,7 @@ const Tabs: React.FC = () => {
           className={`tab ${tab.id === activeTab ? "active" : ""}`}
           onClick={() => handleTabClick(tab.id)}
         >
-          {tab.name}
+          {tab.label}
           <button onClick={() => handleCloseTab(tab.id)}>x</button>
         </div>
       ))}

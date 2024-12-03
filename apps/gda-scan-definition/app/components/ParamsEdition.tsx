@@ -1,13 +1,13 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { paramsSchema } from "../schemas/qexafs";
+import { qexafsParametersSchema } from "../schemas/qexafs";
 
-type ParamsSchema = z.infer<typeof paramsSchema>;
+type ParamsSchema = z.infer<typeof qexafsParametersSchema>;
 
 export function ParamsEdition() {
   const { register, handleSubmit } = useForm<ParamsSchema>({
-    resolver: zodResolver(paramsSchema),
+    resolver: zodResolver(qexafsParametersSchema),
   });
 
   const onSubmit = (data: ParamsSchema) => {
