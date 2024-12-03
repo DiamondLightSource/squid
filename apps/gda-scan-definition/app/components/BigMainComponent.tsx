@@ -1,5 +1,7 @@
 "use client";
 
+import Editor from "@monaco-editor/react";
+
 import {
   Box,
   Button,
@@ -71,8 +73,18 @@ function CustomTabPanel(props: TabPanelProps) {
 
 export function BigMainComponent() {
   const [items, setItems] = useState<TreeViewBaseItem[]>([]);
-  const [currentlyEditing, setCurrentlyEditing] =
-    useState<TreeViewBaseItem | null>(null);
+
+  const [lastSelectedItem, setLastSelectedItem] = useState<string | null>(null);
+
+  const handleItemSelectionToggle = (
+    event: React.SyntheticEvent,
+    itemId: string,
+    isSelected: boolean
+  ) => {
+    if (isSelected) {
+      setLastSelectedItem(itemId);
+    }
+  };
 
   const fetchItems = async () => {
     try {
@@ -90,10 +102,6 @@ export function BigMainComponent() {
         alert("No items found");
         return;
       }
-      if (items["rejected"]) {
-        alert("Error fetching items");
-        return;
-      }
       console.log(`items are correct ${items.length}`);
       setItems(items);
       // setItems(MUI_X_PRODUCTS);
@@ -103,18 +111,34 @@ export function BigMainComponent() {
     }
   };
 
-  const [lastSelectedItem, setLastSelectedItem] = useState<string | null>(null);
-
-  const handleItemSelectionToggle = (
-    event: React.SyntheticEvent,
-    itemId: string,
-    isSelected: boolean
-  ) => {
-    if (isSelected) {
-      setLastSelectedItem(itemId);
-    }
+  const addFolder = () => {
+    // todo this is a known bug when too many layers
+    const newFile: TreeViewBaseItem = {
+      id: `layer-${items.length + 1}`,
+      label: "new item",
+      children: [],
+    };
+    const newFolder: TreeViewBaseItem = {
+      id: `${items.length + 1}`,
+      label: "new folder",
+      children: [newFile],
+    };
+    setItems([...items, newFolder]);
   };
+  const addFile = async () => {
+    // setEditMode(true);
+    const newFile: TreeViewBaseItem = {
+      id: `${items.length + 1}`,
+      label: "new item",
+      children: [],
+    };
+    setItems([...items, newFile]);
 
+    await makeFile({
+      name: "testtwo",
+      type: "txt",
+    });
+  };
   return (
     <Grid container spacing={2}>
       <Grid item xs={4}>
@@ -131,42 +155,8 @@ export function BigMainComponent() {
           >
             Refresh
           </Button>
-          <Button
-            onClick={async () => {
-              // setEditMode(true);
-              const newFile: TreeViewBaseItem = {
-                id: `${items.length + 1}`,
-                label: "new item",
-                children: [],
-              };
-              setItems([...items, newFile]);
-
-              await makeFile({
-                name: "testtwo",
-                type: "txt",
-              });
-            }}
-          >
-            Add file
-          </Button>
-          <Button
-            onClick={() => {
-              // todo this is a known bug when too many layers
-              const newFile: TreeViewBaseItem = {
-                id: `layer-${items.length + 1}`,
-                label: "new item",
-                children: [],
-              };
-              const newFolder: TreeViewBaseItem = {
-                id: `${items.length + 1}`,
-                label: "new folder",
-                children: [newFile],
-              };
-              setItems([...items, newFolder]);
-            }}
-          >
-            Add folder
-          </Button>
+          <Button onClick={addFile}>Add file</Button>
+          <Button onClick={addFolder}>Add folder</Button>
         </ButtonGroup>
         <h3>Items: {items.length}</h3>
         <RichTreeView
@@ -177,45 +167,62 @@ export function BigMainComponent() {
         />
       </Grid>
       <Grid item xs={8}>
-        <Box sx={{ minHeight: "80vh", bgcolor: "background.paper" }}>
-          {lastSelectedItem == null ? (
-            <Typography variant="h6" color="black">
-              Not editing anything now
-            </Typography>
-          ) : (
-            <Box>
-              <Tabs
-                value={items.indexOf(currentlyEditing)}
-                onChange={(_: SyntheticEvent, value: any) => {
-                  console.log("tab changed");
-                  setCurrentlyEditing(value);
-                }}
-                variant="scrollable"
-                scrollButtons="auto"
-                aria-label="scrollable auto tabs example"
-              >
-                {items.map((item, index) => {
-
-                  return (
-                    <Tab key={index} label={item.label} onSelect={ } />
-                  );
-                  // todo here inside add Parsing component depending on the file name
-                })}
-
-              </Tabs>
-              <Box id="editor-box">
-                {
-                  items.map((item, index) => {
-                    return <CustomTabPanel value={items.indexOf(currentlyEditing)} index={index}>
-                      {/* todo here render the buffer */}
-                      {/* todo here render the relevant Form */}
-                    </CustomTabPanel>
-                  })}
-              </Box>
-            </Box>
-          )}
-        </Box>
+        <EditorBox lastSelectedItem={lastSelectedItem} items={items} />
       </Grid>
     </Grid>
+  );
+}
+
+interface EditorBoxProps {
+  lastSelectedItem: string | null;
+  items: TreeViewBaseItem[];
+}
+
+function EditorBox({ lastSelectedItem, items }: EditorBoxProps) {
+  if (lastSelectedItem == null) {
+    return (
+      <Box sx={{ minHeight: "80vh", bgcolor: "background.paper" }}>
+        <Typography variant="h6" color="black">
+          Not editing anything now
+        </Typography>
+      </Box>
+    );
+  }
+  return (
+    <Box sx={{ minHeight: "80vh", bgcolor: "background.paper" }}>
+      <Tabs
+        value={0}
+        onChange={(_: SyntheticEvent, value: any) => {
+          console.log("tab changed");
+          // setCurrentlyEditing(value);
+        }}
+        variant="scrollable"
+        scrollButtons="auto"
+        aria-label="scrollable auto tabs example"
+      >
+        {items.map((item, index) => {
+          return <Tab key={index} label={item.label} />;
+          // todo add on select
+          // todo here inside add Parsing component depending on the file name
+        })}
+      </Tabs>
+      <Box id="editor-box">
+        {items.map((item, index) => {
+          return (
+            <CustomTabPanel value={0} index={index}>
+              {/* todo here render the buffer */}
+              {/* todo here render the relevant Form */}
+              <input type="textarea" value={item.content} />
+              <Editor
+                height="90vh"
+                defaultLanguage="javascript"
+                defaultValue="// some comment"
+              />
+              ;
+            </CustomTabPanel>
+          );
+        })}
+      </Box>
+    </Box>
   );
 }

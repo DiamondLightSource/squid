@@ -1,8 +1,8 @@
 import { AppBar, Typography } from "@mui/material";
-import {
-  BigMainComponent
-} from "./components/BigMainComponent";
+import { BigMainComponent } from "./components/BigMainComponent";
 import styles from "./page.module.css";
+import { MyForm } from "./components/AutoFormTest";
+import IDE from "./components/IDE";
 
 export default function Page(): JSX.Element {
   return (
@@ -11,7 +11,9 @@ export default function Page(): JSX.Element {
         <Typography variant="h6">GDA Scan Definition</Typography>
       </AppBar>
 
-      <BigMainComponent />
+      {/* <BigMainComponent /> */}
+      <IDE />
+      {/* <MyForm /> */}
     </main>
   );
 }

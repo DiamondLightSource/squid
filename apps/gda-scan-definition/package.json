@@ -9,10 +9,13 @@
     "lint": "eslint . --max-warnings 0"
   },
   "dependencies": {
+    "@autoform/mui": "^2.1.0",
+    "@autoform/zod": "^2.0.0",
     "@diamondlightsource/periodic-table": "workspace:*",
     "@emotion/react": "^11.13.5",
     "@emotion/styled": "^11.13.5",
     "@hookform/resolvers": "^3.9.1",
+    "@monaco-editor/react": "^4.6.0",
     "@mui/material": "^5.15.15",
     "@mui/x-tree-view": "^7.23.0",
     "@preact-signals/safe-react": "^0.8.1",

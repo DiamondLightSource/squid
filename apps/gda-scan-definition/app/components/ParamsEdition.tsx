@@ -16,8 +16,8 @@ export function ParamsEdition() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <input {...register("name")} />
-      <input {...register("age", { valueAsNumber: true })} type="number" />
+      <input {...register("edge")} />
+      <input {...register("element", { valueAsNumber: true })} type="number" />
       <input type="submit" />
     </form>
   );

@@ -1,0 +1,130 @@
+"use client";
+import React, { createContext, useContext, useReducer } from "react";
+import { basePath } from "../actions/basePath";
+
+export interface FileItem {
+  id: string;
+  name: string;
+  type: "file" | "folder";
+  path: string; // e.g., "/src/components/Button.tsx"
+}
+
+export interface Tab {
+  id: string; // Match with `FileItem.id`
+  name: string; // Display name of the tab
+  content: string; // Editor content
+  isDirty: boolean; // True if there are unsaved changes
+}
+
+export interface IDEState {
+  fileSystem: FileItem[]; // The file explorer hierarchy
+  selectedFile: string | null; // ID of the selected file
+  openTabs: Tab[]; // Array of open tabs
+  activeTab: string | null; // ID of the active tab
+}
+
+type IDEAction =
+  | { type: "SELECT_FILE"; payload: string }
+  | { type: "OPEN_TAB"; payload: FileItem }
+  | { type: "CLOSE_TAB"; payload: string }
+  | { type: "SET_ACTIVE_TAB"; payload: string }
+  | { type: "EDIT_TAB_CONTENT"; payload: { id: string; content: string } };
+
+function ideReducer(state: IDEState, action: IDEAction): IDEState {
+  console.log(`Current state: ${JSON.stringify(state)}`);
+  console.log(`Action: ${JSON.stringify(action)}`);
+  switch (action.type) {
+    case "SELECT_FILE":
+      return { ...state, selectedFile: action.payload };
+
+    case "OPEN_TAB":
+      const isAlreadyOpen = state.openTabs.some(
+        (tab) => tab.id === action.payload.id
+      );
+      if (isAlreadyOpen) return { ...state, activeTab: action.payload.id };
+
+      const newTab: Tab = {
+        id: action.payload.id,
+        name: action.payload.name,
+        content: "", // Load content from your backend or initial state
+        isDirty: false,
+      };
+      return {
+        ...state,
+        openTabs: [...state.openTabs, newTab],
+        activeTab: newTab.id,
+      };
+
+    case "CLOSE_TAB":
+      const updatedTabs = state.openTabs.filter(
+        (tab) => tab.id !== action.payload
+      );
+      return {
+        ...state,
+        openTabs: updatedTabs,
+        activeTab: updatedTabs.length ? updatedTabs[0].id : null,
+      };
+
+    case "SET_ACTIVE_TAB":
+      return { ...state, activeTab: action.payload };
+
+    case "EDIT_TAB_CONTENT":
+      return {
+        ...state,
+        openTabs: state.openTabs.map((tab) =>
+          tab.id === action.payload.id
+            ? { ...tab, content: action.payload.content, isDirty: true }
+            : tab
+        ),
+      };
+
+    default:
+      return state;
+  }
+}
+
+const baseItem: FileItem = {
+  id: "0",
+  name: "root",
+  type: "folder",
+  path: basePath,
+};
+
+const initialIDEState: IDEState = {
+  fileSystem: [baseItem], // Fetch or initialize this with the file explorer structure
+  selectedFile: null,
+  openTabs: [],
+  activeTab: null,
+};
+
+const IDEStateContext = createContext<IDEState | undefined>(undefined);
+const IDEDispatchContext = createContext<React.Dispatch<IDEAction> | undefined>(
+  undefined
+);
+
+export const IDEProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  const [state, dispatch] = useReducer(ideReducer, initialIDEState);
+
+  return (
+    <IDEStateContext.Provider value={state}>
+      <IDEDispatchContext.Provider value={dispatch}>
+        {children}
+      </IDEDispatchContext.Provider>
+    </IDEStateContext.Provider>
+  );
+};
+
+export const useIDEState = () => {
+  const context = useContext(IDEStateContext);
+  if (!context) throw new Error("useIDEState must be used within IDEProvider");
+  return context;
+};
+
+export const useIDEDispatch = () => {
+  const context = useContext(IDEDispatchContext);
+  if (!context)
+    throw new Error("useIDEDispatch must be used within IDEProvider");
+  return context;
+};
