@@ -47,6 +47,28 @@ export function getComponentForFilename(filename: string): () => JSX.Element {
   return r || UnknownFileForm;
 }
 
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
+}
+
+function CustomTabPanel(props: TabPanelProps) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+    </div>
+  );
+}
+
 export function BigMainComponent() {
   const [items, setItems] = useState<TreeViewBaseItem[]>([]);
   const [currentlyEditing, setCurrentlyEditing] =
@@ -161,37 +183,36 @@ export function BigMainComponent() {
               Not editing anything now
             </Typography>
           ) : (
-            <Tabs
-              value={items.indexOf(currentlyEditing)}
-              onChange={(_: SyntheticEvent, value: any) => {
-                console.log("tab changed");
-                setCurrentlyEditing(value);
-              }}
-              variant="scrollable"
-              scrollButtons="auto"
-              aria-label="scrollable auto tabs example"
-            >
-              {items.map((item, index) => {
-                const Component = getComponentForFilename(item.label);
-                const match = filename.match(/^([A-Za-z]+)_Parameters\.xml$/);
-                if (!match) return <UnknownFileForm />;
+            <Box>
+              <Tabs
+                value={items.indexOf(currentlyEditing)}
+                onChange={(_: SyntheticEvent, value: any) => {
+                  console.log("tab changed");
+                  setCurrentlyEditing(value);
+                }}
+                variant="scrollable"
+                scrollButtons="auto"
+                aria-label="scrollable auto tabs example"
+              >
+                {items.map((item, index) => {
 
-                const prefix = match[1] as FilePrefix;
+                  return (
+                    <Tab key={index} label={item.label} onSelect={ } />
+                  );
+                  // todo here inside add Parsing component depending on the file name
+                })}
 
-                return (
-                  <Tab key={index} label={item.label}>
-                    {
-
-                      if (prefix === FilePrefix.QEXEAFS) {
-                        return <QEXEAFSParametersForm />;
-                      } else if (prefix === FilePrefix.Detector) {
-
-                    }
-                  </Tab>
-                );
-                // todo here inside add Parsing component depending on the file name
-              })}
-            </Tabs>
+              </Tabs>
+              <Box id="editor-box">
+                {
+                  items.map((item, index) => {
+                    return <CustomTabPanel value={items.indexOf(currentlyEditing)} index={index}>
+                      {/* todo here render the buffer */}
+                      {/* todo here render the relevant Form */}
+                    </CustomTabPanel>
+                  })}
+              </Box>
+            </Box>
           )}
         </Box>
       </Grid>

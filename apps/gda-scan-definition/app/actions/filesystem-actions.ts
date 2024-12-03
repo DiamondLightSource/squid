@@ -103,3 +103,51 @@ export const makeFolder = actionClient
       }
     }
   });
+
+export const modifyFileBuffer = actionClient
+  .schema(fileSchema)
+  .action(async ({ parsedInput: { relativePath, name, content } }) => {
+    // Resolve the full file path
+    if (content === undefined) {
+      throw new Error("Content is undefined");
+    }
+    const filePath = path.resolve(basePath, relativePath, name);
+
+    try {
+      // Write the buffer to the file
+      await fs.writeFile(filePath, content);
+
+      return { success: true, filePath };
+    } catch (error) {
+      console.error("Error modifying file buffer:", error);
+      if (error instanceof Error) {
+        throw new Error(`Failed to modify file: ${error.message}`);
+      } else {
+        throw new Error("Failed to modify file: Unknown error");
+      }
+    }
+  });
+
+export const deleteFile = actionClient
+  .schema(fileSchema)
+  .action(async ({ parsedInput: { relativePath, name } }) => {
+    // Resolve the full file path
+    const filePath = path.resolve(basePath, relativePath, name);
+
+    try {
+      // Check if the file exists
+      await fs.access(filePath);
+
+      // Delete the file
+      await fs.unlink(filePath);
+
+      return { success: true, filePath };
+    } catch (error) {
+      console.error("Error deleting file:", error);
+      if (error instanceof Error) {
+        throw new Error(`Failed to delete file: ${error.message}`);
+      } else {
+        throw new Error("Failed to delete file: Unknown error");
+      }
+    }
+  });
