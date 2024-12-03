@@ -5,6 +5,7 @@ import { TreeViewBaseItem } from "@mui/x-tree-view";
 import { actionClient } from "../clients/actionclient";
 import { basePath } from "./basePath";
 import path from "path";
+import { fileSchema, folderSchema } from "../schemas/filesystemSchemas";
 
 async function readFilesFlat(): Promise<TreeViewBaseItem[]> {
   const dir: string = basePath.toString();
@@ -17,9 +18,8 @@ async function readFilesFlat(): Promise<TreeViewBaseItem[]> {
   }));
 }
 
-async function readFiles(p: PathLike): Promise<TreeViewBaseItem[]> {
-  const dir: string = p.toString();
-  const dirPath = path.resolve(dir);
+async function readFiles(p: string): Promise<TreeViewBaseItem[]> {
+  const dirPath = path.resolve(p);
   console.log(`dirPath: ${dirPath}`);
 
   async function getItems(currentPath: string): Promise<TreeViewBaseItem[]> {
@@ -58,3 +58,48 @@ export const getFiles = actionClient.action(async () => {
   const files = readFiles(basePath);
   return { files };
 });
+
+export const makeFile = actionClient
+  .schema(fileSchema)
+  .action(async ({ parsedInput: { name, type, content, relativePath } }) => {
+    // Resolve the full file path
+    const filePath = path.resolve(basePath, relativePath, `${name}.${type}`);
+
+    try {
+      // Ensure the directory exists
+      await fs.mkdir(path.dirname(filePath), { recursive: true });
+
+      // Write the file content
+      await fs.writeFile(filePath, content || "");
+
+      return { success: true, filePath };
+    } catch (error) {
+      console.error("Error creating file:", error);
+      if (error instanceof Error) {
+        throw new Error(`Failed to create file: ${error.message}`);
+      } else {
+        throw new Error("Failed to create file: Unknown error");
+      }
+    }
+  });
+
+export const makeFolder = actionClient
+  .schema(folderSchema)
+  .action(async ({ parsedInput: { name, relativePath } }) => {
+    // Resolve the full folder path
+    const folderPath = path.resolve(basePath, relativePath, name);
+
+    try {
+      // Create the folder
+      await fs.mkdir(folderPath, { recursive: true });
+
+      return { success: true, folderPath };
+    } catch (error) {
+      console.error("Error creating folder:", error);
+      if (error instanceof Error) {
+        throw new Error(`Failed to create folder: ${error.message}`);
+      } else {
+        throw new Error("Failed to create folder: Unknown error");
+      }
+    }
+  });

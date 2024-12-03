@@ -15,3 +15,7 @@ audio stuff component
 
   for instance for the editor
   <https://remix-ide.readthedocs.io/en/latest/file_explorer.html#file-storage>
+
+
+  https://github.com/rhasspy/piper/
+  https://github.com/yacineMTB/talk?tab=readme-ov-file
