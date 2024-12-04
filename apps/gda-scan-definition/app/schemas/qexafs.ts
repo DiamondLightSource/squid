@@ -4,7 +4,7 @@ import { maxHeaderSize } from "http";
 
 // more than Zn(30) and less than Nd(60)
 // todo make this real
-const allowedElements = elements
+export const allowedElements = elements
   .filter((e) => {
     const n = parseInt(e.Number);
     return 30 < n && n < 60;
@@ -17,10 +17,17 @@ export const multipleScanSchema = z.object({
   title: z.string().min(1).max(100),
 });
 
-const allowedEdges = ["K", "L3", "L2", "L1", "M5", "M4", "M3", "M2", "M1"] as [
-  string,
-  ...string[],
-];
+export const allowedEdges = [
+  "K",
+  "L3",
+  "L2",
+  "L1",
+  "M5",
+  "M4",
+  "M3",
+  "M2",
+  "M1",
+] as [string, ...string[]];
 
 // Define the schema for validation
 
@@ -67,7 +74,7 @@ export const outputParametersSchema = z.object({
 });
 
 // Schema for common motor position structure
-const motorPositionSchema = z.object({
+export const motorPositionSchema = z.object({
   scannableName: z.string(),
   description: z.string(),
   doMove: z.boolean(),
@@ -157,7 +164,7 @@ const userStageSchema = z.object({
 });
 
 // Main Schema for B18SampleParameters
-const b18SampleParametersSchema = z.object({
+export const sampleParametersSchema = z.object({
   shouldValidate: z.boolean(),
   name: z.string(),
   description1: z.string(),

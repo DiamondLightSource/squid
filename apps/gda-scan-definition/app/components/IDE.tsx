@@ -14,6 +14,10 @@ import {
 } from "@mui/material";
 import { getParameters } from "../actions/qexafs-actions";
 import { ParamsForm } from "./forms/ParamsForm";
+import OutputParametersForm from "./forms/OutputForm";
+import SampleParametersForm from "./forms/SampleForm";
+import { MyForm } from "./forms/AutoFormTest";
+import DetectorParametersForm from "./forms/DetectorParametersForm";
 
 const IDE: React.FC = () => {
   // Load existing circles
@@ -71,6 +75,11 @@ const IDE: React.FC = () => {
 
             <Grid item xs={12}>
               <ParamsForm />
+              <OutputParametersForm />
+              <SampleParametersForm />
+              {/* <MyForm /> */}
+              <DetectorParametersForm />
+
             </Grid>
           </Grid>
         </Grid>
