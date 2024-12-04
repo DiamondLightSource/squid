@@ -26,15 +26,15 @@ const EditorTabs: React.FC = () => {
 
   return (
     <Box className="tabs" sx={{ display: "flex", flexDirection: "row" }}>
+      {/* <span> all the tabs: {tabsWithLabels.map(t => t.label)}</span> */}
       {tabsWithLabels.map((tab) => {
-        const label = fileSystem.find((file) => file.id === tab.id)?.label;
         return (
           <Box
             key={tab.id}
             className={`tab ${tab.id === activeTab ? "active" : ""}`}
             onClick={() => handleTabClick(tab.id)}
           >
-            {label}
+            {tab.label}
             <Button onClick={() => handleCloseTab(tab.id)}>
               <CloseIcon />
             </Button>

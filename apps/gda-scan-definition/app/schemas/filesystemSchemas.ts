@@ -11,3 +11,10 @@ export const folderSchema = z.object({
   relativePath: z.string().default("."), // Default to the current directory
 });
 
+
+
+export const fileRenameSchema = z.object({
+  oldName: z.string(),
+  newName: z.string(),
+  relativePath: z.string(),
+});

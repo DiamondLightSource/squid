@@ -1,43 +1,22 @@
 "use client";
-import React from "react";
-import FileExplorer from "./FileExplorer";
-import EditorTabs from "./EditorTabs";
-import Editor from "./CodeEditor";
-import { FileItem, IDEProvider, useIDEDispatch, useIDEState } from "./ideState";
 import {
-  Box,
   Button,
   ButtonGroup,
   Container,
-  Grid,
-  Typography,
+  Grid
 } from "@mui/material";
+import React from "react";
 import { getParameters } from "../actions/qexafs-actions";
-import { ParamsForm } from "./forms/ParamsForm";
+import Editor from "./CodeEditor";
+import EditorTabs from "./EditorTabs";
+import FileExplorer from "./FileExplorer";
 import OutputParametersForm from "./forms/OutputForm";
+import { ParamsForm } from "./forms/ParamsForm";
 import SampleParametersForm from "./forms/SampleForm";
-import { MyForm } from "./forms/AutoFormTest";
+import { IDEProvider } from "./ideState";
 import DetectorParametersForm from "./forms/DetectorParametersForm";
 
 const IDE: React.FC = () => {
-  // Load existing circles
-  const fetchParams = async () => {
-    try {
-      const response = await getParameters();
-      console.log(response);
-      if (!response || !response.data) {
-        alert("No circles found");
-        return;
-      }
-      const circles: any[] = response.data.parameters;
-      if (circles.length === 0) {
-        alert("No circles found");
-      }
-    } catch (error) {
-      alert("Error fetching circles");
-    }
-  };
-
   return (
     <IDEProvider>
       <div className="ide">
@@ -77,9 +56,7 @@ const IDE: React.FC = () => {
               <ParamsForm />
               <OutputParametersForm />
               <SampleParametersForm />
-              {/* <MyForm /> */}
               <DetectorParametersForm />
-
             </Grid>
           </Grid>
         </Grid>

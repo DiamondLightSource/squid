@@ -4,8 +4,8 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { allowedEdges, allowedElements, qexafsParametersSchema } from "../../schemas/qexafs";
 import { Typography } from "@mui/material";
-import { updateParameters } from "../../actions/qexafs-actions";
 import { useState } from "react";
+import { updateQexafsParameters } from "../../actions/qexafs-actions";
 
 
 const defaultData: ParamsSchema = {
@@ -21,19 +21,6 @@ const defaultData: ParamsSchema = {
 type ParamsSchema = z.infer<typeof qexafsParametersSchema>;
 
 export function ParamsForm() {
-  console.log("redering params form");
-  // const { register, handleSubmit } = useForm<ParamsSchema>({
-  //   resolver: zodResolver(qexafsParametersSchema),
-  // });
-
-  // const onSubmit = async (data: ParamsSchema) => {
-  //   console.log("Submitting", data);
-  //   console.log(data);
-  //   // todo connect to the backend here
-  //   const response = await updateParameters({ ...data });
-  //   console.log(response);
-  // };
-
   const [formData, setFormData] = useState<ParamsSchema>(defaultData);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -41,7 +28,7 @@ export function ParamsForm() {
     try {
       const validated: ParamsSchema = qexafsParametersSchema.parse(formData);
 
-      const { success, parameters } = await updateParameters(validated);
+      const { success, parameters } = await updateQexafsParameters(validated);
 
       console.log(success, parameters);
 

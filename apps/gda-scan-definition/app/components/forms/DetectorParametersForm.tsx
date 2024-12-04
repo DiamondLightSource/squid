@@ -2,6 +2,7 @@ import Typography from "@mui/material/Typography";
 import React, { useState } from "react";
 import { z } from "zod";
 import { detectorConfigurationSchema, detectorParametersSchema } from "../../schemas/qexafs";
+import { updateDetectorParameters } from "../../actions/qexafs-actions";
 
 const defaultDetectorConfig: DetectorConfiguration = {
     description: "",
@@ -18,17 +19,37 @@ const defaultDetectorConfig: DetectorConfiguration = {
 type DetectorConfiguration = z.infer<typeof detectorConfigurationSchema>;
 type DetectorsSchema = z.infer<typeof detectorParametersSchema>;
 
-const DetectorParametersForm = () => {
-    const [formData, setFormData] = useState<DetectorsSchema>({
-        shouldValidate: false,
-        detectorConfiguration: [
-            defaultDetectorConfig,
-        ],
-    });
+const defaultFormData: DetectorsSchema = {
+    shouldValidate: false,
+    detectorConfiguration: [
+        defaultDetectorConfig,
+    ],
+};
 
-    const handleSubmit = (e: React.SyntheticEvent) => {
+const DetectorParametersForm = () => {
+    const [formData, setFormData] = useState<DetectorsSchema>(defaultFormData);
+
+    const handleSubmit = async (e: React.SyntheticEvent) => {
         console.log(formData);
-        // todo complete
+
+        e.preventDefault();
+        try {
+            const validated: DetectorsSchema = detectorParametersSchema.parse(formData);
+
+            // Connect to the backend here
+            const { success, parameters } = await updateDetectorParameters(validated);
+            console.log(success, parameters);
+            if (success) {
+                setFormData(defaultFormData);
+            }
+
+        } catch (err) {
+            if (err instanceof z.ZodError) {
+                alert("Validation error: " + err.errors.map((e) => e.message).join("\n"));
+            } else {
+                alert("An unexpected error occurred");
+            }
+        }
     };
 
     const handleAddConfiguration = () => {

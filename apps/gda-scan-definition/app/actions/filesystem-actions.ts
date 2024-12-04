@@ -5,7 +5,11 @@ import { TreeViewBaseItem } from "@mui/x-tree-view";
 import { actionClient } from "../clients/actionclient";
 import { basePath } from "./basePath";
 import path from "path";
-import { fileSchema, folderSchema } from "../schemas/filesystemSchemas";
+import {
+  fileRenameSchema,
+  fileSchema,
+  folderSchema,
+} from "../schemas/filesystemSchemas";
 
 async function readFilesFlat(): Promise<TreeViewBaseItem[]> {
   const dir: string = basePath.toString();
@@ -55,7 +59,8 @@ async function readFiles(p: string): Promise<TreeViewBaseItem[]> {
 
 export const getFiles = actionClient.action(async () => {
   //   const files = readFilesFlat();
-  const files = readFiles(basePath);
+  const files = await readFiles(basePath);
+  console.log(`files in the getFiles function: ${files}`);
   return { files };
 });
 
@@ -82,6 +87,41 @@ export const makeFile = actionClient
       }
     }
   });
+
+export const renameFile = async (basePath: string) =>
+  actionClient
+    .schema(fileRenameSchema)
+    .action(async ({ parsedInput: { oldName, newName, relativePath } }) => {
+      // Resolve the full file paths
+      const oldFilePath = path.resolve(basePath, relativePath, oldName);
+      const newFilePath = path.resolve(basePath, relativePath, newName);
+
+      // todo normalize error handling
+      if (!newFilePath.startsWith(basePath)) {
+        throw new Error(`Access denied: path is outside of allowed base path.`);
+      }
+      try {
+        // Ensure the old file exists
+        if (!(await fs.stat(oldFilePath)).isFile()) {
+          throw new Error(`File not found: ${oldFilePath}`);
+        }
+
+        // todo add guardrails here where it does not match basepath
+
+        // Guardrail: Ensure that the folderPath is within the basePath
+        // Rename the file
+        await fs.rename(oldFilePath, newFilePath);
+
+        return { success: true, oldFilePath, newFilePath };
+      } catch (error) {
+        console.error("Error renaming file:", error);
+        if (error instanceof Error) {
+          throw new Error(`Failed to rename file: ${error.message}`);
+        } else {
+          throw new Error("Failed to rename file: Unknown error");
+        }
+      }
+    });
 
 export const makeFolder = actionClient
   .schema(folderSchema)
@@ -148,6 +188,33 @@ export const deleteFile = actionClient
         throw new Error(`Failed to delete file: ${error.message}`);
       } else {
         throw new Error("Failed to delete file: Unknown error");
+      }
+    }
+  });
+
+export const getFileBuffer = actionClient
+  .schema(fileSchema)
+  .action(async ({ parsedInput: { relativePath, name } }) => {
+    // Resolve the full file path
+    const filePath = path.resolve(basePath, relativePath, name);
+
+    try {
+      // Check if the file exists
+      // todo fix this issue
+      if (!fs.existsSync(filePath)) {
+        throw new Error(`File not found: ${filePath}`);
+      }
+
+      // Read the file content as a buffer
+      const fileBuffer = await fs.promises.readFile(filePath);
+
+      return { success: true, fileBuffer };
+    } catch (error) {
+      console.error("Error retrieving file buffer:", error);
+      if (error instanceof Error) {
+        throw new Error(`Failed to retrieve file buffer: ${error.message}`);
+      } else {
+        throw new Error("Failed to retrieve file buffer: Unknown error");
       }
     }
   });

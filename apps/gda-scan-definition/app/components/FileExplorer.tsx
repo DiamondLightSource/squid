@@ -4,10 +4,37 @@ import React from "react";
 import { FileItem, useIDEDispatch, useIDEState } from "./ideState";
 
 import { RichTreeView } from "@mui/x-tree-view";
+import { getFiles } from "../actions/filesystem-actions";
 
 function FileSystemButtons() {
   const { openTabs, activeTab } = useIDEState();
   const dispatch = useIDEDispatch();
+
+
+  const fetchItems = async () => {
+    try {
+      const response = await getFiles();
+      console.log(response);
+      if (!response || !response.data) {
+        alert("No items found");
+        return;
+      }
+      // NOTE: this slightly odd parsing needs to be to work with the server response
+      const items: any[] = await response.data.files;
+      console.log(` response: ${JSON.stringify(response)}`);
+      console.log(`items: ${items} with length: ${items.length}`);
+      if (items == undefined || items.length === 0) {
+        alert("No items found");
+        return;
+      }
+      console.log(`items are correct ${items.length}`);
+      dispatch({ type: "SET_FILE_SYSTEM", payload: items });
+      // setItems(MUI_X_PRODUCTS);
+    } catch (error) {
+      // const reason = error.response?.data?.reason;
+      alert(`Error fetching or parsing items ${error}`);
+    }
+  };
 
   return (
     <ButtonGroup
@@ -21,6 +48,13 @@ function FileSystemButtons() {
         justifyContent: "center",
       }}
     >
+      <Button
+        onClick={async () => {
+          await fetchItems();
+        }}
+      >
+        Refresh
+      </Button>
       <Button
         onClick={() => {
           const f: FileItem = {
@@ -54,13 +88,13 @@ function FileSystemButtons() {
 const FileExplorer: React.FC = () => {
   const { fileSystem, selectedFile } = useIDEState();
   const dispatch = useIDEDispatch();
-
   const handleFileClick = (file: FileItem) => {
     dispatch({ type: "SELECT_FILE", payload: file.id });
     if (file.type === "file") {
       dispatch({ type: "OPEN_TAB", payload: file });
     }
   };
+  console.log(`fileSystem: ${fileSystem} with length: ${fileSystem.length}`);
 
   return (
     <div className="file-explorer">

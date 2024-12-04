@@ -28,6 +28,7 @@ type IDEAction =
   | { type: "SELECT_FILE"; payload: string }
   | { type: "ADD_FILE"; payload: FileItem }
   | { type: "ADD_FOLDER"; payload: FileItem }
+  | { type: "SET_FILE_SYSTEM"; payload: FileItem[] }
   | { type: "SELECT_FILE"; payload: string }
   | { type: "OPEN_TAB"; payload: FileItem }
   | { type: "CLOSE_TAB"; payload: string }
@@ -36,10 +37,28 @@ type IDEAction =
 
 function ideReducer(state: IDEState, action: IDEAction): IDEState {
   console.log(`Current state: ${JSON.stringify(state)}`);
-  console.log(`Action: ${JSON.stringify(action)}`);
+  console.debug(`Action: ${JSON.stringify(action)}`);
   switch (action.type) {
     case "SELECT_FILE":
-      return { ...state, selectedFile: action.payload };
+      const fileRef: FileItem | undefined = state.fileSystem.find(file => file.id === action.payload);
+      if (!fileRef) {
+        console.error(`File not found: ${action.payload}`);
+        return state;
+      }
+      const content = "Loading file...";
+      // todo this needs to fetch from the backend here - empty buffer for now
+      const newTabSelect: Tab = {
+        id: action.payload,
+        content: content,
+        isDirty: false
+      };
+      const newTabs = [...state.openTabs, newTabSelect];
+      return { ...state, selectedFile: action.payload, openTabs: newTabs, activeTab: newTabs.at(-1)?.id ?? null };
+    // todo prevent multiple opneing of the same file
+
+    case "SET_FILE_SYSTEM":
+      console.log(`Setting file system: ${JSON.stringify(action.payload)}`);
+      return { ...state, fileSystem: action.payload };
 
     case "OPEN_TAB":
       const isAlreadyOpen = state.openTabs.some(

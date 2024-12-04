@@ -2,6 +2,7 @@ import { Typography } from "@mui/material";
 import React, { useState } from "react";
 import { z } from "zod";
 import { motorPositionSchema, sampleParametersSchema } from "../../schemas/qexafs";
+import { updateSampleParameters } from "../../actions/qexafs-actions";
 
 const initialMotorPosition: MotorPosition = {
     scannableName: "",
@@ -88,8 +89,28 @@ type SampleParametersSchema = z.infer<typeof sampleParametersSchema>;
 const SampleParametersForm = () => {
     const [formData, setFormData] = useState<SampleParametersSchema>(initialFormData);
 
-    const handleSubmit = (e: React.SyntheticEvent) => {
+    const handleSubmit = async (e: React.SyntheticEvent) => {
         console.log(formData);
+
+        e.preventDefault();
+        try {
+            const validated: SampleParametersSchema = sampleParametersSchema.parse(formData);
+
+            // Connect to the backend here
+            const { success, parameters } = await updateSampleParameters(validated);
+            console.log(success, parameters);
+            if (success) {
+                setFormData(initialFormData);
+            }
+
+        } catch (err) {
+            if (err instanceof z.ZodError) {
+                alert("Validation error: " + err.errors.map((e) => e.message).join("\n"));
+            } else {
+                alert("An unexpected error occurred");
+            }
+        }
+
     }
 
     const handleUpdateField = (path, value) => {
