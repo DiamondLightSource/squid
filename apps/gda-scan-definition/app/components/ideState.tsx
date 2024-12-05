@@ -107,6 +107,7 @@ function ideReducer(state: IDEState, action: IDEAction): IDEState {
             ? { ...tab, content: action.payload.content, isDirty: true }
             : tab
         ),
+        fileCache: { ...state.fileCache, [action.payload.id]: action.payload.content }
       };
 
     case "ADD_FILE":

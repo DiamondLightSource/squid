@@ -41,6 +41,8 @@ export const qexafsParametersSchema = z.object({
   stepSize: z.number().positive().int(),
 });
 
+// todo looks like most of this is still written as string
+// might try out a different parser
 // Base schema for a single detector configuration
 export const detectorConfigurationSchema = z.object({
   description: z.string(),

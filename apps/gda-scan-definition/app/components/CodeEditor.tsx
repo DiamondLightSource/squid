@@ -1,10 +1,11 @@
 "use client";
-import Editor from "@monaco-editor/react";
+import Editor, { DiffEditor } from "@monaco-editor/react";
 import React from "react";
 import { useIDEState, useIDEDispatch, FileItem } from "./ideState";
 import { Button, ButtonGroup } from "@mui/material";
 import { getComponentForFilename } from "./FilePrefix";
 import { updateDetectorParameters } from "../actions/qexafs-actions";
+import { modifyFileBuffer } from "../actions/filesystem-actions";
 
 const CodeEditor: React.FC = () => {
   const { openTabs, activeTab, fileSystem, fileCache } = useIDEState();
@@ -41,18 +42,38 @@ const CodeEditor: React.FC = () => {
     });
   };
 
+  const code1 = "// your original code...";
+  const code2 = "// a different version...";
+  const options = {
+    //renderSideBySide: false
+  };
   return (
     <div>
       <ButtonGroup>
-        <Button disabled>Save is disabled because autosave is enabled</Button>
+        <Button onClick={async () => {
+          if (fileRef.label === "Detector_Parameters.xml") {
+            // todo here need to parse the xml back into the form, alternatively just one way change it and refresh the form
+            const response = await modifyFileBuffer({ id: activeTabData.id, content: activeTabData.content });
+            console.log(response);
+          }
+        }}>Save </Button>
+
       </ButtonGroup>
-      <Editor
+      {/* <Editor
         height="70vh"
         defaultLanguage="html"
         language="html"
         defaultValue="// some comment"
         value={activeTabData.content}
         onChange={(t) => handleContentChange(t || "")}
+      /> */}
+      <DiffEditor
+        width="70vw"
+        height="70vh"
+        language="javascript"
+        original={fileCache[activeTabData.id] || ""}
+        modified={activeTabData.content}
+        options={options}
       />
       <Form />
     </div>

@@ -1,8 +1,11 @@
 import Typography from "@mui/material/Typography";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { z } from "zod";
 import { detectorConfigurationSchema, detectorParametersSchema } from "../../schemas/qexafs";
 import { updateDetectorParameters } from "../../actions/qexafs-actions";
+import { useIDEState } from "../ideState";
+import { basePath } from "../../actions/basePath";
+import { create } from "xmlbuilder2";
 
 const defaultDetectorConfig: DetectorConfiguration = {
     description: "",
@@ -25,8 +28,14 @@ const defaultFormData: DetectorsSchema = {
         defaultDetectorConfig,
     ],
 };
+const filePath = `${basePath}/Detector_Parameters.xml`;
 
 const DetectorParametersForm = () => {
+    const { fileCache } = useIDEState();
+
+
+
+    // todo use the parsed data from the backend instead
     const [formData, setFormData] = useState<DetectorsSchema>(defaultFormData);
 
     const handleSubmit = async (e: React.SyntheticEvent) => {
@@ -51,6 +60,26 @@ const DetectorParametersForm = () => {
             }
         }
     };
+
+    if (fileCache[filePath] === undefined) {
+        return <div>Loading..., try refreshing the file tree</div>;
+    }
+    const fileContent: string = fileCache[filePath];
+    // todo parse the xml content into json
+
+    const parsed = create(fileContent).end({ format: "object" });
+    console.log(`parsed: ${JSON.stringify(parsed)}`);
+    const validationResult = detectorParametersSchema.safeParse(parsed["DetectorParameters"]);
+    console.log(`validated: ${JSON.stringify(validationResult)}`);
+    if (!validationResult.success) {
+        console.error("Validation error:", validationResult.error.errors);
+        return <div>Validation error, please check the console for details</div>;
+    }
+
+    useEffect(() => {
+        setFormData(validationResult.data);
+        // setFormData(parsed);
+    }, [])
 
     const handleAddConfiguration = () => {
         setFormData({
