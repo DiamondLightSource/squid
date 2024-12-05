@@ -30,7 +30,7 @@ const IDE: React.FC = () => {
           {/* Horizontal bar for potential buttons */}
           <Grid item>
             <ButtonGroup>
-              <Button> Test</Button>
+              <Button>Button example</Button>
             </ButtonGroup>
           </Grid>
 

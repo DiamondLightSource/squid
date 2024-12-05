@@ -41,10 +41,12 @@ function FileSystemButtons() {
   return (
     <ButtonGroup
       sx={{
-        // width: "100%",
+        width: "100%",
         // height: "40px",
         backgroundColor: "#f5f5f5", // Light gray background for the bar
         borderBottom: "1px solid #ddd", // Thin border to define the bar
+        padding: "10px",
+        margin: "10px",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -54,10 +56,11 @@ function FileSystemButtons() {
         onClick={async () => {
           await fetchItems();
         }}
+        sx={{ margin: "10px", padding: "10px" }}
       >
         Refresh
       </Button>
-      <Button
+      {/* <Button
         onClick={() => {
           const f: FileItem = {
             id: `file-${Date.now()}`,
@@ -82,7 +85,7 @@ function FileSystemButtons() {
         }}
       >
         Add folder
-      </Button>
+      </Button> */}
     </ButtonGroup>
   );
 }
@@ -110,7 +113,8 @@ const FileExplorer: React.FC = () => {
             handleFileClick(item);
           }
         }}
-        isItemEditable
+        // todo this is temporary, we do not need to edit names
+        isItemEditable={false}
         experimentalFeatures={{ labelEditing: true }}
       />
     </div>

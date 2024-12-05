@@ -122,8 +122,8 @@ export function BigMainComponent() {
           >
             Refresh
           </Button>
-          <Button onClick={addFile}>Add file</Button>
-          <Button onClick={addFolder}>Add folder</Button>
+          {/* <Button onClick={addFile}>Add file</Button>
+          <Button onClick={addFolder}>Add folder</Button> */}
         </ButtonGroup>
         <h3>Items: {items.length}</h3>
         <RichTreeView

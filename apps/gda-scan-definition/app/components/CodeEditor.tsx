@@ -2,7 +2,7 @@
 import Editor, { DiffEditor } from "@monaco-editor/react";
 import React from "react";
 import { useIDEState, useIDEDispatch, FileItem } from "./ideState";
-import { Button, ButtonGroup } from "@mui/material";
+import { Box, Button, ButtonGroup } from "@mui/material";
 import { getComponentForFilename } from "./FilePrefix";
 import { updateDetectorParameters } from "../actions/qexafs-actions";
 import { modifyFileBuffer } from "../actions/filesystem-actions";
@@ -13,6 +13,7 @@ const CodeEditor: React.FC = () => {
 
   const activeTabData = openTabs.find((tab) => tab.id === activeTab);
 
+  const [useDiffEditor, setUseDiffEditor] = React.useState(true);
   if (!activeTabData) {
     return <div className="editor">No file selected</div>;
   }
@@ -42,10 +43,9 @@ const CodeEditor: React.FC = () => {
     });
   };
 
-  const code1 = "// your original code...";
-  const code2 = "// a different version...";
   const options = {
-    //renderSideBySide: false
+    renderSideBySide: true,
+    highlightModifiedLines: true,
   };
   return (
     <div>
@@ -57,24 +57,30 @@ const CodeEditor: React.FC = () => {
             console.log(response);
           }
         }}>Save </Button>
+        <Button onClick={() => setUseDiffEditor(!useDiffEditor)}>Toggle Editor</Button>
 
       </ButtonGroup>
-      {/* <Editor
-        height="70vh"
-        defaultLanguage="html"
-        language="html"
-        defaultValue="// some comment"
-        value={activeTabData.content}
-        onChange={(t) => handleContentChange(t || "")}
-      /> */}
-      <DiffEditor
-        width="70vw"
-        height="70vh"
-        language="javascript"
-        original={fileCache[activeTabData.id] || ""}
-        modified={activeTabData.content}
-        options={options}
-      />
+      <Box sx={{ minWidth: "60vw" }}>
+        {
+          useDiffEditor ?
+            <DiffEditor
+              width="70vw"
+              height="70vh"
+              language="javascript"
+              original={fileCache[activeTabData.id] || ""}
+              modified={activeTabData.content}
+              options={options} />
+            :
+            <Editor
+              height="70vh"
+              defaultLanguage="html"
+              language="html"
+              defaultValue="// some comment"
+              value={activeTabData.content}
+              onChange={(t) => handleContentChange(t || "")}
+            />
+        }
+      </Box>
       <Form />
     </div>
   );

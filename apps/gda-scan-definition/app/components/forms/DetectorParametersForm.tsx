@@ -1,11 +1,11 @@
 import Typography from "@mui/material/Typography";
 import React, { useEffect, useState } from "react";
-import { z } from "zod";
-import { detectorConfigurationSchema, detectorParametersSchema } from "../../schemas/qexafs";
-import { updateDetectorParameters } from "../../actions/qexafs-actions";
-import { useIDEState } from "../ideState";
-import { basePath } from "../../actions/basePath";
 import { create } from "xmlbuilder2";
+import { z } from "zod";
+import { basePath } from "../../actions/basePath";
+import { updateDetectorParameters } from "../../actions/qexafs-actions";
+import { detectorConfigurationSchema, detectorParametersSchema } from "../../schemas/qexafs";
+import { useIDEState } from "../ideState";
 
 const defaultDetectorConfig: DetectorConfiguration = {
     description: "",
@@ -65,10 +65,13 @@ const DetectorParametersForm = () => {
         return <div>Loading..., try refreshing the file tree</div>;
     }
     const fileContent: string = fileCache[filePath];
-    // todo parse the xml content into json
 
+    // todo this doesn't quite work smoothly
     const parsed = create(fileContent).end({ format: "object" });
     console.log(`parsed: ${JSON.stringify(parsed)}`);
+    if (Array.isArray(parsed)) {
+        return <div>invalid xml</div>
+    }
     const validationResult = detectorParametersSchema.safeParse(parsed["DetectorParameters"]);
     console.log(`validated: ${JSON.stringify(validationResult)}`);
     if (!validationResult.success) {
