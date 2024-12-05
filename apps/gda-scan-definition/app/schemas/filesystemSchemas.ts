@@ -1,7 +1,8 @@
 import { z } from "zod";
+
 export const fileSchema = z.object({
   name: z.string().min(1, "File name is required"),
-  type: z.enum(["txt", "csv", "json", "other"]),
+  type: z.enum(["txt", "csv", "json", "xml",  "other"]),
   content: z.string().optional(), // Allow optional content for file creation
   relativePath: z.string().default("."), // Default to the current directory
 });

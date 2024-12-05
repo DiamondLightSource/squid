@@ -79,7 +79,7 @@ export function BigMainComponent() {
   };
 
   const addFolder = () => {
-    // todo this is a known bug when too many layers
+    // this is a known bug when too many layers
     const newFile: TreeViewBaseItem = {
       id: `layer-${items.length + 1}`,
       label: "new item",
@@ -169,16 +169,13 @@ function EditorBox({ lastSelectedItem, items }: EditorBoxProps) {
       >
         {items.map((item, index) => {
           return <Tab key={index} label={item.label} />;
-          // todo add on select
-          // todo here inside add Parsing component depending on the file name
+          // add on select
         })}
       </Tabs>
       <Box id="editor-box">
         {items.map((item, index) => {
           return (
             <CustomTabPanel key={index} value={0} index={index}>
-              {/* todo here render the buffer */}
-              {/* todo here render the relevant Form */}
               <input type="textarea" value={item.label} />
               <Editor
                 height="90vh"

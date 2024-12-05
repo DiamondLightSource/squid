@@ -1,8 +1,5 @@
 "use client";
 import React, { createContext, useContext, useReducer } from "react";
-import { basePath } from "../actions/basePath";
-import { makeFile } from "../actions/filesystem-actions";
-import { get } from "http";
 
 export interface FileItem {
   id: string;
@@ -22,17 +19,20 @@ export interface IDEState {
   selectedFile: string | null; // ID of the selected file
   openTabs: Tab[]; // Array of open tabs
   activeTab: string | null; // ID of the active tab
+  fileCache: { [id: string]: string }; // Cached content of files, keyed by file ID
 }
 
-type IDEAction =
+export type IDEAction =
   | { type: "SELECT_FILE"; payload: string }
   | { type: "ADD_FILE"; payload: FileItem }
   | { type: "ADD_FOLDER"; payload: FileItem }
   | { type: "SET_FILE_SYSTEM"; payload: FileItem[] }
-  | { type: "SELECT_FILE"; payload: string }
   | { type: "OPEN_TAB"; payload: FileItem }
   | { type: "CLOSE_TAB"; payload: string }
   | { type: "SET_ACTIVE_TAB"; payload: string }
+  | { type: "FILE_FETCH_START"; payload: string }
+  | { type: "FILE_FETCH_SUCCESS"; payload: { id: string; content: string } }
+  | { type: "FILE_FETCH_ERROR"; payload: { id: string; error: string } }
   | { type: "EDIT_TAB_CONTENT"; payload: { id: string; content: string } };
 
 function ideReducer(state: IDEState, action: IDEAction): IDEState {
@@ -45,32 +45,41 @@ function ideReducer(state: IDEState, action: IDEAction): IDEState {
         console.error(`File not found: ${action.payload}`);
         return state;
       }
-      const content = "Loading file...";
-      // todo this needs to fetch from the backend here - empty buffer for now
+      if (state.openTabs.some(tab => tab.id === action.payload)) {
+        // if the file is already open, just switch to it
+        return { ...state, selectedFile: action.payload, activeTab: action.payload };
+      }
+      // todo this is not DRY
+      const cachedContentInSelect = state.fileCache[action.payload] || "Loading file..., press refresh";
+
       const newTabSelect: Tab = {
         id: action.payload,
-        content: content,
+        content: cachedContentInSelect,
         isDirty: false
       };
       const newTabs = [...state.openTabs, newTabSelect];
-      return { ...state, selectedFile: action.payload, openTabs: newTabs, activeTab: newTabs.at(-1)?.id ?? null };
-    // todo prevent multiple opneing of the same file
+      const activeTab = newTabs.at(-1)?.id ?? null;
+      return { ...state, selectedFile: action.payload, openTabs: newTabs, activeTab };
 
     case "SET_FILE_SYSTEM":
       console.log(`Setting file system: ${JSON.stringify(action.payload)}`);
       return { ...state, fileSystem: action.payload };
 
     case "OPEN_TAB":
+      console.log(`Opening tab: ${JSON.stringify(action.payload)}`);
       const isAlreadyOpen = state.openTabs.some(
         (tab) => tab.id === action.payload.id
       );
       if (isAlreadyOpen) return { ...state, activeTab: action.payload.id };
 
+      // todo this is not DRY
+      const cachedContent = state.fileCache[action.payload.id] || "Loading file..., press refresh";
       const newTab: Tab = {
         id: action.payload.id,
-        content: "", // Load content from your backend or initial state
+        content: cachedContent,
         isDirty: false,
       };
+
       return {
         ...state,
         openTabs: [...state.openTabs, newTab],
@@ -107,17 +116,46 @@ function ideReducer(state: IDEState, action: IDEAction): IDEState {
     case "ADD_FOLDER":
       return { ...state, fileSystem: [...state.fileSystem, action.payload] };
 
+
+    case "FILE_FETCH_START":
+      return {
+        ...state,
+        openTabs: state.openTabs.map(tab =>
+          tab.id === action.payload ? { ...tab, content: "Loading..." } : tab
+        ),
+      };
+
+    case "FILE_FETCH_SUCCESS":
+      const newContent = action.payload.content;
+      console.log(`Fetched content: ${newContent}`);
+      const newCache = {
+        ...state.fileCache,
+        [action.payload.id]: newContent,
+      };
+      console.log(`New cache: ${JSON.stringify(newCache)}`);
+      return {
+        ...state,
+        fileCache: newCache,
+        openTabs: state.openTabs.map(tab =>
+          tab.id === action.payload.id ? { ...tab, content: newContent } : tab
+        ),
+      };
+
+    case "FILE_FETCH_ERROR":
+      return {
+        ...state,
+        openTabs: state.openTabs.map(tab =>
+          tab.id === action.payload.id
+            ? { ...tab, content: `Error: ${action.payload.error}` }
+            : tab
+        ),
+      };
+
+
     default:
       return state;
   }
 }
-
-// const baseItem: FileItem = {
-//   id: "0",
-//   label: "root",
-//   type: "folder",
-//   path: basePath,
-// };
 
 const initialIDEState: IDEState = {
   // fileSystem: [baseItem], // Fetch or initialize this with the file explorer structure
@@ -125,6 +163,7 @@ const initialIDEState: IDEState = {
   selectedFile: null,
   openTabs: [],
   activeTab: null,
+  fileCache: {},
 };
 
 const IDEStateContext = createContext<IDEState | undefined>(undefined);

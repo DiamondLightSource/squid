@@ -37,10 +37,8 @@ export default function ParametersPage() {
     title: "",
   });
 
-  // todo use optimistic updates or not
   const [params, setParams] = useState<any[]>([]);
   // https://react-hook-form.com/docs/useform
-  // todo use the form with zod fields
 
   // Load existing circles
   const fetchParams = async () => {

@@ -53,10 +53,10 @@ const IDE: React.FC = () => {
             </Grid>
 
             <Grid item xs={12}>
-              <ParamsForm />
+              {/* <ParamsForm />
               <OutputParametersForm />
               <SampleParametersForm />
-              <DetectorParametersForm />
+              <DetectorParametersForm /> */}
             </Grid>
           </Grid>
         </Grid>

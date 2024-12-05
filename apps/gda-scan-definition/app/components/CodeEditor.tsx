@@ -4,9 +4,10 @@ import React from "react";
 import { useIDEState, useIDEDispatch, FileItem } from "./ideState";
 import { Button, ButtonGroup } from "@mui/material";
 import { getComponentForFilename } from "./FilePrefix";
+import { updateDetectorParameters } from "../actions/qexafs-actions";
 
 const CodeEditor: React.FC = () => {
-  const { openTabs, activeTab, fileSystem } = useIDEState();
+  const { openTabs, activeTab, fileSystem, fileCache } = useIDEState();
   const dispatch = useIDEDispatch();
 
   const activeTabData = openTabs.find((tab) => tab.id === activeTab);
@@ -25,9 +26,15 @@ const CodeEditor: React.FC = () => {
 
   const Form = getComponentForFilename(fileRef.label);
 
-  const handleContentChange = (text: string) => {
-    // todo first do the validation depending on the form type
+  const handleContentChange = async (text: string) => {
 
+    // parse string into valid xml
+    // parse xml into valid json
+    // compare json with the chosen schema
+    // maybe skip the editor for now  and just use the form
+    if (fileRef.label === "Detector_Parameters.xml") {
+      // await updateDetectorParameters({ content: text });
+    }
     dispatch({
       type: "EDIT_TAB_CONTENT",
       payload: { id: activeTabData.id, content: text },

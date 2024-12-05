@@ -5,6 +5,7 @@ import { FileItem, useIDEDispatch, useIDEState } from "./ideState";
 
 import { RichTreeView } from "@mui/x-tree-view";
 import { getFiles } from "../actions/filesystem-actions";
+import { selectFileWithFetch } from "../clients/selectors";
 
 function FileSystemButtons() {
   const { openTabs, activeTab } = useIDEState();
@@ -28,10 +29,11 @@ function FileSystemButtons() {
         return;
       }
       console.log(`items are correct ${items.length}`);
-      dispatch({ type: "SET_FILE_SYSTEM", payload: items });
-      // setItems(MUI_X_PRODUCTS);
+      items.forEach(async (item) => {
+        dispatch({ type: "ADD_FILE", payload: item });
+        await selectFileWithFetch(dispatch, item.id);
+      });
     } catch (error) {
-      // const reason = error.response?.data?.reason;
       alert(`Error fetching or parsing items ${error}`);
     }
   };

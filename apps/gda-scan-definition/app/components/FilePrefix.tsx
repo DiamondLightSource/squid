@@ -1,6 +1,9 @@
 "use client";
 
+import DetectorParametersForm from "./forms/DetectorParametersForm";
+import OutputParametersForm from "./forms/OutputForm";
 import { ParamsForm } from "./forms/ParamsForm";
+import SampleParametersForm from "./forms/SampleForm";
 
 export enum FilePrefix {
   QEXEAFS = "QEXEAFS",
@@ -9,9 +12,6 @@ export enum FilePrefix {
   Output = "Output",
 }
 
-const DetectorParametersForm = () => <div>Detector Parameters Form</div>;
-const SampleParametersForm = () => <div>Sample Parameters Form</div>;
-const OutputParametersForm = () => <div>Output Parameters Form</div>;
 const UnknownFileForm = () => <div>Unknown File Form</div>;
 
 type ComponentMap = {

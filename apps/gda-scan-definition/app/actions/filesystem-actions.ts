@@ -106,8 +106,6 @@ export const renameFile = async (basePath: string) =>
           throw new Error(`File not found: ${oldFilePath}`);
         }
 
-        // todo add guardrails here where it does not match basepath
-
         // Guardrail: Ensure that the folderPath is within the basePath
         // Rename the file
         await fs.rename(oldFilePath, newFilePath);
@@ -200,15 +198,16 @@ export const getFileBuffer = actionClient
 
     try {
       // Check if the file exists
-      // todo fix this issue
-      if (!fs.existsSync(filePath)) {
+      if (!fs.access(filePath, fs.constants.R_OK)) {
         throw new Error(`File not found: ${filePath}`);
       }
 
       // Read the file content as a buffer
-      const fileBuffer = await fs.promises.readFile(filePath);
+      const fileBuffer = await fs.readFile(filePath);
+      const s: string = fileBuffer.toString();
 
-      return { success: true, fileBuffer };
+      console.log(`fileBuffer: ${s}`);
+      return { success: true, fileBuffer: s };
     } catch (error) {
       console.error("Error retrieving file buffer:", error);
       if (error instanceof Error) {
