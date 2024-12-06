@@ -9,6 +9,7 @@
     "lint": "eslint . --max-warnings 0"
   },
   "dependencies": {
+    "@astral-sh/ruff-wasm-web": "^0.8.2",
     "@autoform/mui": "^2.1.0",
     "@autoform/zod": "^2.0.0",
     "@diamondlightsource/periodic-table": "workspace:*",

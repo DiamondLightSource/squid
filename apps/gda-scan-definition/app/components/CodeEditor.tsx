@@ -1,11 +1,10 @@
 "use client";
 import Editor, { DiffEditor } from "@monaco-editor/react";
-import React from "react";
-import { useIDEState, useIDEDispatch, FileItem } from "./ideState";
 import { Box, Button, ButtonGroup } from "@mui/material";
-import { getComponentForFilename } from "./FilePrefix";
-import { updateDetectorParameters } from "../actions/qexafs-actions";
+import React from "react";
 import { modifyFileBuffer } from "../actions/filesystem-actions";
+import { getComponentForFilename } from "./FilePrefix";
+import { FileItem, useIDEDispatch, useIDEState } from "./ideState";
 
 const CodeEditor: React.FC = () => {
   const { openTabs, activeTab, fileSystem, fileCache } = useIDEState();
@@ -73,7 +72,7 @@ const CodeEditor: React.FC = () => {
             :
             <Editor
               height="70vh"
-              defaultLanguage="html"
+              defaultLanguage="javascript"
               language="html"
               defaultValue="// some comment"
               value={activeTabData.content}
