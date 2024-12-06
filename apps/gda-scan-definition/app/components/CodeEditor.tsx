@@ -28,7 +28,6 @@ const CodeEditor: React.FC = () => {
   const Form = getComponentForFilename(fileRef.label);
 
   const handleContentChange = async (text: string) => {
-
     // parse string into valid xml
     // parse xml into valid json
     // compare json with the chosen schema
@@ -49,36 +48,44 @@ const CodeEditor: React.FC = () => {
   return (
     <div>
       <ButtonGroup>
-        <Button onClick={async () => {
-          if (fileRef.label === "Detector_Parameters.xml") {
-            // todo here need to parse the xml back into the form, alternatively just one way change it and refresh the form
-            const response = await modifyFileBuffer({ id: activeTabData.id, content: activeTabData.content });
-            console.log(response);
-          }
-        }}>Save </Button>
-        <Button onClick={() => setUseDiffEditor(!useDiffEditor)}>Toggle Editor</Button>
-
+        <Button
+          onClick={async () => {
+            if (fileRef.label === "Detector_Parameters.xml") {
+              // todo here need to parse the xml back into the form, alternatively just one way change it and refresh the form
+              const response = await modifyFileBuffer({
+                id: activeTabData.id,
+                content: activeTabData.content,
+              });
+              console.log(response);
+            }
+          }}
+        >
+          Save{" "}
+        </Button>
+        <Button onClick={() => setUseDiffEditor(!useDiffEditor)}>
+          Toggle Editor
+        </Button>
       </ButtonGroup>
       <Box sx={{ minWidth: "60vw" }}>
-        {
-          useDiffEditor ?
-            <DiffEditor
-              width="70vw"
-              height="70vh"
-              language="javascript"
-              original={fileCache[activeTabData.id] || ""}
-              modified={activeTabData.content}
-              options={options} />
-            :
-            <Editor
-              height="70vh"
-              defaultLanguage="javascript"
-              language="html"
-              defaultValue="// some comment"
-              value={activeTabData.content}
-              onChange={(t) => handleContentChange(t || "")}
-            />
-        }
+        {useDiffEditor ? (
+          <DiffEditor
+            width="70vw"
+            height="70vh"
+            language="javascript"
+            original={fileCache[activeTabData.id] || ""}
+            modified={activeTabData.content}
+            options={options}
+          />
+        ) : (
+          <Editor
+            height="70vh"
+            defaultLanguage="javascript"
+            language="html"
+            defaultValue="// some comment"
+            value={activeTabData.content}
+            onChange={(t) => handleContentChange(t || "")}
+          />
+        )}
       </Box>
       <Form />
     </div>
