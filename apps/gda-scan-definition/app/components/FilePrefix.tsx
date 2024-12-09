@@ -6,7 +6,7 @@ import { ParamsForm } from "./forms/ParamsForm";
 import SampleParametersForm from "./forms/SampleForm";
 
 export enum FilePrefix {
-  QEXEAFS = "QEXEAFS",
+  QEXEAFS = "QEXAFS",
   Detector = "Detector",
   Sample = "Sample",
   Output = "Output",

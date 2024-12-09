@@ -16,7 +16,12 @@ const CodeEditor: React.FC = () => {
   const activeTabData = openTabs.find((tab) => tab.id === activeTab);
 
   const [currentEditorType, setEditorType] = useState<EditorType>("none");
-
+  useEffect(() => {
+    (async () => {
+      const params = await getParameters();
+      // todo this has to do with the line 39
+    })();
+  }, [activeTabData]);
   if (!activeTabData) {
     return <div className="editor">No file selected</div>;
   }
@@ -44,13 +49,6 @@ const CodeEditor: React.FC = () => {
       payload: { id: activeTabData.id, content: text },
     });
   };
-
-  useEffect(() => {
-    (async () => {
-      const params = await getParameters();
-      // todo this has to do with the line 39
-    })();
-  }, [activeTabData]);
 
   const options = {
     renderSideBySide: true,

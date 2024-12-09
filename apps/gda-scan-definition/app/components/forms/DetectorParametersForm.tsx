@@ -29,6 +29,7 @@ const defaultFormData: DetectorsSchema = {
   shouldValidate: false,
   detectorConfiguration: [defaultDetectorConfig],
 };
+
 const filePath = `${basePath}/Detector_Parameters.xml`;
 
 const DetectorParametersForm = () => {
@@ -44,6 +45,9 @@ const DetectorParametersForm = () => {
     try {
       const validated: DetectorsSchema =
         detectorParametersSchema.parse(formData);
+      console.log(validated);
+      console.log(JSON.stringify(validated));
+      console.log(formData);
 
       // Connect to the backend here
       const { success, parameters } = await updateDetectorParameters(validated);
@@ -62,29 +66,29 @@ const DetectorParametersForm = () => {
     }
   };
 
-  if (fileCache[filePath] === undefined) {
-    return <div>Loading..., try refreshing the file tree</div>;
-  }
-  const fileContent: string = fileCache[filePath];
+  // if (fileCache[filePath] === undefined) {
+  //   return <div>Loading..., try refreshing the file tree</div>;
+  // }
+  // const fileContent: string = fileCache[filePath];
 
-  // todo this doesn't quite work smoothly
-  const parsed = create(fileContent).end({ format: "object" });
-  console.log(`parsed: ${JSON.stringify(parsed)}`);
-  if (Array.isArray(parsed)) {
-    return <div>invalid xml</div>;
-  }
-  const validationResult = detectorParametersSchema.safeParse(
-    parsed["DetectorParameters"]
-  );
-  console.log(`validated: ${JSON.stringify(validationResult)}`);
-  if (!validationResult.success) {
-    console.error("Validation error:", validationResult.error.errors);
-    return <div>Validation error, please check the console for details</div>;
-  }
+  // // todo this doesn't quite work smoothly
+  // const parsed = create(fileContent).end({ format: "object" });
+  // console.log(`parsed: ${JSON.stringify(parsed)}`);
+  // if (Array.isArray(parsed)) {
+  //   return <div>invalid xml</div>;
+  // }
+  // const validationResult = detectorParametersSchema.safeParse(
+  //   parsed["DetectorParameters"]
+  // );
+  // console.log(`validated: ${JSON.stringify(validationResult)}`);
+  // if (!validationResult.success) {
+  //   console.error("Validation error:", validationResult.error.errors);
+  //   return <div>Validation error, please check the console for details</div>;
+  // }
 
-  useEffect(() => {
-    setFormData(validationResult.data);
-  }, []);
+  // useEffect(() => {
+  //   setFormData(validationResult.data);
+  // }, []);
 
   const handleAddConfiguration = () => {
     setFormData({
@@ -138,6 +142,9 @@ const DetectorParametersForm = () => {
             marginBottom: "1rem",
             border: "1px solid #ccc",
             padding: "1rem",
+            display: "flex",
+            flexDirection: "column",
+            gap: "1rem",
           }}
         >
           <label>

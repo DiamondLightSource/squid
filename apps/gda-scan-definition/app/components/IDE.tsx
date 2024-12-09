@@ -1,10 +1,5 @@
 "use client";
-import {
-  Button,
-  ButtonGroup,
-  Container,
-  Grid
-} from "@mui/material";
+import { Button, ButtonGroup, Container, Grid } from "@mui/material";
 import React from "react";
 import Editor from "./CodeEditor";
 import EditorTabs from "./EditorTabs";
@@ -18,9 +13,9 @@ const IDE: React.FC = () => {
         {/* Main grid container */}
         <Grid
           container
+          display="flex"
           direction="column"
           spacing={2}
-          style={{ height: "100vh" }}
         >
           {/* Horizontal bar for potential buttons */}
           <Grid item>
