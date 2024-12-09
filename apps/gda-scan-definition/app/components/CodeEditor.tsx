@@ -1,10 +1,11 @@
 "use client";
-import Editor, { DiffEditor } from "@monaco-editor/react";
+import Editor, { DiffEditor, DiffEditorProps } from "@monaco-editor/react";
 import { Box, Button, ButtonGroup } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { modifyFileBuffer } from "../actions/filesystem-actions";
 import { getComponentForFilename } from "./FilePrefix";
 import { FileItem, useIDEDispatch, useIDEState } from "./ideState";
+import { getParameters } from "../actions/qexafs-actions";
 
 type EditorType = "regular" | "diff" | "none";
 
@@ -43,6 +44,13 @@ const CodeEditor: React.FC = () => {
       payload: { id: activeTabData.id, content: text },
     });
   };
+
+  useEffect(() => {
+    (async () => {
+      const params = await getParameters();
+      // todo this has to do with the line 39
+    })();
+  }, [activeTabData]);
 
   const options = {
     renderSideBySide: true,

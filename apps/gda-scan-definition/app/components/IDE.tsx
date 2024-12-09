@@ -6,15 +6,10 @@ import {
   Grid
 } from "@mui/material";
 import React from "react";
-import { getParameters } from "../actions/qexafs-actions";
 import Editor from "./CodeEditor";
 import EditorTabs from "./EditorTabs";
 import FileExplorer from "./FileExplorer";
-import OutputParametersForm from "./forms/OutputForm";
-import { ParamsForm } from "./forms/ParamsForm";
-import SampleParametersForm from "./forms/SampleForm";
 import { IDEProvider } from "./ideState";
-import DetectorParametersForm from "./forms/DetectorParametersForm";
 
 const IDE: React.FC = () => {
   return (

@@ -460,7 +460,7 @@ importers:
         version: 15.0.3(@babel/core@7.24.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.81.0)
       next-safe-action:
         specifier: ^7.9.9
-        version: 7.9.9(next@15.0.3(@babel/core@7.24.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.81.0))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(yup@1.4.0)(zod@apps+gda-scan-definition+@hookform+resolvers+zod)
+        version: 7.9.9(next@15.0.3(@babel/core@7.24.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.81.0))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(yup@1.4.0)(zod@3.23.8)
       react:
         specifier: ^18.2.0
         version: 18.3.1
@@ -478,7 +478,7 @@ importers:
         version: 3.1.1
       zod:
         specifier: link:@hookform/resolvers/zod
-        version: link:@hookform/resolvers/zod
+        version: 3.23.8
     devDependencies:
       '@next/eslint-plugin-next':
         specifier: ^14.1.1
@@ -18425,14 +18425,14 @@ snapshots:
       yup: 1.4.0
       zod: 3.23.8
 
-  next-safe-action@7.9.9(next@15.0.3(@babel/core@7.24.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.81.0))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(yup@1.4.0)(zod@apps+gda-scan-definition+@hookform+resolvers+zod):
+  next-safe-action@7.9.9(next@15.0.3(@babel/core@7.24.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.81.0))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(yup@1.4.0)(zod@3.23.8):
     dependencies:
       next: 15.0.3(@babel/core@7.24.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.81.0)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
     optionalDependencies:
       yup: 1.4.0
-      zod: link:apps/gda-scan-definition/@hookform/resolvers/zod
+      zod: 3.23.8
 
   next@14.2.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.81.0):
     dependencies:

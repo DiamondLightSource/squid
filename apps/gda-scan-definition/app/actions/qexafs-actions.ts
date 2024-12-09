@@ -60,17 +60,17 @@ export const getParameters = actionClient.action(async () => {
   return { parameters };
 });
 
-// Usage Example
+
+
+
 export const updateDetectorParameters = actionClient
   .schema(detectorParametersSchema)
   .action(createParamsCallback(`${basePath}/Detector_Parameters.xml`));
 
-// Usage Example
 export const updateOutputParameters = actionClient
   .schema(outputParametersSchema)
   .action(createParamsCallback(`${basePath}/Output_Parameters.xml`));
 
-// Another instance with a different path
 export const updateSampleParameters = actionClient
   .schema(sampleParametersSchema)
   .action(createParamsCallback(`${basePath}/Sample_Parameters.xml`));
