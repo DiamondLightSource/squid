@@ -1,4 +1,5 @@
 "use client";
+import Editor, { DiffEditor, DiffEditorProps } from "@monaco-editor/react";
 
 import init, { Workspace, type Diagnostic } from "@astral-sh/ruff-wasm-web";
 import { ButtonGroup } from "@mui/material";
@@ -49,16 +50,16 @@ export default function PythonEditor() {
   };
 
   return (
-    <div>
+    <div style={{ width: "50%" }}>
       <ButtonGroup>
         <button onClick={handleFormat}>Format</button>
         <button onClick={handleLint}>Lint</button>
       </ButtonGroup>
-      <textarea
+      {/* <textarea
         value={text}
         onChange={(e) => setText(e.target.value)}
         style={{ width: "100%", height: "200px" }}
-      />
+      /> */}
       <div>Errors (if any):</div>
       <ul>
         {diagnostics.map((d) => (
@@ -67,6 +68,16 @@ export default function PythonEditor() {
           </li>
         ))}
       </ul>
+      <Editor
+        height="70vh"
+        language="python"
+        defaultValue='print("hello world!")'
+        value={text}
+        onChange={(t) => {
+          setText(t ?? "");
+          handleLint();
+        }}
+      />
     </div>
   );
 }
