@@ -2,11 +2,14 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { allowedEdges, allowedElements, qexafsParametersSchema } from "../../schemas/qexafs";
+import {
+  allowedEdges,
+  allowedElements,
+  qexafsParametersSchema,
+} from "../../schemas/qexafs";
 import { Typography } from "@mui/material";
 import { useState } from "react";
 import { updateQexafsParameters } from "../../actions/qexafs-actions";
-
 
 const defaultData: ParamsSchema = {
   element: "",
@@ -15,7 +18,7 @@ const defaultData: ParamsSchema = {
   initialEnergy: 0,
   finalEnergy: 0,
   speedMDegPerSecond: 0,
-  stepSize: 0
+  stepSize: 0,
 };
 
 type ParamsSchema = z.infer<typeof qexafsParametersSchema>;
@@ -37,7 +40,9 @@ export function ParamsForm() {
       }
     } catch (err) {
       if (err instanceof z.ZodError) {
-        alert("Validation error: " + err.errors.map((e) => e.message).join("\n"));
+        alert(
+          "Validation error: " + err.errors.map((e) => e.message).join("\n")
+        );
       } else {
         alert("An unexpected error occurred");
       }
@@ -45,14 +50,18 @@ export function ParamsForm() {
   };
 
   return (
-
-    <form onSubmit={handleSubmit}>
+    <form
+      onSubmit={handleSubmit}
+      style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
+    >
       <Typography variant="h6">QEXAFS Parameters</Typography>
       <label>
         Element:
         <select
           value={formData.element}
-          onChange={(e) => setFormData({ ...formData, element: e.target.value })}
+          onChange={(e) =>
+            setFormData({ ...formData, element: e.target.value })
+          }
         >
           {allowedElements.map((element) => (
             <option key={element} value={element}>
@@ -95,7 +104,10 @@ export function ParamsForm() {
           placeholder="Initial Energy"
           value={formData.initialEnergy}
           onChange={(e) =>
-            setFormData({ ...formData, initialEnergy: parseInt(e.target.value) })
+            setFormData({
+              ...formData,
+              initialEnergy: parseInt(e.target.value),
+            })
           }
         />
       </label>

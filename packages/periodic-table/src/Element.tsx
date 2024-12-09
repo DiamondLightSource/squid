@@ -44,7 +44,9 @@ export default function Element({ atomicNumber, callback }: ElementProps) {
         alignItems: "center",
       }}
     >
-      <div className="symbol">{element.Symbol}</div>
+      <div className="symbol" style={{ color: "black" }}>
+        {element.Symbol}
+      </div>
       <div
         className="name"
         style={{
@@ -57,7 +59,7 @@ export default function Element({ atomicNumber, callback }: ElementProps) {
       >
         {element.Name}
       </div>
-      <div className="weight" style={{ fontSize: "small" }}>
+      <div className="weight" style={{ fontSize: "small", color: "black" }}>
         {element["Atomic Weight"]}
       </div>
       <div

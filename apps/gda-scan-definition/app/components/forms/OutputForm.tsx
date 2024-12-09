@@ -7,7 +7,6 @@ import {
 } from "../../schemas/qexafs";
 import { Typography } from "@mui/material";
 
-
 import React, { useState } from "react";
 import { updateOutputParameters } from "../../actions/qexafs-actions";
 
@@ -43,7 +42,9 @@ export const OutputParametersForm = () => {
       }
     } catch (err) {
       if (err instanceof z.ZodError) {
-        alert("Validation error: " + err.errors.map((e) => e.message).join("\n"));
+        alert(
+          "Validation error: " + err.errors.map((e) => e.message).join("\n")
+        );
       } else {
         alert("An unexpected error occurred");
       }
@@ -51,8 +52,11 @@ export const OutputParametersForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} >
-            <Typography variant="h6">Output Parameters</Typography>
+    <form
+      onSubmit={handleSubmit}
+      style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
+    >
+      <Typography variant="h6">Output Parameters</Typography>
       <label>
         Validate:
         <input
@@ -178,4 +182,3 @@ export const OutputParametersForm = () => {
 };
 
 export default OutputParametersForm;
-
