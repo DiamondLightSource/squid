@@ -264,7 +264,13 @@ const SampleParametersForm = () => {
       {formData.sampleParameterMotorPosition.map((motor, index) => (
         <div
           key={index}
-          style={{ border: "1px solid #ccc", marginBottom: "1rem" }}
+          style={{
+            border: "1px solid #ccc",
+            marginBottom: "1rem",
+            display: "flex",
+            flexDirection: "column",
+            gap: "1rem",
+          }}
         >
           <label>
             Scannable Name:
