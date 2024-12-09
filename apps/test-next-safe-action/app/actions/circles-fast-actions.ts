@@ -1,24 +1,28 @@
 "use server";
 import fs from "fs";
-import { create } from "xmlbuilder2";
+import { XMLBuilder, XMLValidator, XMLParser } from "fast-xml-parser";
 import { actionClient } from "../clients/actionclient";
 import { circleSchema } from "../schemas/circleSchema";
 
+// https://www.npmjs.com/package/fast-xml-parser
+
 // Path to store XML data
-const filePath = "/tmp/next/circles-builder.xml";
+const filePath = "/tmp/next/circles-fast.xml";
+const builder = new XMLBuilder();
+const parser = new XMLParser();
 
 // Helper to read existing data
 function readCircles(): any[] {
   if (!fs.existsSync(filePath)) return [];
   const data = fs.readFileSync(filePath, "utf-8");
-  const parsed = create(data).end({ format: "object" });
+  const parsed = parser.parse(data);
   console.log("Read circles", parsed);
   const circles = parsed["circles"]?.circle;
   return Array.isArray(circles) ? circles : [circles]; // Handle no or single entry cases
 }
 
 // Action: Add a new circle
-export const addCircle = actionClient
+export const addCircleFast = actionClient
   .schema(circleSchema)
   .action(async ({ parsedInput: { diameter, color, title } }) => {
     const existingCircles = readCircles();
@@ -31,7 +35,7 @@ export const addCircle = actionClient
       },
     };
 
-    const xml = create(updatedData).end({ prettyPrint: true });
+    const xml = builder.build(updatedData);
     console.log("Writing to file", xml);
     fs.writeFileSync(filePath, xml);
 
@@ -39,7 +43,7 @@ export const addCircle = actionClient
   });
 
 // Action: Get all circles
-export const getCircles = actionClient.action(async () => {
+export const getCirclesFast = actionClient.action(async () => {
   const circles = readCircles();
   return { circles };
 });

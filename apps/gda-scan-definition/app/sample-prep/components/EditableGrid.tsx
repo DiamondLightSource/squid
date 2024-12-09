@@ -1,4 +1,3 @@
-import * as React from "react";
 import { DataGrid, GridColDef, GridRowsProp } from "@mui/x-data-grid";
 import {
   randomCreatedDate,
@@ -66,7 +65,6 @@ const columns = [
   },
 ];
 
-
 const rows: GridRowsProp = [
   {
     id: 1,
@@ -106,7 +104,6 @@ const rows: GridRowsProp = [
 ];
 
 export default function SamplesLayoutGrid() {
-
   return (
     <div style={{ height: 300, width: "100%" }}>
       <DataGrid

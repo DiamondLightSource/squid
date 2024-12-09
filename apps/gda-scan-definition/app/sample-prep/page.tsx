@@ -2,6 +2,8 @@
 import { PeriodicTable } from "@diamondlightsource/periodic-table/table";
 import SamplesLayoutGrid from "./components/EditableGrid";
 import { ElementType } from "@diamondlightsource/periodic-table/elements";
+import { Table } from "@mui/material";
+import TableManager from "./components/ZodGrid";
 
 /*
 todo 
@@ -24,6 +26,7 @@ export default function SamplePrepPage() {
         }}
       />
       <SamplesLayoutGrid />
+      <TableManager />
     </div>
   );
 }

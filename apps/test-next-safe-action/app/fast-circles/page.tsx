@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { getCircles, addCircle } from "../actions/circle-actions";
 import { circleSchema } from "../schemas/circleSchema";
+import { addCircleFast, getCirclesFast } from "../actions/circles-fast-actions";
 
 export default function Home() {
   const [formData, setFormData] = useState({
@@ -18,7 +18,7 @@ export default function Home() {
   // Load existing circles
   const fetchCircles = async () => {
     try {
-      const response = await getCircles();
+      const response = await getCirclesFast();
       console.log(response);
       if (!response || !response.data) {
         alert("No circles found");
@@ -40,7 +40,7 @@ export default function Home() {
     try {
       const validated = circleSchema.parse(formData);
 
-      const { success, circle } = await addCircle({
+      const { success, circle } = await addCircleFast({
         diameter: Number(validated.diameter),
         color: validated.color,
         title: validated.title,

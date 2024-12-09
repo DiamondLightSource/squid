@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@repo/ui": "workspace:*",
+    "fast-xml-parser": "^4.5.0",
     "fs": "0.0.1-security",
     "next": "^14.1.1",
     "next-safe-action": "^7.9.9",
