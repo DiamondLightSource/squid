@@ -25,7 +25,15 @@ const EditorTabs: React.FC = () => {
   };
 
   return (
-    <Box className="tabs" sx={{ display: "flex", flexDirection: "row" , overflowX: "scroll"}}>
+    <Box
+      className="tabs"
+      sx={{
+        display: "flex",
+        flexDirection: "row",
+        overflowX: "scroll",
+        rowGap: "5px",
+      }}
+    >
       {/* <span> all the tabs: {tabsWithLabels.map(t => t.label)}</span> */}
       {tabsWithLabels.map((tab) => {
         return (
@@ -33,7 +41,10 @@ const EditorTabs: React.FC = () => {
             key={tab.id}
             className={`tab ${tab.id === activeTab ? "active" : ""}`}
             onClick={() => handleTabClick(tab.id)}
-            sx={{ textDecoration: tab.id == activeTab ? "underline" : "none" }}
+            sx={{
+              textDecoration: tab.id == activeTab ? "underline" : "none",
+              marginX: "5px",
+            }}
           >
             {tab.label}
             <Button onClick={() => handleCloseTab(tab.id)}>

@@ -1,10 +1,12 @@
 "use client";
 import Editor, { DiffEditor } from "@monaco-editor/react";
 import { Box, Button, ButtonGroup } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import { modifyFileBuffer } from "../actions/filesystem-actions";
 import { getComponentForFilename } from "./FilePrefix";
 import { FileItem, useIDEDispatch, useIDEState } from "./ideState";
+
+type EditorType = "regular" | "diff" | "none";
 
 const CodeEditor: React.FC = () => {
   const { openTabs, activeTab, fileSystem, fileCache } = useIDEState();
@@ -12,7 +14,8 @@ const CodeEditor: React.FC = () => {
 
   const activeTabData = openTabs.find((tab) => tab.id === activeTab);
 
-  const [useDiffEditor, setUseDiffEditor] = React.useState(true);
+  const [currentEditorType, setEditorType] = useState<EditorType>("none");
+
   if (!activeTabData) {
     return <div className="editor">No file selected</div>;
   }
@@ -62,31 +65,48 @@ const CodeEditor: React.FC = () => {
         >
           Save{" "}
         </Button>
-        <Button onClick={() => setUseDiffEditor(!useDiffEditor)}>
-          Toggle Editor
+        <Button
+          onClick={() => setEditorType("regular")}
+          disabled={currentEditorType === "regular"}
+        >
+          Use regular editor
+        </Button>
+        <Button
+          onClick={() => setEditorType("diff")}
+          disabled={currentEditorType === "diff"}
+        >
+          Use diff editor
+        </Button>
+        <Button
+          onClick={() => setEditorType("none")}
+          disabled={currentEditorType === "none"}
+        >
+          disable editors
         </Button>
       </ButtonGroup>
-      <Box sx={{ minWidth: "60vw" }}>
-        {useDiffEditor ? (
-          <DiffEditor
-            width="70vw"
-            height="70vh"
-            language="javascript"
-            original={fileCache[activeTabData.id] || ""}
-            modified={activeTabData.content}
-            options={options}
-          />
-        ) : (
-          <Editor
-            height="70vh"
-            defaultLanguage="javascript"
-            language="html"
-            defaultValue="// some comment"
-            value={activeTabData.content}
-            onChange={(t) => handleContentChange(t || "")}
-          />
-        )}
-      </Box>
+      {currentEditorType !== "none" && (
+        <Box sx={{ minWidth: "60vw" }}>
+          {currentEditorType ? (
+            <DiffEditor
+              width="70vw"
+              height="70vh"
+              language="javascript"
+              original={fileCache[activeTabData.id] || ""}
+              modified={activeTabData.content}
+              options={options}
+            />
+          ) : (
+            <Editor
+              height="70vh"
+              defaultLanguage="javascript"
+              language="html"
+              defaultValue="// some comment"
+              value={activeTabData.content}
+              onChange={(t) => handleContentChange(t || "")}
+            />
+          )}
+        </Box>
+      )}
       <Form />
     </div>
   );
