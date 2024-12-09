@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getCircles, addCircle } from "../actions/circle-actions";
 import { circleSchema } from "../schemas/circleSchema";
 
@@ -34,6 +34,10 @@ export default function Home() {
     }
   };
 
+  useEffect(() => {
+    // fetch circles on the first render
+    fetchCircles();
+  }, []);
   // Add a new circle
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

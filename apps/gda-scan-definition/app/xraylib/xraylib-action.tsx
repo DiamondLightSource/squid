@@ -9,14 +9,16 @@ import { ElementType } from "@diamondlightsource/periodic-table/elements";
 import { z } from "zod";
 
 import sqlite3 from "sqlite3";
+import { allowedElements } from "../schemas/qexafs";
 
+// todo fix the filesystem readout here
 // Initialize an in-memory SQLite database
-const db = new sqlite3.Database(".xraydb.sqlite", (err) => {
+const db = new sqlite3.Database("./xraydb2.sqlite", (err) => {
   if (err) {
     console.error("Failed to open database:", err.message);
     return;
   }
-  console.log("Connected to in-memory SQLite database.");
+  console.log("Connected to file read only SQLite database.");
 });
 
 process.on("exit", () => {
@@ -31,12 +33,15 @@ process.on("exit", () => {
 
 // Define a function to get the absorption edge energy for a given element
 function getAbsorptionEdgeEnergy(
-  element: ElementType,
+  elementName: string,
   callback: (err: Error | null, energy: number | null) => void
 ) {
   const query = `SELECT absorption_edge FROM xray_levels WHERE element = ?`;
 
-  db.get(query, [element], (err, row) => {
+  db.get(query, [elementName], (err, row) => {
+    console.log(`some row: ${row}`);
+    console.log(`some error: ${err}`);
+
     if (err) {
       callback(err, null);
       return;
@@ -44,16 +49,35 @@ function getAbsorptionEdgeEnergy(
     if (row) {
       callback(null, row.absorption_edge);
     } else {
-      callback(new Error(`Element '${element}' not found.`), null);
+      callback(new Error(`Element '${elementName}' not found.`), null);
     }
   });
 }
 
+const absorptionEdgeEnergyRequestSchema = z.object({
+  element: z.enum(allowedElements),
+});
+
+export const actionGetAbsorptionEdgeEnergy = actionClient
+  .schema(absorptionEdgeEnergyRequestSchema)
+  .action(async ({ parsedInput: { element } }) => {
+    getAbsorptionEdgeEnergy(element, (err, energy) => {
+      if (err) {
+        return { error: err.message };
+      }
+
+      return {
+        success: "Absorption edge energy retrieved successfully",
+        energy,
+      };
+    });
+  });
+
 // Define a function to get fluorescence yields for a given element
-function getFluorescenceYields(element, callback) {
+function getFluorescenceYields(elementName: string, callback) {
   const query = `SELECT shell, yield FROM fluorescence_yields WHERE element = ?`;
 
-  db.all(query, [element], (err, rows) => {
+  db.all(query, [elementName], (err, rows) => {
     if (err) {
       callback(err, null);
       return;
@@ -62,30 +86,28 @@ function getFluorescenceYields(element, callback) {
       callback(null, rows);
     } else {
       callback(
-        new Error(`No fluorescence yields found for element '${element}'.`),
+        new Error(`No fluorescence yields found for element '${elementName}'.`),
         null
       );
     }
   });
 }
 
-// Action: Add a new circle
-export const addCircle = actionClient
-  .schema(circleSchema)
-  .action(async ({ parsedInput: { diameter, color, title } }) => {
-    const existingCircles = readCircles();
+const fluorescenceYieldsRequestSchema = z.object({
+  element: z.enum(allowedElements),
+});
 
-    const newCircle = { diameter, color, title };
-    console.log("Adding circle", newCircle);
-    const updatedData = {
-      circles: {
-        circle: [...existingCircles, newCircle],
-      },
-    };
+export const actionGetFluorescenceYields = actionClient
+  .schema(fluorescenceYieldsRequestSchema)
+  .action(async ({ parsedInput: { element } }) => {
+    getFluorescenceYields(element, (err, yields) => {
+      if (err) {
+        return { error: err.message };
+      }
 
-    const xml = create(updatedData).end({ prettyPrint: true });
-    console.log("Writing to file", xml);
-    fs.writeFileSync(filePath, xml);
-
-    return { success: "Circle added successfully", circle: newCircle };
+      return {
+        success: "Fluorescence yields retrieved successfully",
+        yields,
+      };
+    });
   });
