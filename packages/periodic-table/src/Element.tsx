@@ -64,7 +64,13 @@ export default function Element({ atomicNumber, callback }: ElementProps) {
       </div>
       <div
         className="number"
-        style={{ position: "absolute", top: 0, left: 1, fontSize: "x-small" }}
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 1,
+          fontSize: "x-small",
+          color: "black",
+        }}
       >
         {atomicNumber}
       </div>

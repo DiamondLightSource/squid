@@ -50,7 +50,7 @@ export default function PythonEditor() {
   };
 
   return (
-    <div style={{ width: "50%" }}>
+    <div style={{ width: "50%", margin: "2rem" }}>
       <ButtonGroup>
         <button onClick={handleFormat}>Format</button>
         <button onClick={handleLint}>Lint</button>

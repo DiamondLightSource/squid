@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import {
   allowedEdges,
-  allowedElements,
+  allowedElementSymbols,
   qexafsParametersSchema,
 } from "../../schemas/qexafs";
 import { Typography } from "@mui/material";
@@ -12,7 +12,7 @@ import { useState } from "react";
 import { updateQexafsParameters } from "../../actions/qexafs-actions";
 
 const defaultData: ParamsSchema = {
-  element: "",
+  elementSymbol: "",
   edge: "",
   edgeEnergy: 0,
   initialEnergy: 0,
@@ -58,12 +58,12 @@ export function ParamsForm() {
       <label>
         Element:
         <select
-          value={formData.element}
+          value={formData.elementSymbol}
           onChange={(e) =>
-            setFormData({ ...formData, element: e.target.value })
+            setFormData({ ...formData, elementSymbol: e.target.value })
           }
         >
-          {allowedElements.map((element) => (
+          {allowedElementSymbols.map((element) => (
             <option key={element} value={element}>
               {element}
             </option>

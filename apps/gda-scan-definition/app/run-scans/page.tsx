@@ -1,13 +1,10 @@
-/*
-todo 
-- [ ] connect to gda server directly https://confluence.diamond.ac.uk/display/~ewz97849/Running+Jython+commands+via+ActiveMq
+import RunScanForm from "../components/RunScanForm";
 
-*/
-
-export default function RunScansPage() {
+export function RunScanPage() {
   return (
     <div>
-      <h1>XraylibPage</h1>
+      <h1>run scan page</h1>
+      <RunScanForm />
     </div>
   );
 }

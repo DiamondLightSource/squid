@@ -30,7 +30,6 @@ const defaultFormData: DetectorsSchema = {
   detectorConfiguration: [defaultDetectorConfig],
 };
 
-const filePath = `${basePath}/Detector_Parameters.xml`;
 
 const DetectorParametersForm = () => {
   const { fileCache } = useIDEState();

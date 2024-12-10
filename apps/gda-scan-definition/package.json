@@ -31,6 +31,8 @@
     "lz-string": "^1.5.0",
     "next": "^15.0.3",
     "next-safe-action": "^7.9.9",
+    "promised-sqlite3": "^2.1.0",
+    "rabbitmq-client": "^5.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.53.2",

@@ -4,21 +4,37 @@
 // https://xraypy.github.io/XrayDB/dbschema.html
 // file from here
 
+import { promisify } from "util";
 import { actionClient } from "../clients/actionclient";
 import { ElementType } from "@diamondlightsource/periodic-table/elements";
 import { z } from "zod";
 
 import sqlite3 from "sqlite3";
-import { allowedElements } from "../schemas/qexafs";
+import { allowedElementSymbols } from "../schemas/qexafs";
+import path from "path";
+
+// Construct the absolute path to the database file
+const dbPath = path.join(process.cwd(), "data", "xraydb.sqlite");
+
+console.log(`dbPath: ${dbPath}`);
 
 // todo fix the filesystem readout here
 // Initialize an in-memory SQLite database
-const db = new sqlite3.Database("./xraydb2.sqlite", (err) => {
+const db = new sqlite3.Database(dbPath, (err) => {
   if (err) {
     console.error("Failed to open database:", err.message);
     return;
   }
   console.log("Connected to file read only SQLite database.");
+});
+const testQuery = `SELECT * FROM xray_levels WHERE element = 'Fe'`;
+
+const dbGet = promisify(db.get.bind(db));
+
+db.get(testQuery, (err, row) => {
+  console.log(`some row: ${Object.keys(row)}`);
+  console.log(`edge: ${row.absorption_edge}`);
+  console.log(`some error: ${err}`);
 });
 
 process.on("exit", () => {
@@ -32,45 +48,57 @@ process.on("exit", () => {
 });
 
 // Define a function to get the absorption edge energy for a given element
-function getAbsorptionEdgeEnergy(
-  elementName: string,
-  callback: (err: Error | null, energy: number | null) => void
-) {
-  const query = `SELECT absorption_edge FROM xray_levels WHERE element = ?`;
+async function getAbsorptionEdgeEnergy(elementSymbol: string) {
+  const query = `SELECT absorption_edge FROM xray_levels WHERE element = '${elementSymbol}';`;
 
-  db.get(query, [elementName], (err, row) => {
-    console.log(`some row: ${row}`);
-    console.log(`some error: ${err}`);
+  const result = await dbGet(query);
+  console.log(`result: ${result}`);
+  return result;
+  //  (err, row) => {
+  //   console.log(`some row: ${row}`);
+  //   console.log(`some error: ${err}`);
 
-    if (err) {
-      callback(err, null);
-      return;
-    }
-    if (row) {
-      callback(null, row.absorption_edge);
-    } else {
-      callback(new Error(`Element '${elementName}' not found.`), null);
-    }
-  });
+  //   if (err) {
+  //     callback(err, null);
+  //     return;
+  //   }
+  //   if (row) {
+  //     callback(null, row.absorption_edge);
+  //   } else {
+  //     callback(new Error(`Element '${elementSymbol}' not found.`), null);
+  //   }
+  // });
 }
 
 const absorptionEdgeEnergyRequestSchema = z.object({
-  element: z.enum(allowedElements),
+  elementSymbol: z.enum(allowedElementSymbols),
 });
 
+// todo bug with the promises vs callbacks setup
 export const actionGetAbsorptionEdgeEnergy = actionClient
   .schema(absorptionEdgeEnergyRequestSchema)
-  .action(async ({ parsedInput: { element } }) => {
-    getAbsorptionEdgeEnergy(element, (err, energy) => {
-      if (err) {
-        return { error: err.message };
-      }
+  .action(async ({ parsedInput: { elementSymbol } }) => {
+    const energy = await getAbsorptionEdgeEnergy(elementSymbol);
+    console.log(`some energy: ${energy.toString()}`);
+    // if (err) {
+    //   return { error: err.message };
+    // }
 
-      return {
-        success: "Absorption edge energy retrieved successfully",
-        energy,
-      };
-    });
+    return {
+      success: "Absorption edge energy retrieved successfully",
+      energy,
+    };
+    // getAbsorptionEdgeEnergy(elementSymbol, (err, energy) => {
+    //   console.log(`some energy: ${energy}`);
+    //   if (err) {
+    //     return { error: err.message };
+    //   }
+
+    //   return {
+    //     success: "Absorption edge energy retrieved successfully",
+    //     energy,
+    //   };
+    // });
   });
 
 // Define a function to get fluorescence yields for a given element
@@ -94,7 +122,7 @@ function getFluorescenceYields(elementName: string, callback) {
 }
 
 const fluorescenceYieldsRequestSchema = z.object({
-  element: z.enum(allowedElements),
+  element: z.enum(allowedElementSymbols),
 });
 
 export const actionGetFluorescenceYields = actionClient

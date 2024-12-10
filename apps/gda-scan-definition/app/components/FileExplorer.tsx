@@ -11,7 +11,6 @@ function FileSystemButtons() {
   const { openTabs, activeTab } = useIDEState();
   const dispatch = useIDEDispatch();
 
-
   const fetchItems = async () => {
     try {
       const response = await getFiles();
@@ -90,7 +89,11 @@ function FileSystemButtons() {
   );
 }
 
-const FileExplorer: React.FC = () => {
+type FileExplorerProps = {
+  basePath: string;
+};
+
+function FileExplorer({ basePath }: FileExplorerProps) {
   const { fileSystem, selectedFile } = useIDEState();
   const dispatch = useIDEDispatch();
   const handleFileClick = (file: FileItem) => {
@@ -119,6 +122,6 @@ const FileExplorer: React.FC = () => {
       />
     </div>
   );
-};
+}
 
 export default FileExplorer;

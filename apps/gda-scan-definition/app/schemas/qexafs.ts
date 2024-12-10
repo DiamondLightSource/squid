@@ -4,10 +4,10 @@ import { maxHeaderSize } from "http";
 
 // more than Zn(30) and less than Nd(60)
 // todo make this real
-export const allowedElements = elements
+export const allowedElementSymbols = elements
   .filter((e) => {
     const n = parseInt(e.Number);
-    return 30 < n && n < 60;
+    return 1 < n && n < 109;
   })
   .map((element) => element.Symbol) as [string, ...string[]];
 
@@ -32,7 +32,7 @@ export const allowedEdges = [
 // Define the schema for validation
 
 export const qexafsParametersSchema = z.object({
-  element: z.enum(allowedElements),
+  elementSymbol: z.enum(allowedElementSymbols),
   edge: z.enum(allowedEdges),
   edgeEnergy: z.number().positive().int(),
   initialEnergy: z.number().positive().int(),
