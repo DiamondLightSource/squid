@@ -4,6 +4,9 @@ import { Grid, ButtonGroup, Button, Container } from "@mui/material";
 import EditorTabs from "../components/EditorTabs";
 import FileExplorer from "../components/FileExplorer";
 import { IDEProvider } from "../components/ideState";
+// todo hard code the one form, and a simple context also defined here
+// add also the simple action for fetching existing data, and overwriting it
+// besides the form add a diff editor
 
 export default function SimpleParamsPage() {
   return (
