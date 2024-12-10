@@ -44,7 +44,8 @@
         "rvest.vs-code-prettier-eslint",
         "christian-kohler.path-intellisense",
         "esbenp.prettier-vscode",
-        "eamodio.gitlens"
+        "eamodio.gitlens",
+        "Vercel.turbo-vsc"
       ]
     }
   },

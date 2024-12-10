@@ -1,8 +1,10 @@
 "use server";
+// file from here
 // https://github.com/xraypy/XrayDB?tab=readme-ov-file
 // and schema here
 // https://xraypy.github.io/XrayDB/dbschema.html
-// file from here
+// todo trying the async sqlite3 variant
+// https://www.npmjs.com/package/promised-sqlite3
 
 import { promisify } from "util";
 import { actionClient } from "../clients/actionclient";

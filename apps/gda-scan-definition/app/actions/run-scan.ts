@@ -1,6 +1,6 @@
 "use server";
-import { duration } from "@mui/material";
 import { Connection, Publisher } from "rabbitmq-client";
+//https://www.npmjs.com/package/rabbitmq-client
 
 import { z } from "zod";
 import { actionClient } from "../clients/actionclient";
@@ -62,7 +62,7 @@ export const runScan = actionClient
       };
       try {
         await pub.send(
-          { exchange: "my-events", routingKey: "users.visit" }, // metadata
+          { exchange: "topic", routingKey: "gda.command.runner.topic" }, // metadata
           ourMessage
         );
         return {
