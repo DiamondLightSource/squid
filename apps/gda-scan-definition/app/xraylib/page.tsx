@@ -13,40 +13,53 @@ export default function XraylibPage() {
   const [selectedElementSymbol, setSelectedElementSymbol] = useState(
     allowedElementSymbols[0]
   );
-  const [edgeEnergy, setEdgeEnergy] = useState(0);
-  const [fluorescenceYields, setFluorescenceYields] = useState(0);
+  const [edgeEnergy, setEdgeEnergy] = useState<number>(0);
+  const [fluorescenceYields, setFluorescenceYields] = useState<number>(0);
 
   useEffect(() => {
     const fetchEnergy = async () => {
       console.log(`fetching energy for ${selectedElementSymbol}`);
       try {
-        const { success, energy } = await actionGetAbsorptionEdgeEnergy({
+        const response = await actionGetAbsorptionEdgeEnergy({
           elementSymbol: selectedElementSymbol,
         });
-        console.log(`response success: ${success}`);
-        console.log(`response energy: ${energy}`);
-        console.log(`response keys: ${Object.keys(energy)}`);
-        // console.log(`response energy: ${energyResponse.data.energy}`);
-        // You can use newEnergy here, for example:
-        if (energyResponse && energyResponse.data) {
-          console.log(energyResponse.data);
-          setEdgeEnergy(energyResponse.data.energy);
-        } else {
-          console.error("No data found");
+        if (!response) {
+          console.error("No response from actionGetAbsorptionEdgeEnergy");
+          return;
         }
-        const fluorescenceResponse = await actionGetFluorescenceYields({
-          element: selectedElementSymbol,
-        });
-
-        if (fluorescenceResponse && fluorescenceResponse.data) {
-          console.log(fluorescenceResponse.data);
-          setEdgeEnergy(fluorescenceResponse.data.yields);
-        } else {
-          console.error("No data found");
+        if (!response.data) {
+          console.error(
+            "No data in response from actionGetAbsorptionEdgeEnergy"
+          );
+          return;
         }
+        const { energy } = response.data;
+        setEdgeEnergy(energy);
       } catch (e) {
         console.log(`response errors: ${Object.keys(e.validationErrors)}`);
         console.error(e);
+      }
+
+      try {
+        const fluorescenceResponse = await actionGetFluorescenceYields({
+          element: selectedElementSymbol,
+        });
+        if (!fluorescenceResponse) {
+          console.error("No response from actionGetFluorescenceYields");
+          return;
+        }
+        if (!fluorescenceResponse.data) {
+          console.error(
+            `No data in response from actionGetFluorescenceYields: ${fluorescenceResponse}`
+          );
+          return;
+        }
+        console.log(`fluorescenceResponse: ${fluorescenceResponse}`);
+        console.log(`fluorescenceResponse data: ${fluorescenceResponse.data}`);
+        const {  yieldValue } = fluorescenceResponse.data;
+        setFluorescenceYields(yieldValue);
+      } catch (error) {
+        console.error(error);
       }
     };
     fetchEnergy();

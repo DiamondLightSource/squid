@@ -1,6 +1,6 @@
-import RunScanForm from "../components/RunScanForm";
+import RunScanForm from "../components/forms/RunScanForm";
 
-export function RunScanPage() {
+export default function RunScanPage() {
   return (
     <div>
       <h1>run scan page</h1>
