@@ -30,7 +30,6 @@ const defaultFormData: DetectorsSchema = {
   detectorConfiguration: [defaultDetectorConfig],
 };
 
-
 const DetectorParametersForm = () => {
   const { fileCache } = useIDEState();
 

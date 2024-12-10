@@ -60,9 +60,6 @@ export const getParameters = actionClient.action(async () => {
   return { parameters };
 });
 
-
-
-
 export const updateDetectorParameters = actionClient
   .schema(detectorParametersSchema)
   .action(createParamsCallback(`${basePath}/Detector_Parameters.xml`));

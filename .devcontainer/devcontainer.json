@@ -35,17 +35,16 @@
     "vscode": {
       // Add the IDs of extensions you want installed when the container is created.
       "extensions": [
-        "foxundermoon.shell-format",
-        "vitest.explorer",
-        "hediet.vscode-drawio",
-        "rodrigovallades.es7-react-js",
+        "bierner.markdown-mermaid",
+        "christian-kohler.path-intellisense",
         "eamodio.gitlens",
         "espenp.prettier-vscode",
+        "foxundermoon.shell-format",
+        "hediet.vscode-drawio",
         "rvest.vs-code-prettier-eslint",
-        "christian-kohler.path-intellisense",
-        "esbenp.prettier-vscode",
-        "eamodio.gitlens",
-        "Vercel.turbo-vsc"
+        "rodrigovallades.es7-react-js",
+        "Vercel.turbo-vsc",
+        "vitest.explorer",
       ]
     }
   },

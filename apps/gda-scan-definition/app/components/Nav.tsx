@@ -19,6 +19,9 @@ export default function B18Nav() {
       <ListItem>
         <Link href="/run-scans">run scans</Link>
       </ListItem>
+      <ListItem>
+        <Link href="/simple-parameters">Simple params</Link>
+      </ListItem>
     </>
   );
 }
