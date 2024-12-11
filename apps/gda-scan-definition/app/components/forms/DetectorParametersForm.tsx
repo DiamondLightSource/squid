@@ -22,19 +22,25 @@ const defaultDetectorConfig: DetectorConfiguration = {
   extraDetectorName: "",
 };
 
-type DetectorConfiguration = z.infer<typeof detectorConfigurationSchema>;
-type DetectorsSchema = z.infer<typeof detectorParametersSchema>;
+export type DetectorConfiguration = z.infer<typeof detectorConfigurationSchema>;
+export type DetectorsSchema = z.infer<typeof detectorParametersSchema>;
 
 const defaultFormData: DetectorsSchema = {
   shouldValidate: false,
   detectorConfiguration: [defaultDetectorConfig],
 };
 
-const DetectorParametersForm = () => {
-  const { fileCache } = useIDEState();
+type DetectorParametersFormProps = {
+  overrideDefaultValue?: DetectorsSchema;
+};
+
+function DetectorParametersForm({
+  overrideDefaultValue: initialValue,
+}: DetectorParametersFormProps) {
+  const initialData = initialValue || defaultFormData;
 
   // todo use the parsed data from the backend instead
-  const [formData, setFormData] = useState<DetectorsSchema>(defaultFormData);
+  const [formData, setFormData] = useState<DetectorsSchema>(initialData);
 
   const handleSubmit = async (e: React.SyntheticEvent) => {
     console.log(formData);
@@ -293,6 +299,6 @@ const DetectorParametersForm = () => {
       <button type="submit">Submit</button>
     </form>
   );
-};
+}
 
 export default DetectorParametersForm;

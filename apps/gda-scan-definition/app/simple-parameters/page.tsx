@@ -1,36 +1,19 @@
 "use client";
-import CodeEditor from "../components/CodeEditor";
-import { Grid, ButtonGroup, Button, Container } from "@mui/material";
-import EditorTabs from "../components/EditorTabs";
-import FileExplorer from "../components/FileExplorer";
-import { IDEProvider } from "../components/ideState";
+import { Button } from "@mui/material";
+import { useAction } from "next-safe-action/hooks";
+import { getDetectors } from "../actions/simple-actions";
+import DetectorParametersForm from "../components/forms/DetectorParametersForm";
 // todo hard code the one form, and a simple context also defined here
 // add also the simple action for fetching existing data, and overwriting it
 // besides the form add a diff editor
 
 export default function SimpleParamsPage() {
+  const { execute, result } = useAction(getDetectors);
   return (
     <div>
       <h1> Simple Parameters</h1>
-      <IDEProvider>
-        <div className="ide">
-          <Grid container display="flex" direction="column" spacing={2}>
-            <Grid container item spacing={2} flex={1}>
-              {/* File Explorer */}
-              <Grid item xs={3}>
-                <FileExplorer />
-              </Grid>
-
-              <Grid item xs={9}>
-                <Container sx={{ display: "flex", flexDirection: "column" }}>
-                  <EditorTabs />
-                  <CodeEditor />
-                </Container>
-              </Grid>
-            </Grid>
-          </Grid>
-        </div>
-      </IDEProvider>
+      <Button onClick={() => execute()}>Fetch Detectors</Button>
+      <DetectorParametersForm overrideDefaultValue={result.data?.detectors} />
     </div>
   );
 }
