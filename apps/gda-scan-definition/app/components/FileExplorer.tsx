@@ -1,7 +1,7 @@
 "use client";
 import { Button, ButtonGroup, Typography } from "@mui/material";
 import React from "react";
-import { FileItem, useIDEDispatch, useIDEState } from "./ideState";
+import { FileItem, useIDEDispatch, useIDEState } from "./oldIdeState";
 
 import { RichTreeView } from "@mui/x-tree-view";
 import { getFiles } from "../actions/filesystem-actions";
@@ -116,7 +116,6 @@ function FileExplorer({ basePath }: FileExplorerProps) {
             handleFileClick(item);
           }
         }}
-        // todo this is temporary, we do not need to edit names
         isItemEditable={false}
         experimentalFeatures={{ labelEditing: true }}
       />

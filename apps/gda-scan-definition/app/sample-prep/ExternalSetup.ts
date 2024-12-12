@@ -1,11 +1,12 @@
 import { DetectorType, MonocrystalType, Offsets } from "./initialTypes";
+import { usePathname } from 'next/navigation'
 
 export type ExternalSetup = {
   xMotorName: string;
   yMotorName: string;
   detector: DetectorType;
   monocrystal: MonocrystalType;
-  offsets: Offsets; // todo these depend on the holder
+  offsets: Offsets; 
 };
 
 import {
@@ -18,9 +19,8 @@ export function getShareableLink(data: ExternalSetup): string {
   const jsonData = JSON.stringify(data);
   const compressedData = compressToEncodedURIComponent(jsonData);
 
-  // todo read in an env variable here
-  const baseUrl = "https://yourdomain.com/formB";
-  const shareableUrl = `${baseUrl}?data=${compressedData}`;
+  const path = usePathname();
+  const shareableUrl = `${path}?data=${compressedData}`;
   return shareableUrl;
 }
 

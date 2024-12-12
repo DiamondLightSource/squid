@@ -41,7 +41,6 @@ function DetectorParametersForm({
 }: DetectorParametersFormProps) {
   const initialData = overrideDefaultValue || defaultFormData;
 
-  // todo use the parsed data from the backend instead
   const [formData, setFormData] = useState<DetectorsSchema>(initialData);
 
   console.log(`Form data: ${JSON.stringify(formData)}`);
@@ -294,13 +293,13 @@ function DetectorParametersForm({
         </button>
         <button type="submit">Submit</button>
       </form>
-      {/* <DiffEditor
+      <DiffEditor
         original={builder.build(initialData)}
         width="70vw"
         height="70vh"
         language="xml"
         modified={builder.build(formData)}
-      /> */}
+      />
     </div>
   );
 }

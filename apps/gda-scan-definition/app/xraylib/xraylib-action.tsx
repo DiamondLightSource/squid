@@ -3,8 +3,6 @@
 // https://github.com/xraypy/XrayDB?tab=readme-ov-file
 // and schema here
 // https://xraypy.github.io/XrayDB/dbschema.html
-// todo trying the async sqlite3 variant
-// https://www.npmjs.com/package/promised-sqlite3
 
 import { promisify } from "util";
 import { actionClient } from "../clients/actionclient";
@@ -59,7 +57,6 @@ const absorptionEdgeEnergyRequestSchema = z.object({
   elementSymbol: z.enum(allowedElementSymbols),
 });
 
-// todo bug with the promises vs callbacks setup
 export const actionGetAbsorptionEdgeEnergy = actionClient
   .schema(absorptionEdgeEnergyRequestSchema)
   .action(async ({ parsedInput: { elementSymbol } }) => {

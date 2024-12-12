@@ -1,6 +1,10 @@
 "use server";
-import fs, { PathLike, PathOrFileDescriptor } from "fs";
+import fs from "fs";
 import { create } from "xmlbuilder2";
+import {
+  XMLSerializedAsObject,
+  XMLSerializedAsObjectArray,
+} from "xmlbuilder2/lib/interfaces";
 import { actionClient } from "../clients/actionclient";
 import {
   detectorParametersSchema,
@@ -9,10 +13,6 @@ import {
   sampleParametersSchema,
 } from "../schemas/qexafs";
 import { basePath } from "./basePath";
-import {
-  XMLSerializedAsObject,
-  XMLSerializedAsObjectArray,
-} from "xmlbuilder2/lib/interfaces";
 
 // Helper to read existing data
 function readParameters(xmlPath: string): any[] {

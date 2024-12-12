@@ -2,8 +2,6 @@ import { z } from "zod";
 import { elements } from "@diamondlightsource/periodic-table/elements";
 import { maxHeaderSize } from "http";
 
-// more than Zn(30) and less than Nd(60)
-// todo make this real
 export const allowedElementSymbols = elements
   .filter((e) => {
     const n = parseInt(e.Number);
@@ -41,8 +39,6 @@ export const qexafsParametersSchema = z.object({
   stepSize: z.number().positive().int(),
 });
 
-// todo looks like most of this is still written as string
-// might try out a different parser
 // Base schema for a single detector configuration
 export const detectorConfigurationSchema = z.object({
   description: z.string(),

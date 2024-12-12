@@ -1,19 +1,11 @@
 "use client";
-/*
-todo 
-- [ ] connect to gda server directly https://confluence.diamond.ac.uk/display/~ewz97849/Running+Jython+commands+via+ActiveMq
-https://www.npmjs.com/package/rabbitmq-client
 
-*/
-
-import { useForm, Controller, useFieldArray } from "react-hook-form";
-import { useState } from "react";
-import {
-  runScan,
-  scanRequestSchema,
-  ScanRequestType,
-} from "../../actions/run-scan";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useFieldArray, useForm } from "react-hook-form";
+import {
+  scanRequestSchema,
+  ScanRequestType
+} from "../../actions/run-scan";
 
 const defaultScanSchema: ScanRequestType = {
   name: "",

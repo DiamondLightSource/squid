@@ -49,7 +49,7 @@ function ideReducer(state: IDEState, action: IDEAction): IDEState {
         // if the file is already open, just switch to it
         return { ...state, selectedFile: action.payload, activeTab: action.payload };
       }
-      // todo this is not DRY
+      // note this is not DRY, do not repeat this pattern
       const cachedContentInSelect = state.fileCache[action.payload] || "Loading file..., press refresh";
 
       const newTabSelect: Tab = {
@@ -72,7 +72,7 @@ function ideReducer(state: IDEState, action: IDEAction): IDEState {
       );
       if (isAlreadyOpen) return { ...state, activeTab: action.payload.id };
 
-      // todo this is not DRY
+      // note this is not DRY
       const cachedContent = state.fileCache[action.payload.id] || "Loading file..., press refresh";
       const newTab: Tab = {
         id: action.payload.id,

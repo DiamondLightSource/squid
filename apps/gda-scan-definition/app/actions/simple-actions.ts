@@ -1,16 +1,13 @@
 "use server";
+import { XMLBuilder, XMLParser } from "fast-xml-parser";
 import fs from "fs";
 import { create } from "xmlbuilder2";
 import { actionClient } from "../clients/actionclient";
-import { basePath } from "./basePath";
 import {
-  DetectorConfiguration,
-  DetectorsSchema,
+  DetectorsSchema
 } from "../components/forms/DetectorParametersForm";
 import { detectorParametersSchema } from "../schemas/qexafs";
-import { XMLSerializedAsObject } from "xmlbuilder2/lib/interfaces";
-import { z } from "zod";
-import { XMLBuilder, XMLValidator, XMLParser } from "fast-xml-parser";
+import { basePath } from "./basePath";
 
 // https://www.npmjs.com/package/fast-xml-parser
 

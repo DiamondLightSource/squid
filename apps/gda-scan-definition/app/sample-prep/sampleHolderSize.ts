@@ -91,7 +91,6 @@ export function generateRows({
 // https://www.tutorialspoint.com/convert-number-to-alphabet-letter-javascript
 export function toAlphabet(num: number): string {
   if (num < 1 || num > 26 || typeof num !== "number") {
-    // todo error handling
     return "1";
   }
   const leveller = 64;

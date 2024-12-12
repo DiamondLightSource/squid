@@ -4,7 +4,7 @@ import { Box, Button, ButtonGroup } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { modifyFileBuffer } from "../actions/filesystem-actions";
 import { getComponentForFilename } from "./FilePrefix";
-import { FileItem, useIDEDispatch, useIDEState } from "./ideState";
+import { FileItem, useIDEDispatch, useIDEState } from "./oldIdeState";
 import { getParameters } from "../actions/qexafs-actions";
 
 type EditorType = "regular" | "diff" | "none";
@@ -19,7 +19,6 @@ const CodeEditor: React.FC = () => {
   useEffect(() => {
     (async () => {
       const params = await getParameters();
-      // todo this has to do with the line 39
     })();
   }, [activeTabData]);
   if (!activeTabData) {
@@ -60,7 +59,6 @@ const CodeEditor: React.FC = () => {
         <Button
           onClick={async () => {
             if (fileRef.label === "Detector_Parameters.xml") {
-              // todo here need to parse the xml back into the form, alternatively just one way change it and refresh the form
               const response = await modifyFileBuffer({
                 id: activeTabData.id,
                 content: activeTabData.content,

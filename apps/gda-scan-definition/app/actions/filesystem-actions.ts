@@ -88,7 +88,7 @@ export const makeFile = actionClient
     }
   });
 
-export const renameFile = async (basePath: string) =>
+export const renameFileDeprecated = async (basePath: string) =>
   actionClient
     .schema(fileRenameSchema)
     .action(async ({ parsedInput: { oldName, newName, relativePath } }) => {
@@ -96,7 +96,6 @@ export const renameFile = async (basePath: string) =>
       const oldFilePath = path.resolve(basePath, relativePath, oldName);
       const newFilePath = path.resolve(basePath, relativePath, newName);
 
-      // todo normalize error handling
       if (!newFilePath.startsWith(basePath)) {
         throw new Error(`Access denied: path is outside of allowed base path.`);
       }

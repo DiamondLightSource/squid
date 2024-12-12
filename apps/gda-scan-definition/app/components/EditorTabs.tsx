@@ -1,6 +1,6 @@
 "use client";
 import React, { useMemo } from "react";
-import { useIDEState, useIDEDispatch } from "./ideState";
+import { useIDEState, useIDEDispatch } from "./oldIdeState";
 import CloseIcon from "@mui/icons-material/Close";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
