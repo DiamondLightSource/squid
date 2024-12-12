@@ -44,7 +44,8 @@
         "rvest.vs-code-prettier-eslint",
         "rodrigovallades.es7-react-js",
         "Vercel.turbo-vsc",
-        "vitest.explorer",
+        "kamikillerto.vscode-colorize",
+        "vitest.explorer"
       ]
     }
   },

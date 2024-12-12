@@ -1,11 +1,14 @@
 "use client";
 
+import { AddCircleOutline as AddCircleOutlineIcon, RemoveCircleOutline as RemoveCircleOutlineIcon } from "@mui/icons-material";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFieldArray, useForm } from "react-hook-form";
 import {
   scanRequestSchema,
   ScanRequestType
 } from "../../actions/run-scan";
+import { Box, Typography, TextField, Grid, IconButton, Button, Slider } from "@mui/material";
+import { useState } from "react";
 
 const defaultScanSchema: ScanRequestType = {
   name: "",
@@ -19,6 +22,7 @@ export default function RunScanForm() {
     control,
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<ScanRequestType>({
     resolver: zodResolver(scanRequestSchema),
@@ -30,82 +34,163 @@ export default function RunScanForm() {
     name: "detectors",
   });
 
+  const [startStop, setStartStop] = useState([0, 10]);
+  const [step, setStep] = useState(1);
+
+  const handleStartStopChange = (event, newValue) => {
+    setStartStop(newValue);
+    setValue("startStopStep.0", newValue[0]);
+    setValue("startStopStep.1", newValue[1]);
+  };
+
+  const handleStepChange = (event, newValue) => {
+    setStep(newValue);
+    setValue("startStopStep.2", newValue);
+  };
+
   const onSubmit = (data: ScanRequestType) => {
     console.log("Form submitted:", data);
   };
+
   return (
-    <div>
-      <form onSubmit={handleSubmit(onSubmit)} className="scan-form">
-        <div>
-          <label>Name:</label>
-          <input type="text" {...register("name")} />
-          {errors.name && <p className="error">{errors.name.message}</p>}
-        </div>
+    <Box
+      component="form"
+      onSubmit={handleSubmit(onSubmit)}
+      sx={{
+        p: 3,
+        bgcolor: "#74b357",
+        borderRadius: 2,
+        boxShadow: 3,
+        maxWidth: 600,
+        mx: "auto",
 
-        <div>
-          <label>Start, Stop, Step:</label>
-          <div style={{ display: "flex", gap: "0.5rem" }}>
-            {["Start", "Stop", "Step"].map((label, index) => (
-              <div key={label}>
-                <input
-                  type="number"
-                  {...register(`startStopStep.${index}` as const, {
-                    valueAsNumber: true,
-                  })}
-                  placeholder={label}
-                />
-                {errors.startStopStep?.[index] && (
-                  <p className="error">
-                    {errors.startStopStep[index]?.message}
-                  </p>
-                )}
-              </div>
-            ))}
-          </div>
-          {errors.startStopStep &&
-            typeof errors.startStopStep.message === "string" && (
-              <p className="error">{errors.startStopStep.message}</p>
-            )}
-        </div>
+      }}
+    >
+      <Typography variant="h4" gutterBottom>
+        Scan Configuration
+      </Typography>
 
-        <div>
-          <label>Detectors:</label>
-          {fields.map((field, index) => (
-            <div
-              key={field.id}
-              style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
-            >
-              <input
-                type="text"
-                {...register(`detectors.${index}` as const)}
-                placeholder={`Detector ${index + 1}`}
+      <Box sx={{ mb: 3 }}>
+        <TextField
+          label="Name"
+          fullWidth
+          {...register("name", { required: "Name is required" })}
+          error={!!errors.name}
+          helperText={errors.name?.message}
+        />
+      </Box>
+
+      <Box sx={{ mb: 3 }}>
+        <Typography gutterBottom>Start and Stop</Typography>
+        <Slider
+          value={startStop}
+          onChange={handleStartStopChange}
+          valueLabelDisplay="auto"
+          min={0}
+          max={100}
+        />
+        <Grid container spacing={2} sx={{ mt: 1 }}>
+          <Grid item xs={6}>
+            <TextField
+              label="Start"
+              type="number"
+              fullWidth
+              value={startStop[0]}
+              onChange={(e) =>
+                handleStartStopChange(null, [Number(e.target.value), startStop[1]])
+              }
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              label="Stop"
+              type="number"
+              fullWidth
+              value={startStop[1]}
+              onChange={(e) =>
+                handleStartStopChange(null, [startStop[0], Number(e.target.value)])
+              }
+            />
+          </Grid>
+        </Grid>
+      </Box>
+
+      <Box sx={{ mb: 3 }}>
+        <Typography gutterBottom>Step</Typography>
+        <Slider
+          value={step}
+          onChange={handleStepChange}
+          valueLabelDisplay="auto"
+          min={1}
+          max={10}
+        />
+        <TextField
+          label="Step"
+          type="number"
+          min={1}
+          fullWidth
+          value={step}
+          onChange={(e) => handleStepChange(null, Number(e.target.value))}
+          sx={{ mt: 1 }}
+        />
+      </Box>
+
+      <Box sx={{ mb: 3 }}>
+        <Typography gutterBottom>Detectors</Typography>
+        {fields.map((field, index) => (
+          <Grid
+            container
+            spacing={2}
+            alignItems="center"
+            key={field.id}
+            sx={{ mb: 1 }}
+          >
+            <Grid item xs={10}>
+              <TextField
+                fullWidth
+                label={`Detector ${index + 1}`}
+                {...register(`detectors.${index}`)}
               />
-              <button type="button" onClick={() => remove(index)}>
-                Remove
-              </button>
-            </div>
-          ))}
-          <button type="button" onClick={() => append("")}>
-            Add Detector
-          </button>
-          {errors.detectors && (
-            <p className="error">{errors.detectors.message}</p>
-          )}
-        </div>
+            </Grid>
+            <Grid item xs={2}>
+              <IconButton color="error" onClick={() => remove(index)}>
+                <RemoveCircleOutlineIcon />
+              </IconButton>
+            </Grid>
+          </Grid>
+        ))}
+        <Button
+          startIcon={<AddCircleOutlineIcon />}
+          onClick={() => append("")}
+          variant="outlined"
+        >
+          Add Detector
+        </Button>
+      </Box>
 
-        <div>
-          <label>Duration (seconds):</label>
-          <input
-            type="number"
-            {...register("duration", { valueAsNumber: true })}
-          />
-          {errors.duration && (
-            <p className="error">{errors.duration.message}</p>
-          )}
-        </div>
+      <Box sx={{ mb: 3 }}>
+        <Typography gutterBottom>Duration (seconds)</Typography>
+        <Slider
+          defaultValue={0}
+          step={1}
+          marks
+          min={0}
+          max={100}
+          scale={(x) => x * 10 + 0.25 * x * x}
+          valueLabelDisplay="auto"
+          {...register("duration", { valueAsNumber: true })}
+        />
+        {errors.duration && (
+          <Typography color="error" variant="caption">
+            {errors.duration.message}
+          </Typography>
+        )}
+      </Box>
 
-        <button type="submit">Submit</button>
-      </form>
-    </div>
+      <Button variant="contained" color="primary" type="submit" fullWidth>
+        Submit
+      </Button>
+    </Box>
   );
 }
+
