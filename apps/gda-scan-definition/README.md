@@ -1,5 +1,12 @@
 ## Getting Started
 
+
+open in devcontainer, then
+`pnpm i`
+then from the root run
+`pnpx turbo dev --filter gda-scan-definition`
+then open your browser
+
 First, run the development server:
 
 ```bash
