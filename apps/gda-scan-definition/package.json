@@ -28,6 +28,7 @@
     "@repo/logger": "workspace:*",
     "@repo/typescript-config": "workspace:*",
     "@repo/ui": "workspace:*",
+    "@xterm/xterm": "^5.5.0",
     "fast-xml-parser": "^4.5.0",
     "lz-string": "^1.5.0",
     "next": "^15.0.3",
@@ -37,6 +38,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.53.2",
+    "react-xtermjs": "^1.0.9",
     "sqlite3": "^5.1.7",
     "xmlbuilder2": "^3.1.1",
     "zod": "link:@hookform/resolvers/zod"
