@@ -1,23 +1,19 @@
 # Turborepo Docker starter
 
-This is an official Docker starter Turborepo.
+This is from an official Docker starter Turborepo.
 
-## Using this example
+To start a particular application go to its readme in `/apps/[app of interest]`.
 
-Run the following command:
-
-```sh
-npx create-turbo@latest -e with-docker
-```
-
-## What's inside?
-
-This Turborepo includes the following:
-
-### Apps and Packages
+## Apps and Packages
 
 - `web`: a [Next.js](https://nextjs.org/) app
 - `api`: an [Express](https://expressjs.com/) server
+- `b18-csv-generator`: a config generator for a beamline
+- `bluegui`: a test client for blueapi
+- `TEMPLATE-nextjs-app`: a template for making NEXTjs apps
+- `TEMPLATE-vite-app`: a template for making vite apps
+- `test-next-safe-action`: a test of the next safe action setup
+- `trpc-test`: a test of trpc (next safe action won)
 - `@repo/ui`: a React component library
 - `@repo/logger`: Isomorphic logger (a small wrapper around console.log)
 - `@repo/eslint-config`: ESLint presets
@@ -50,14 +46,6 @@ To shutdown all running containers:
 # Stop all running containers
 docker kill $(docker ps -q) && docker rm $(docker ps -a -q)
 ```
-
-### Remote Caching
-
-This example includes optional remote caching. In the Dockerfiles of the apps, uncomment the build arguments for `TURBO_TEAM` and `TURBO_TOKEN`. Then, pass these build arguments to your Docker build.
-
-You can test this behavior using a command like:
-
-`docker build -f apps/web/Dockerfile . --build-arg TURBO_TEAM=“your-team-name” --build-arg TURBO_TOKEN=“your-token“ --no-cache`
 
 ### Utilities
 
