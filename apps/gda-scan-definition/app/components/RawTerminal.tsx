@@ -1,6 +1,7 @@
 "use client"
 import React, { useEffect, useRef } from "react";
 import { Terminal } from "@xterm/xterm";
+import "@xterm/xterm/css/xterm.css";
 
 const TerminalComponent = () => {
   const terminalRef = useRef(null);

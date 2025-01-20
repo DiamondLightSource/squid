@@ -8,6 +8,9 @@ export default function B18Nav() {
         <Link href="/about">About</Link>
       </ListItem>
       <ListItem>
+        <Link href="/plotting-wasm">plotting wasm</Link>
+      </ListItem>
+      <ListItem>
         <Link href="/sample-prep">Sample Prep</Link>
       </ListItem>
       <ListItem>
