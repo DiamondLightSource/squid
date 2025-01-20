@@ -472,7 +472,7 @@ importers:
         version: 15.0.3(@babel/core@7.24.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.81.0)
       next-safe-action:
         specifier: ^7.9.9
-        version: 7.9.9(next@15.0.3(@babel/core@7.24.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.81.0))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(yup@1.4.0)(zod@3.23.8)
+        version: 7.9.9(next@15.0.3(@babel/core@7.24.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.81.0))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(yup@1.4.0)(zod@apps+gda-scan-definition+@hookform+resolvers+zod)
       promised-sqlite3:
         specifier: ^2.1.0
         version: 2.1.0(sqlite3@5.1.7)
@@ -499,7 +499,7 @@ importers:
         version: 3.1.1
       zod:
         specifier: link:@hookform/resolvers/zod
-        version: 3.23.8
+        version: link:@hookform/resolvers/zod
     devDependencies:
       '@next/eslint-plugin-next':
         specifier: ^14.1.1
@@ -531,6 +531,97 @@ importers:
       typescript:
         specifier: ^5.3.3
         version: 5.5.4
+
+  apps/layered-heatmap:
+    dependencies:
+      '@chakra-ui/icons':
+        specifier: ^2.1.1
+        version: 2.2.4(@chakra-ui/react@2.10.4(@emotion/react@11.13.5(@types/react@18.3.3)(react@18.3.1))(@emotion/styled@11.13.5(@emotion/react@11.13.5(@types/react@18.3.3)(react@18.3.1))(@types/react@18.3.3)(react@18.3.1))(@types/react@18.3.3)(framer-motion@11.12.0(@emotion/is-prop-valid@1.3.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
+      '@chakra-ui/react':
+        specifier: ^2.8.2
+        version: 2.10.4(@emotion/react@11.13.5(@types/react@18.3.3)(react@18.3.1))(@emotion/styled@11.13.5(@emotion/react@11.13.5(@types/react@18.3.3)(react@18.3.1))(@types/react@18.3.3)(react@18.3.1))(@types/react@18.3.3)(framer-motion@11.12.0(@emotion/is-prop-valid@1.3.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@h5web/app':
+        specifier: ^13.0.0
+        version: 13.0.0(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.5.4)
+      '@h5web/lib':
+        specifier: ^13.0.0
+        version: 13.0.0(@react-three/fiber@8.16.8(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(three@0.167.1))(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(three@0.167.1)(typescript@5.5.4)
+      '@repo/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
+      '@repo/vite-config':
+        specifier: workspace:*
+        version: link:../../packages/vite-config
+      '@testing-library/react':
+        specifier: ^15.0.2
+        version: 15.0.7(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      arkit:
+        specifier: ^1.6.4
+        version: 1.6.4
+      react:
+        specifier: ^18.2.0
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.2.0
+        version: 18.3.1(react@18.3.1)
+    devDependencies:
+      '@diamondlightsource/periodic-table':
+        specifier: workspace:*
+        version: link:../../packages/periodic-table
+      '@repo/eslint-config':
+        specifier: workspace:*
+        version: link:../../packages/eslint-config
+      '@repo/jest-presets':
+        specifier: workspace:*
+        version: link:../../packages/jest-presets
+      '@repo/logger':
+        specifier: workspace:*
+        version: link:../../packages/logger
+      '@repo/test-add':
+        specifier: workspace:*
+        version: link:../../packages/test-add
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../../packages/typescript-config
+      '@types/react':
+        specifier: ^18.2.43
+        version: 18.3.3
+      '@types/react-dom':
+        specifier: ^18.2.17
+        version: 18.3.0
+      '@typescript-eslint/eslint-plugin':
+        specifier: ^6.14.0
+        version: 6.21.0(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.5.4))(eslint@8.57.0)(typescript@5.5.4)
+      '@typescript-eslint/parser':
+        specifier: ^6.14.0
+        version: 6.21.0(eslint@8.57.0)(typescript@5.5.4)
+      '@vitejs/plugin-react-swc':
+        specifier: ^3.5.0
+        version: 3.7.2(@swc/helpers@0.5.13)(vite@5.4.11(@types/node@20.14.12)(sass@1.81.0))
+      '@vitest/coverage-v8':
+        specifier: ^1.5.0
+        version: 1.6.0(vitest@1.6.0)
+      '@vitest/ui':
+        specifier: ^1.5.0
+        version: 1.6.0(vitest@1.6.0)
+      eslint:
+        specifier: ^8.55.0
+        version: 8.57.0
+      eslint-plugin-react-hooks:
+        specifier: ^4.6.0
+        version: 4.6.2(eslint@8.57.0)
+      eslint-plugin-react-refresh:
+        specifier: ^0.4.5
+        version: 0.4.14(eslint@8.57.0)
+      typescript:
+        specifier: ^5.2.2
+        version: 5.5.4
+      vite:
+        specifier: ^5.0.8
+        version: 5.4.11(@types/node@20.14.12)(sass@1.81.0)
+      vitest:
+        specifier: ^1.5.0
+        version: 1.6.0(@types/node@20.14.12)(@vitest/ui@1.6.0)(sass@1.81.0)
 
   apps/test-next-safe-action:
     dependencies:
@@ -17547,7 +17638,7 @@ snapshots:
       ajv: 6.12.6
       chalk: 4.1.2
       cross-spawn: 7.0.6
-      debug: 4.3.5(supports-color@5.5.0)
+      debug: 4.3.7
       doctrine: 3.0.0
       escape-string-regexp: 4.0.0
       eslint-scope: 7.2.2
@@ -19520,14 +19611,14 @@ snapshots:
       yup: 1.4.0
       zod: 3.23.8
 
-  next-safe-action@7.9.9(next@15.0.3(@babel/core@7.24.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.81.0))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(yup@1.4.0)(zod@3.23.8):
+  next-safe-action@7.9.9(next@15.0.3(@babel/core@7.24.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.81.0))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(yup@1.4.0)(zod@apps+gda-scan-definition+@hookform+resolvers+zod):
     dependencies:
       next: 15.0.3(@babel/core@7.24.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.81.0)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
     optionalDependencies:
       yup: 1.4.0
-      zod: 3.23.8
+      zod: link:apps/gda-scan-definition/@hookform/resolvers/zod
 
   next@14.2.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.81.0):
     dependencies:

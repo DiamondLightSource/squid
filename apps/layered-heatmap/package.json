@@ -18,6 +18,8 @@
   "dependencies": {
     "@chakra-ui/icons": "^2.1.1",
     "@chakra-ui/react": "^2.8.2",
+    "@h5web/app": "^13.0.0",
+    "@h5web/lib": "^13.0.0",
     "@repo/ui": "workspace:*",
     "@repo/vite-config": "workspace:*",
     "@testing-library/react": "^15.0.2",
@@ -26,6 +28,14 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@diamondlightsource/periodic-table": "workspace:*",
+    "@repo/eslint-config": "workspace:*",
+    "@repo/jest-presets": "workspace:*",
+    "@repo/logger": "workspace:*",
+    "@repo/test-add": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
+    "@repo/ui": "workspace:*",
+    "@repo/vite-config": "workspace:*",
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",
     "@typescript-eslint/eslint-plugin": "^6.14.0",
@@ -38,14 +48,6 @@
     "eslint-plugin-react-refresh": "^0.4.5",
     "typescript": "^5.2.2",
     "vite": "^5.0.8",
-    "vitest": "^1.5.0",
-    "@repo/eslint-config": "workspace:*",
-    "@repo/jest-presets": "workspace:*",
-    "@repo/logger": "workspace:*",
-    "@diamondlightsource/periodic-table": "workspace:*",
-    "@repo/test-add": "workspace:*",
-    "@repo/typescript-config": "workspace:*",
-    "@repo/ui": "workspace:*",
-    "@repo/vite-config": "workspace:*"
+    "vitest": "^1.5.0"
   }
 }
