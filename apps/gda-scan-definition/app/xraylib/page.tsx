@@ -73,7 +73,8 @@ export default function XraylibPage() {
       <h4>Fluorescence yields: {fluorescenceYields}</h4>
       <PeriodicTable
         callback={(element) => setSelectedElementSymbol(element.Symbol)}
-        squareSize={55}
+        squareSize={25}
+        margin={0.75}
       />
     </div>
   );

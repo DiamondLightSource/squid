@@ -1,0 +1,78 @@
+
+addr:
+  # binding address for TCP port that speaks HTTP protocol
+  http: 0.0.0.0:8084
+  # binding address for TCP port that speaks Postgres wire protocol
+  postgres: 0.0.0.0:5432
+tables:
+  - name: xray_levels
+    uri: "sqlite:///db/xraydb.sqlite"
+    option:
+      table: xray_levels
+      format: sqlite
+  - name: xray_transitions
+    uri: "sqlite:///db/xraydb.sqlite"
+    option:
+      table: xray_transitions
+      format: sqlite
+  - name: Coster_Kronig
+    uri: "sqlite:///db/xraydb.sqlite"
+    option:
+      table: Coster_Kronig
+      format: sqlite
+  - name: photoabsorption
+    uri: "sqlite:///db/xraydb.sqlite"
+    option:
+      table: photoabsorption
+      format: sqlite
+  - name: scattering
+    uri: "sqlite:///db/xraydb.sqlite"
+    option:
+      table: scattering
+      format: sqlite
+  - name: Waasmaier
+    uri: "sqlite:///db/xraydb.sqlite"
+    option:
+      table: Waasmaier
+      format: sqlite
+  - name: elements
+    uri: "sqlite:///db/xraydb.sqlite"
+    option:
+      table: elements
+      format: sqlite
+  - name: ionization_potentials
+    uri: "sqlite:///db/xraydb.sqlite"
+    option:
+      table: ionization_potentials
+      format: sqlite
+  - name: Compton_energies
+    uri: "sqlite:///db/xraydb.sqlite"
+    option:
+      table: Compton_energies
+      format: sqlite
+  - name: KeskiRahkonen_Krause
+    uri: "sqlite:///db/xraydb.sqlite"
+    option:
+      table: KeskiRahkonen_Krause
+      format: sqlite
+  - name: Krause_Oliver
+    uri: "sqlite:///db/xraydb.sqlite"
+    option:
+      table: Krause_Oliver
+      format: sqlite
+  - name: corelevel_widths
+    uri: "sqlite:///db/xraydb.sqlite"
+    option:
+      table: corelevel_widths
+      format: sqlite
+  - name: Chantler
+    uri: "sqlite:///db/xraydb.sqlite"
+    option:
+      table: Chantler
+      format: sqlite
+  - name: Version
+    uri: "sqlite:///db/xraydb.sqlite"
+    option:
+      table: Version
+      format: sqlite
+
