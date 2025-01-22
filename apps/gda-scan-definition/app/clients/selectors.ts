@@ -1,5 +1,5 @@
 "use client";
-import { getFileBuffer } from "../actions/filesystem-actions";
+import { getFileBuffer } from "../actions/file-actions";
 import { IDEAction } from "../components/oldIdeState";
 
 export async function selectFileWithFetch(

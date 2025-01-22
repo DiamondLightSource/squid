@@ -4,7 +4,7 @@ import React from "react";
 import { FileItem, useIDEDispatch, useIDEState } from "./oldIdeState";
 
 import { RichTreeView } from "@mui/x-tree-view";
-import { getFiles } from "../actions/filesystem-actions";
+import { getFiles } from "../actions/tree-actions";
 import { selectFileWithFetch } from "../clients/selectors";
 
 function FileSystemButtons() {

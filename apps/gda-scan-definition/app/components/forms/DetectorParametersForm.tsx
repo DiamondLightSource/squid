@@ -1,14 +1,12 @@
-import Typography from "@mui/material/Typography";
-import React, { useEffect, useState } from "react";
-import { z } from "zod";
-import { updateDetectorParameters } from "../../actions/qexafs-actions";
-import {
-  detectorConfigurationSchema,
-  detectorParametersSchema,
-} from "../../schemas/qexafs";
 import { DiffEditor } from "@monaco-editor/react";
-import { XMLBuilder, XMLParser } from "fast-xml-parser";
-import { Box, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
+import Typography from "@mui/material/Typography";
+import { XMLBuilder } from "fast-xml-parser";
+import React, { useEffect, useState } from "react";
+import {
+  DetectorConfiguration, DetectorsSchema
+} from "../../schemas/qexafs";
+import { SingleDetectorParameters } from "./SingleDetectorParameters";
 
 const builder = new XMLBuilder();
 const defaultDetectorConfig: DetectorConfiguration = {
@@ -23,8 +21,6 @@ const defaultDetectorConfig: DetectorConfiguration = {
   extraDetectorName: "",
 };
 
-export type DetectorConfiguration = z.infer<typeof detectorConfigurationSchema>;
-export type DetectorsSchema = z.infer<typeof detectorParametersSchema>;
 
 const defaultFormData: DetectorsSchema = {
   shouldValidate: false,
@@ -86,204 +82,55 @@ function DetectorParametersForm({
   }, [overrideDefaultValue]);
 
   return (
-    <div>
-      <form
-        onSubmit={(e) => handleSubmit(e)}
-        style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
-      >
-        <Typography variant="h6">Detector Parameters</Typography>
-        <label>
-          Validate:
-          <input
-            type="checkbox"
-            value={formData.shouldValidate.toString()}
-            checked={formData.shouldValidate}
-            onChange={(e) =>
-              setFormData({ ...formData, shouldValidate: e.target.checked })
-            }
-          />
-        </label>
-
-        <h3>Detector Configurations</h3>
-        <Grid container>
-
-          {formData.detectorConfiguration.map((config, index) => (
-            <SingleDetectorParameters
-              index={index}
-              config={config}
-              handleUpdateConfiguration={handleUpdateConfiguration}
-              handleRemoveConfiguration={handleRemoveConfiguration}
+    <Grid container>
+      <Grid item xs={4}>
+        <form
+          onSubmit={(e) => handleSubmit(e)}
+          style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
+        >
+          <Typography variant="h6">Detector Parameters</Typography>
+          <label>
+            Validate:
+            <input
+              type="checkbox"
+              value={formData.shouldValidate.toString()}
+              checked={formData.shouldValidate}
+              onChange={(e) =>
+                setFormData({ ...formData, shouldValidate: e.target.checked })
+              }
             />
-          ))}
-        </Grid>
+          </label>
 
-        <button type="button" onClick={handleAddConfiguration}>
-          Add Configuration
-        </button>
-        <button type="submit">Submit</button>
-      </form>
-      <DiffEditor
-        original={builder.build(initialData)}
-        width="70vw"
-        height="70vh"
-        language="xml"
-        modified={builder.build(formData)}
-      />
-    </div>
+          <h3>Detector Configurations</h3>
+          <Grid container>
+
+            {formData.detectorConfiguration.map((config, index) => (
+              <SingleDetectorParameters
+                index={index}
+                config={config}
+                handleUpdateConfiguration={handleUpdateConfiguration}
+                handleRemoveConfiguration={handleRemoveConfiguration}
+              />
+            ))}
+          </Grid>
+
+          <button type="button" onClick={handleAddConfiguration}>
+            Add Configuration
+          </button>
+          <button type="submit">Submit</button>
+        </form>
+      </Grid>
+      <Grid item xs={8}>
+        <DiffEditor
+          original={builder.build(initialData)}
+          width="70vw"
+          height="70vh"
+          language="html"
+          modified={builder.build(formData)}
+        />
+      </Grid>
+    </Grid>
   );
 }
 
 export default DetectorParametersForm;
-
-type SingleDetectorParametersProps = {
-  index: number;
-  config: {
-    description: string;
-    useDetectorInScan: boolean;
-    useScriptCommand: boolean;
-    useConfigFile: boolean;
-    detectorName?: string | undefined;
-    configFileName?: string | undefined;
-    scriptCommand?: string | undefined;
-    alwaysUseDetectorInScan?: boolean | undefined;
-    extraDetectorName?: string | undefined;
-  };
-  handleUpdateConfiguration: (index: any, key: any, value: any) => void;
-  handleRemoveConfiguration: (index: any) => void;
-};
-
-function SingleDetectorParameters({ index, config, handleUpdateConfiguration, handleRemoveConfiguration }: SingleDetectorParametersProps): React.JSX.Element {
-  return <div
-    key={index}
-    style={{
-      marginBottom: "1rem",
-      border: "1px solid #ccc",
-      padding: "1rem",
-      display: "flex",
-      flexDirection: "column",
-      gap: "1rem",
-    }}
-  >
-    <label>
-      Description:
-      <input
-        type="text"
-        placeholder="Description"
-        value={config.description}
-        onChange={(e) => handleUpdateConfiguration(
-          index,
-          "description",
-          e.target.value
-        )}
-        required />
-    </label>
-
-    <label>
-      Detector Name:
-      <input
-        type="text"
-        placeholder="Detector Name"
-        value={config.detectorName || ""}
-        onChange={(e) => handleUpdateConfiguration(
-          index,
-          "detectorName",
-          e.target.value
-        )} />
-    </label>
-
-    <label>
-      Config File Name:
-      <input
-        type="text"
-        placeholder="Config File Name"
-        value={config.configFileName || ""}
-        onChange={(e) => handleUpdateConfiguration(
-          index,
-          "configFileName",
-          e.target.value
-        )} />
-    </label>
-
-    <label>
-      Script Command:
-      <input
-        type="text"
-        placeholder="Script Command"
-        value={config.scriptCommand || ""}
-        onChange={(e) => handleUpdateConfiguration(
-          index,
-          "scriptCommand",
-          e.target.value
-        )} />
-    </label>
-
-    <label>
-      Use Detector In Scan:
-      <input
-        type="checkbox"
-        checked={config.useDetectorInScan}
-        onChange={(e) => handleUpdateConfiguration(
-          index,
-          "useDetectorInScan",
-          e.target.checked
-        )} />
-    </label>
-
-    <label>
-      Use Script Command:
-      <input
-        type="checkbox"
-        checked={config.useScriptCommand}
-        onChange={(e) => handleUpdateConfiguration(
-          index,
-          "useScriptCommand",
-          e.target.checked
-        )} />
-    </label>
-
-    <label>
-      Use Config File:
-      <input
-        type="checkbox"
-        checked={config.useConfigFile}
-        onChange={(e) => handleUpdateConfiguration(
-          index,
-          "useConfigFile",
-          e.target.checked
-        )} />
-    </label>
-
-    <label>
-      Always Use Detector In Scan:
-      <input
-        type="checkbox"
-        checked={config.alwaysUseDetectorInScan || false}
-        onChange={(e) => handleUpdateConfiguration(
-          index,
-          "alwaysUseDetectorInScan",
-          e.target.checked
-        )} />
-    </label>
-
-    <label>
-      Extra Detector Name:
-      <input
-        type="text"
-        placeholder="Extra Detector Name"
-        value={config.extraDetectorName || ""}
-        onChange={(e) => handleUpdateConfiguration(
-          index,
-          "extraDetectorName",
-          e.target.value
-        )} />
-    </label>
-
-    <button
-      type="button"
-      onClick={() => handleRemoveConfiguration(index)}
-    >
-      Remove Configuration
-    </button>
-  </div>;
-}
-

@@ -2,7 +2,7 @@
 import Editor, { DiffEditor, DiffEditorProps } from "@monaco-editor/react";
 import { Box, Button, ButtonGroup } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { modifyFileBuffer } from "../actions/filesystem-actions";
+import { modifyFileBuffer } from "../actions/file-actions";
 import { getComponentForFilename } from "./FilePrefix";
 import { FileItem, useIDEDispatch, useIDEState } from "./oldIdeState";
 import { getParameters } from "../actions/qexafs-actions";

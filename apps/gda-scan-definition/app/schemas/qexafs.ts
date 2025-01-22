@@ -52,6 +52,9 @@ export const detectorConfigurationSchema = z.object({
   extraDetectorName: z.string().optional(),
 });
 
+export type DetectorConfiguration = z.infer<typeof detectorConfigurationSchema>;
+export type DetectorsSchema = z.infer<typeof detectorParametersSchema>;
+
 // Main schema for DetectorParameters
 export const detectorParametersSchema = z.object({
   shouldValidate: z.boolean(),

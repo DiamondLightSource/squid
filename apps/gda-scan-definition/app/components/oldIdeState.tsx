@@ -27,9 +27,9 @@ export type IDEAction =
   | { type: "ADD_FILE"; payload: FileItem }
   | { type: "ADD_FOLDER"; payload: FileItem }
   | { type: "SET_FILE_SYSTEM"; payload: FileItem[] }
-  | { type: "OPEN_TAB"; payload: FileItem }
-  | { type: "CLOSE_TAB"; payload: string }
-  | { type: "SET_ACTIVE_TAB"; payload: string }
+  | { type: "OPEN_TAB"; payload: FileItem } // NOTE tab is lower level than the ide state
+  | { type: "CLOSE_TAB"; payload: string } // NOTE tab is lower level than the ide state
+  | { type: "SET_ACTIVE_TAB"; payload: string } // NOTE tab is lower level than the ide state
   | { type: "FILE_FETCH_START"; payload: string }
   | { type: "FILE_FETCH_SUCCESS"; payload: { id: string; content: string } }
   | { type: "FILE_FETCH_ERROR"; payload: { id: string; error: string } }
@@ -62,6 +62,7 @@ function ideReducer(state: IDEState, action: IDEAction): IDEState {
       return { ...state, selectedFile: action.payload, openTabs: newTabs, activeTab };
 
     case "SET_FILE_SYSTEM":
+      // todo this must be called on fs load
       console.log(`Setting file system: ${JSON.stringify(action.payload)}`);
       return { ...state, fileSystem: action.payload };
 

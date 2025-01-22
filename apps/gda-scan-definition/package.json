@@ -18,6 +18,9 @@
     "@h5web/app": "^13.0.0",
     "@h5web/h5wasm": "^13.0.0",
     "@hookform/resolvers": "^3.9.1",
+    "@jsonforms/core": "^3.5.1",
+    "@jsonforms/material-renderers": "^3.3.0",
+    "@jsonforms/react": "^3.3.0",
     "@monaco-editor/react": "^4.6.0",
     "@mui/icons-material": "^5.16.8",
     "@mui/material": "^5.15.15",
@@ -33,6 +36,7 @@
     "@xterm/xterm": "^5.5.0",
     "fast-xml-parser": "^4.5.0",
     "lz-string": "^1.5.0",
+    "monaco-editor": "^0.52.2",
     "next": "^15.0.3",
     "next-safe-action": "^7.9.9",
     "promised-sqlite3": "^2.1.0",
@@ -43,7 +47,8 @@
     "react-xtermjs": "^1.0.9",
     "sqlite3": "^5.1.7",
     "xmlbuilder2": "^3.1.1",
-    "zod": "link:@hookform/resolvers/zod"
+    "zod": "link:@hookform/resolvers/zod",
+    "zod-to-json-schema": "^3.24.1"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^14.1.1",

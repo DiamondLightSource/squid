@@ -1,17 +1,15 @@
 import { ListItem } from "@mui/material";
 import Link from "next/link";
+import BasicMenu from "./BasicMenu";
 
 export default function B18Nav() {
   return (
     <>
       <ListItem>
-        <Link href="/about">About</Link>
-      </ListItem>
-      <ListItem>
-        <Link href="/plotting-wasm">plotting wasm</Link>
-      </ListItem>
-      <ListItem>
         <Link href="/sample-prep">Sample Prep</Link>
+      </ListItem>
+      <ListItem>
+        <Link href="/forms">Forms</Link>
       </ListItem>
       <ListItem>
         <Link href="/xraylib">Xraylib</Link>
@@ -25,6 +23,7 @@ export default function B18Nav() {
       <ListItem>
         <Link href="/simple-parameters">Simple params</Link>
       </ListItem>
+      <BasicMenu />
     </>
   );
 }

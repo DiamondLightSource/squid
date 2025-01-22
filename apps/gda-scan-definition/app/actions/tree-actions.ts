@@ -1,26 +1,16 @@
 "use server";
-import { promises as fs, PathLike } from "fs";
+import { promises as fs } from "fs";
 
 import { TreeViewBaseItem } from "@mui/x-tree-view";
-import { actionClient } from "../clients/actionclient";
-import { basePath } from "./basePath";
 import path from "path";
+import { actionClient } from "../clients/actionclient";
 import {
   fileRenameSchema,
   fileSchema,
   folderSchema,
 } from "../schemas/filesystemSchemas";
+import { basePath } from "./basePath";
 
-async function readFilesFlat(): Promise<TreeViewBaseItem[]> {
-  const dir: string = basePath.toString();
-  const dirPath = path.resolve(dir);
-  const files: string[] = await fs.readdir(dirPath);
-  return files.map((file) => ({
-    id: file,
-    label: file,
-    children: [],
-  }));
-}
 
 async function readFiles(p: string): Promise<TreeViewBaseItem[]> {
   const dirPath = path.resolve(p);
@@ -141,30 +131,6 @@ export const makeFolder = actionClient
     }
   });
 
-export const modifyFileBuffer = actionClient
-  .schema(fileSchema)
-  .action(async ({ parsedInput: { relativePath, name, content } }) => {
-    // Resolve the full file path
-    if (content === undefined) {
-      throw new Error("Content is undefined");
-    }
-    const filePath = path.resolve(basePath, relativePath, name);
-
-    try {
-      // Write the buffer to the file
-      await fs.writeFile(filePath, content);
-
-      return { success: true, filePath };
-    } catch (error) {
-      console.error("Error modifying file buffer:", error);
-      if (error instanceof Error) {
-        throw new Error(`Failed to modify file: ${error.message}`);
-      } else {
-        throw new Error("Failed to modify file: Unknown error");
-      }
-    }
-  });
-
 export const deleteFile = actionClient
   .schema(fileSchema)
   .action(async ({ parsedInput: { relativePath, name } }) => {
@@ -189,30 +155,4 @@ export const deleteFile = actionClient
     }
   });
 
-export const getFileBuffer = actionClient
-  .schema(fileSchema)
-  .action(async ({ parsedInput: { relativePath, name } }) => {
-    // Resolve the full file path
-    const filePath = path.resolve(basePath, relativePath, name);
 
-    try {
-      // Check if the file exists
-      if (!fs.access(filePath, fs.constants.R_OK)) {
-        throw new Error(`File not found: ${filePath}`);
-      }
-
-      // Read the file content as a buffer
-      const fileBuffer = await fs.readFile(filePath);
-      const s: string = fileBuffer.toString();
-
-      console.log(`fileBuffer: ${s}`);
-      return { success: true, fileBuffer: s };
-    } catch (error) {
-      console.error("Error retrieving file buffer:", error);
-      if (error instanceof Error) {
-        throw new Error(`Failed to retrieve file buffer: ${error.message}`);
-      } else {
-        throw new Error("Failed to retrieve file buffer: Unknown error");
-      }
-    }
-  });
