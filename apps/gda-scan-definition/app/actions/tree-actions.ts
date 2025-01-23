@@ -1,4 +1,5 @@
 "use server";
+import { z } from "zod";
 import { promises as fs } from "fs";
 
 import { TreeViewBaseItem } from "@mui/x-tree-view";
@@ -8,15 +9,17 @@ import {
   fileRenameSchema,
   fileSchema,
   folderSchema,
+  getFilesSchema,
 } from "../schemas/filesystemSchemas";
 import { basePath } from "./basePath";
+import { FileItem } from "../components/ideReducer";
 
 
-async function readFiles(p: string): Promise<TreeViewBaseItem[]> {
+async function readFiles(p: string): Promise<FileItem[]> {
   const dirPath = path.resolve(p);
   console.log(`dirPath: ${dirPath}`);
 
-  async function getItems(currentPath: string): Promise<TreeViewBaseItem[]> {
+  async function getItems(currentPath: string): Promise<FileItem[]> {
     const entries = await fs.readdir(currentPath, { withFileTypes: true });
     console.log(`entries: ${entries} with length: ${entries.length}`);
 
@@ -25,18 +28,23 @@ async function readFiles(p: string): Promise<TreeViewBaseItem[]> {
         const fullPath = path.join(currentPath, entry.name);
         if (entry.isDirectory()) {
           const children = await getItems(fullPath); // Recursive call for nested directories
-          return {
+          const item: FileItem =  {
             id: fullPath,
             label: entry.name,
+            path: fullPath,
+            type: 'folder',
             children, // Nested structure
           };
-        } else {
-          return {
-            id: fullPath,
-            label: entry.name,
-            children: [], // No children for files
-          };
-        }
+          return item;
+        } 
+        const item: FileItem = {
+          id: fullPath,
+          path: fullPath,
+          label: entry.name,
+          type: "file",
+          children: [],
+        };
+        return item;
       })
     );
     console.log(`items: ${items} with length: ${items.length}`);
@@ -50,6 +58,13 @@ async function readFiles(p: string): Promise<TreeViewBaseItem[]> {
 export const getFiles = actionClient.action(async () => {
   //   const files = readFilesFlat();
   const files = await readFiles(basePath);
+  console.log(`files in the getFiles function: ${files}`);
+  return { files };
+});
+
+// todo make a zod schema to get all the files
+export const getFilesByPath = actionClient.schema(getFilesSchema).action(async ({parsedInput: {path}}) => {
+  const files = await readFiles(path);
   console.log(`files in the getFiles function: ${files}`);
   return { files };
 });

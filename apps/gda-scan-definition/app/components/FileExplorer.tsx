@@ -1,12 +1,13 @@
 "use client";
 import { Button, ButtonGroup, Typography } from "@mui/material";
 import React from "react";
-import { FileItem, useIDEDispatch, useIDEState } from "./oldIdeState";
+import { FileItem, useIDEDispatch, useIDEState } from "./ideReducer";
 
 import { RichTreeView } from "@mui/x-tree-view";
 import { getFiles } from "../actions/tree-actions";
 import { selectFileWithFetch } from "../clients/selectors";
 
+// NOTE THIS IS MOSTLY OUT OF SYNC FROM THE IDE STATE
 function FileSystemButtons() {
   const { openTabs, activeTab } = useIDEState();
   const dispatch = useIDEDispatch();
@@ -94,7 +95,7 @@ type FileExplorerProps = {
 };
 
 function FileExplorer({ basePath }: FileExplorerProps) {
-  const { fileSystem, selectedFile } = useIDEState();
+  const { fileTree: fileSystem, selectedFile } = useIDEState();
   const dispatch = useIDEDispatch();
   const handleFileClick = (file: FileItem) => {
     dispatch({ type: "SELECT_FILE", payload: file.id });

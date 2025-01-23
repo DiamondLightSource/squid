@@ -56,7 +56,7 @@ export const runScan = actionClient
   .schema(scanRequestSchema)
   .action(
     async ({ parsedInput: { name, startStopStep, detectors, duration } }) => {
-      const jythonCommand = `scan ${name} ${startStopStep.join(" ")} ${detectors.join(" ")} ${duration}`;
+      const jythonCommand = getJythonInputString(name, startStopStep, detectors, duration);
       const ourMessage = {
         message: { jythonCommand: jythonCommand, runInQueue: "False" },
       };
@@ -76,3 +76,7 @@ export const runScan = actionClient
       }
     }
   );
+
+function getJythonInputString(name: string, startStopStep: number[], detectors: string[], duration: number): string {
+  return `scan ${name} ${startStopStep.join(" ")} ${detectors.join(" ")} ${duration}`;
+}

@@ -1,7 +1,6 @@
-"use client";
 // based on https://github.com/microsoft/monaco-editor/issues/1509
 // Sample XML Formatter Function
-export const formatXml = (raw) => {
+export const formatXml = (raw: string) => {
     const PADDING = '  ';
     const reg = /(>)(<)(\/*)/g;
     let pad = 0;

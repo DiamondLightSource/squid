@@ -1,12 +1,12 @@
 "use client";
 import React, { useMemo } from "react";
-import { useIDEState, useIDEDispatch } from "./oldIdeState";
+import { useIDEState, useIDEDispatch } from "./ideReducer";
 import CloseIcon from "@mui/icons-material/Close";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 
 const EditorTabs: React.FC = () => {
-  const { openTabs, activeTab, fileSystem } = useIDEState();
+  const { openTabs, activeTab, fileTree: fileSystem } = useIDEState();
   const dispatch = useIDEDispatch();
 
   const tabsWithLabels = useMemo(() => {

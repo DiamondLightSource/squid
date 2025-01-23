@@ -1,6 +1,6 @@
 "use client";
 import { getFileBuffer } from "../actions/file-actions";
-import { IDEAction } from "../components/oldIdeState";
+import { IDEAction } from "../components/ideReducer";
 
 export async function selectFileWithFetch(
   dispatch: React.Dispatch<IDEAction>,

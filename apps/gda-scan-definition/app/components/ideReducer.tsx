@@ -6,6 +6,7 @@ export interface FileItem {
   label: string;
   type: "file" | "folder";
   path: string; // e.g., "/src/components/Button.tsx"
+  children?: FileItem[];
 }
 
 export interface Tab {
@@ -15,7 +16,7 @@ export interface Tab {
 }
 
 export interface IDEState {
-  fileSystem: FileItem[]; // The file explorer hierarchy
+  fileTree: FileItem[]; // The file explorer hierarchy
   selectedFile: string | null; // ID of the selected file
   openTabs: Tab[]; // Array of open tabs
   activeTab: string | null; // ID of the active tab
@@ -33,14 +34,17 @@ export type IDEAction =
   | { type: "FILE_FETCH_START"; payload: string }
   | { type: "FILE_FETCH_SUCCESS"; payload: { id: string; content: string } }
   | { type: "FILE_FETCH_ERROR"; payload: { id: string; error: string } }
-  | { type: "EDIT_TAB_CONTENT"; payload: { id: string; content: string } };
+  | { type: "EDIT_TAB_CONTENT"; payload: { id: string; content: string } }
+  | { type: "FETCH_FILE_TREE_START"; payload: { folderPath: string } }
+  | { type: "FETCH_FILE_TREE_SUCCESS"; payload: FileItem[] }
+  | { type: "FETCH_FILE_TREE_ERROR"; payload: { folderPath: string; error: string } };
 
 function ideReducer(state: IDEState, action: IDEAction): IDEState {
   console.log(`Current state: ${JSON.stringify(state)}`);
   console.debug(`Action: ${JSON.stringify(action)}`);
   switch (action.type) {
     case "SELECT_FILE":
-      const fileRef: FileItem | undefined = state.fileSystem.find(file => file.id === action.payload);
+      const fileRef: FileItem | undefined = state.fileTree.find(file => file.id === action.payload);
       if (!fileRef) {
         console.error(`File not found: ${action.payload}`);
         return state;
@@ -61,10 +65,11 @@ function ideReducer(state: IDEState, action: IDEAction): IDEState {
       const activeTab = newTabs.at(-1)?.id ?? null;
       return { ...state, selectedFile: action.payload, openTabs: newTabs, activeTab };
 
+
     case "SET_FILE_SYSTEM":
       // todo this must be called on fs load
       console.log(`Setting file system: ${JSON.stringify(action.payload)}`);
-      return { ...state, fileSystem: action.payload };
+      return { ...state, fileTree: action.payload };
 
     case "OPEN_TAB":
       console.log(`Opening tab: ${JSON.stringify(action.payload)}`);
@@ -113,10 +118,10 @@ function ideReducer(state: IDEState, action: IDEAction): IDEState {
 
     case "ADD_FILE":
       console.log(`Adding file: ${JSON.stringify(action.payload)}`);
-      return { ...state, fileSystem: [...state.fileSystem, action.payload] };
+      return { ...state, fileTree: [...state.fileTree, action.payload] };
 
     case "ADD_FOLDER":
-      return { ...state, fileSystem: [...state.fileSystem, action.payload] };
+      return { ...state, fileTree: [...state.fileTree, action.payload] };
 
 
     case "FILE_FETCH_START":
@@ -152,8 +157,12 @@ function ideReducer(state: IDEState, action: IDEAction): IDEState {
             : tab
         ),
       };
-
-
+    case "FETCH_FILE_TREE_START":
+      return state;
+    case "FETCH_FILE_TREE_SUCCESS":
+      return { ...state, fileTree: action.payload };
+    case "FETCH_FILE_TREE_ERROR":
+      return state;
     default:
       return state;
   }
@@ -161,7 +170,7 @@ function ideReducer(state: IDEState, action: IDEAction): IDEState {
 
 const initialIDEState: IDEState = {
   // fileSystem: [baseItem], // Fetch or initialize this with the file explorer structure
-  fileSystem: [], // Fetch or initialize this with the file explorer structure
+  fileTree: [], // Fetch or initialize this with the file explorer structure
   selectedFile: null,
   openTabs: [],
   activeTab: null,

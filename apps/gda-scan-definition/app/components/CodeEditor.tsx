@@ -4,13 +4,13 @@ import { Box, Button, ButtonGroup } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { modifyFileBuffer } from "../actions/file-actions";
 import { getComponentForFilename } from "./FilePrefix";
-import { FileItem, useIDEDispatch, useIDEState } from "./oldIdeState";
+import { FileItem, useIDEDispatch, useIDEState } from "./ideReducer";
 import { getParameters } from "../actions/qexafs-actions";
 
 type EditorType = "regular" | "diff" | "none";
 
 const CodeEditor: React.FC = () => {
-  const { openTabs, activeTab, fileSystem, fileCache } = useIDEState();
+  const { openTabs, activeTab, fileTree: fileSystem, fileCache } = useIDEState();
   const dispatch = useIDEDispatch();
 
   const activeTabData = openTabs.find((tab) => tab.id === activeTab);

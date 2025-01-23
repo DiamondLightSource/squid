@@ -1,5 +1,19 @@
 "use client";
 
+import { z } from "zod";
+import { zodToJsonSchema } from "zod-to-json-schema";
+import {
+    materialCells,
+    materialRenderers,
+} from '@jsonforms/material-renderers';
+import { JsonForms } from '@jsonforms/react';
+import { useState } from 'react';
+import { ConfigContextProvider } from "./components/ConfigContext";
+import ConfigFilesDrawer from "./components/ConfigFIlesDrawer";
+import FormWithDiffViewer from "./components/FormWithDiff";
+import { IDEProvider } from "../components/ideReducer";
+
+
 /*
 the form is generic and we use json forms to get the correct json
 all the rest is just transformations, not to write the forms manually
@@ -19,9 +33,6 @@ also add the custom formatter to work things on the edited file, just like with 
 
 */
 
-import { z } from "zod";
-import { zodToJsonSchema } from "zod-to-json-schema";
-import { IDEProvider } from "../components/oldIdeState";
 
 const mySchema = z
     .object({
@@ -32,21 +43,6 @@ const mySchema = z
 
 const jsonSchema = zodToJsonSchema(mySchema, "mySchema");
 console.log(jsonSchema);
-
-type FormReference = {
-
-};
-
-import React, { useState } from 'react';
-import {
-    materialRenderers,
-    materialCells,
-} from '@jsonforms/material-renderers';
-import { JsonForms } from '@jsonforms/react';
-import GenericEditor from "../components/GenericEditor";
-import XmlEditor from "../components/XmlEditor";
-import FormWithDiffViewer from "./components/FormWithDiff";
-
 const schema = {
     type: 'object',
     properties: {
@@ -101,20 +97,22 @@ const initialData = {};
 
 export default function FormsPage() {
     const [data, setData] = useState(initialData);
-    return (
-        <div>
-            <JsonForms
+    return <div>
+        <IDEProvider>
+            <ConfigContextProvider startingValue={{
+                beamlineIdentifier: "i18",
+                configUrl: "/tmp/qexafs/experiment_1"
+            }} >
+                {/* <JsonForms
                 schema={schema}
                 uischema={uischema}
                 data={data}
                 renderers={materialRenderers}
                 cells={materialCells}
                 onChange={({ data, _errors }) => setData(data)}
-            />
-            <IDEProvider>
+            /> */}
                 <FormWithDiffViewer />
-            </IDEProvider>
-        </div>
-
-    );
+            </ConfigContextProvider>
+        </IDEProvider>
+    </div >
 }

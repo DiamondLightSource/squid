@@ -10,13 +10,19 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import GenericEditor from '../../components/GenericEditor';
-import { useIDEDispatch } from '../../components/oldIdeState';
+import { useIDEDispatch, useIDEState } from '../../components/ideReducer';
+import { ConfigContextProvider, useConfigContext } from './ConfigContext';
+import ConfigFilesDrawer from './ConfigFIlesDrawer';
+import { ArrowRight, ArrowLeft } from '@mui/icons-material';
+import { formatXml } from '../../components/formatXml';
 
-// Example React component
 const FormWithDiffViewer = () => {
   const [currentContent, setCurrentContent] = useState<string>('');
   const [newContent, setNewContent] = useState<string>('');
+  const configState = useConfigContext();
   const dispatch = useIDEDispatch();
+
+  const { activeTab } = useIDEState();
 
 
   const handleRevertChanges = () => {
@@ -24,7 +30,6 @@ const FormWithDiffViewer = () => {
   };
 
   const handleSaveToDisk = () => {
-
     console.log('Saving to disk:', newContent);
     dispatch({ type: "EDIT_TAB_CONTENT", payload: { id: '1', content: newContent } });
   };
@@ -35,17 +40,26 @@ const FormWithDiffViewer = () => {
       <AppBar position="static" color="primary">
         <Toolbar>
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
-            Action Menu
+            Action Menu for beamline: {configState.beamlineIdentifier}
           </Typography>
-          <Button color="inherit" onClick={handleSaveToDisk}>
-            Save to Disk
+          <ConfigFilesDrawer />
+          <Button color="inherit" onClick={()=>{
+            const newContent = formatXml(currentContent);
+            setNewContent(newContent);
+          }}>
+            Format xml
           </Button>
           <Button color="inherit" onClick={handleRevertChanges}>
+            <ArrowLeft color='error' fontSize='large' />
             Revert Changes
+          </Button>
+          <Button color="inherit" onClick={handleSaveToDisk}>
+            Save to Disk <ArrowRight color='success' fontSize='large' />
           </Button>
         </Toolbar>
       </AppBar>
 
+      <Typography variant="h6">Now browsing: {configState.configUrl} </Typography>
       <Box sx={{ flex: 1, display: 'flex', flexDirection: 'row', mt: 2 }}>
         {/* FORM */}
         <Grid container spacing={2} sx={{ width: '30%', p: 2 }}>

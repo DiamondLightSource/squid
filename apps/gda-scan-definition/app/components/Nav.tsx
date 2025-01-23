@@ -18,11 +18,11 @@ export default function B18Nav() {
         <Link href="/scripting">Scripting</Link>
       </ListItem>
       <ListItem>
-        <Link href="/run-scans">run scans</Link>
+        <Link href="/run-scans">Run scans</Link>
       </ListItem>
-      <ListItem>
+      {/* <ListItem>
         <Link href="/simple-parameters">Simple params</Link>
-      </ListItem>
+      </ListItem> */}
       <BasicMenu />
     </>
   );

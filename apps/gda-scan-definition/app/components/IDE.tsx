@@ -4,7 +4,7 @@ import React from "react";
 import Editor from "./CodeEditor";
 import EditorTabs from "./EditorTabs";
 import FileExplorer from "./FileExplorer";
-import { IDEProvider } from "./oldIdeState";
+import { IDEProvider } from "./ideReducer";
 
 const IDE: React.FC = () => {
   return (
