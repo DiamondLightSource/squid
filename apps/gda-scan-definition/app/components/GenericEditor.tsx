@@ -1,27 +1,19 @@
+import { DiffEditor } from "@monaco-editor/react";
 
-import { Grid } from "@mui/material";
-import Typography from "@mui/material/Typography";
-import { XMLBuilder } from "fast-xml-parser";
-
-
-import React from 'react';
-import Editor, { DiffEditor, DiffEditorProps } from "@monaco-editor/react";
-
-
-// relative path context
 export interface GenericEditorProps {
-
-
+    oldText: string;
+    newText: string;
 }
 
-export default function GenericEditor({ }: GenericEditorProps) {
-
+export default function GenericEditor({ oldText, newText }: GenericEditorProps) {
+    console.log('oldText:', oldText);
     return <DiffEditor
-        original={"old"}
+        original={oldText}
+
         width="70vw"
         height="70vh"
         language="html"
-        modified={"new"}
+        modified={newText}
     />
 
 }

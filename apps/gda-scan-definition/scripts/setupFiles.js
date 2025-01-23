@@ -4,6 +4,7 @@ const util = require("util");
 
 // Promisified version of fs.copyFile
 const copyFile = util.promisify(fs.copyFile);
+// NOTE for this to work you need to be in the apps/gda-scan-definition folder
 
 // Function to copy files from reference folder to base path
 async function copyFilesToBasePath(fileNames, basePath) {

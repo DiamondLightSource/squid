@@ -1,5 +1,5 @@
 "use server";
-import { fs } from "node:fs/promises";
+import { promises as fs } from "fs";
 import path from "path";
 import { actionClient } from "../clients/actionclient";
 import { fileSchema } from "../schemas/filesystemSchemas";

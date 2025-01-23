@@ -24,17 +24,16 @@ export default function ConfigFilesDrawer() {
     const state = useIDEState();
 
     const fetchFilepath = async () => {
-        window.alert(`fetching contents of folder: ${config.configUrl}`);
         dispatch({ type: 'FETCH_FILE_TREE_START', payload: { folderPath: config.configUrl } });
 
         const response = await getFilesByPath({ path: config.configUrl });
         if (!response || !response.data) {
-            alert("No circles found");
             dispatch({ type: 'FETCH_FILE_TREE_ERROR', payload: { folderPath: config.configUrl, error: 'No files found' } });
             return;
         }
         const items: FileItem[] = response.data.files;
         dispatch({ type: 'FETCH_FILE_TREE_SUCCESS', payload: items });
+        setOpen(true);
     }
 
     const toggleDrawer = (newOpen: boolean) => () => {

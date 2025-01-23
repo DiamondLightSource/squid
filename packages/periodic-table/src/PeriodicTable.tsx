@@ -92,7 +92,7 @@ export function PeriodicTable({
           />
           <RowOfElementSquares start={104} end={118} callback={callback} />
         </div>
-        <div style={{ height: 0.5 * squareSize}}></div>
+        <div style={{ height: 0.5 * squareSize }}></div>
         {/* lantanides */}
         <div className="period-8" style={{ display: "flex" }}>
           <Rectangle

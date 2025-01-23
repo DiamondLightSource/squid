@@ -1,10 +1,9 @@
 "use server";
-import { z } from "zod";
 import { promises as fs } from "fs";
 
-import { TreeViewBaseItem } from "@mui/x-tree-view";
 import path from "path";
 import { actionClient } from "../clients/actionclient";
+import { FileItem } from "../components/ideReducer";
 import {
   fileRenameSchema,
   fileSchema,
@@ -12,7 +11,6 @@ import {
   getFilesSchema,
 } from "../schemas/filesystemSchemas";
 import { basePath } from "./basePath";
-import { FileItem } from "../components/ideReducer";
 
 
 async function readFiles(p: string): Promise<FileItem[]> {
