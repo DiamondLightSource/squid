@@ -15,8 +15,11 @@ export async function selectFileWithFetch(
       relativePath: "",
     });
     console.log(response);
+    if (!response) {
+      throw new Error(`Failed to fetch file: ${fileId}`);
+    }
     const { success, fileBuffer } = await response.data;
-    console.log(fileBuffer);
+    // console.debug(fileBuffer);
     if (!success) {
       throw new Error(`Failed to fetch file: ${fileId}`);
     }

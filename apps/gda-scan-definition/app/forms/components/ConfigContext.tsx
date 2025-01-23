@@ -2,7 +2,7 @@
 import { createContext, useContext } from "react";
 
 
-type ConfigContext = {
+export type ConfigContext = {
     beamlineIdentifier: string;
     configUrl: string;
 }

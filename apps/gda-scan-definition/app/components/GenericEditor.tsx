@@ -6,7 +6,6 @@ export interface GenericEditorProps {
 }
 
 export default function GenericEditor({ oldText, newText }: GenericEditorProps) {
-    console.log('oldText:', oldText);
     return <DiffEditor
         original={oldText}
 

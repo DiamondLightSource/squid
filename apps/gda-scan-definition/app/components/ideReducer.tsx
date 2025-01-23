@@ -139,7 +139,7 @@ function ideReducer(state: IDEState, action: IDEAction): IDEState {
         ...state.fileCache,
         [action.payload.id]: newContent,
       };
-      console.log(`New cache: ${JSON.stringify(newCache)}`);
+      // console.debug(`New cache: ${JSON.stringify(newCache)}`);
       return {
         ...state,
         fileCache: newCache,

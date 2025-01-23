@@ -43,21 +43,7 @@ export default function ConfigFilesDrawer() {
     const DrawerList = (
         <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
             <Button onClick={fetchFilepath}>Fetch files</Button>
-            <Typography variant="h6">Folders</Typography>
-            <List>
-                {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                    <ListItem key={text} disablePadding>
-                        <ListItemButton>
-                            <ListItemIcon>
-                                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                            </ListItemIcon>
-                            <ListItemText primary={text} />
-                        </ListItemButton>
-                    </ListItem>
-                ))}
-            </List>
-            <Divider />
-            <Typography variant="h6">Files</Typography>
+            <Typography variant="h6">Files at {config.configUrl} </Typography>
             <List>
                 {state.fileTree.map((file: FileItem, index) => (
                     <ListItem key={file.id} disablePadding>

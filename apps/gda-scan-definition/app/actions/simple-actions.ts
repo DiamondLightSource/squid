@@ -3,10 +3,7 @@ import { XMLBuilder, XMLParser } from "fast-xml-parser";
 import fs from "fs";
 import { create } from "xmlbuilder2";
 import { actionClient } from "../clients/actionclient";
-import {
-  DetectorsSchema
-} from "../components/forms/DetectorParametersForm";
-import { detectorParametersSchema } from "../schemas/qexafs";
+import { detectorParametersSchema, DetectorsSchema } from "../schemas/qexafs";
 import { basePath } from "./basePath";
 
 // https://www.npmjs.com/package/fast-xml-parser
@@ -23,6 +20,7 @@ export const simpleActionWithParams = actionClient.action(
 
 const path = `${basePath}/Detector_Parameters.xml`;
 // Path to store XML data
+// NOTE: those cannot be exported as only async functions can be exported from 'use server' file
 const builder = new XMLBuilder();
 const parser = new XMLParser();
 

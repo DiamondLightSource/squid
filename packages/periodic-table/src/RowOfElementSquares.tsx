@@ -21,8 +21,8 @@ export function RowOfElementSquares({
   const id = `row-starting-with-${start}`;
   return (
     <div id={id} key={id} style={{ display: "flex" }}>
-      {arr.map((n) => (
-        <ElementSquare atomicNumber={n} callback={callback} />
+      {arr.map((n, i) => (
+        <ElementSquare key={i} atomicNumber={n} callback={callback} />
       ))}
     </div>
   );

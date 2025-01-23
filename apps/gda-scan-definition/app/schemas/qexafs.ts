@@ -1,7 +1,16 @@
 import { z } from "zod";
 import { elements } from "@diamondlightsource/periodic-table/elements";
-import { maxHeaderSize } from "http";
+import zodToJsonSchema from "zod-to-json-schema";
+import { convertSchemaToUiSchema, JsonSchema, UiSchema } from "../forms/schemaToUiSchema";
 
+
+export type FormFileDefinition = {
+  fileName: string;
+  schema: JsonSchema;
+  uiSchema: UiSchema;
+}
+
+// INVARIANTS
 export const allowedElementSymbols = elements
   .filter((e) => {
     const n = parseInt(e.Number);
@@ -39,6 +48,9 @@ export const qexafsParametersSchema = z.object({
   stepSize: z.number().positive().int(),
 });
 
+export const qexafsParametersJson: JsonSchema = zodToJsonSchema(qexafsParametersSchema) as unknown as JsonSchema;
+export const qexafsParametersUiSchema = convertSchemaToUiSchema(qexafsParametersJson);
+
 // Base schema for a single detector configuration
 export const detectorConfigurationSchema = z.object({
   description: z.string(),
@@ -52,10 +64,13 @@ export const detectorConfigurationSchema = z.object({
   extraDetectorName: z.string().optional(),
 });
 
+export const detectorConfigurationJson: JsonSchema = zodToJsonSchema(detectorConfigurationSchema) as unknown as JsonSchema;
+export const detectorConfigurationUiSchema = convertSchemaToUiSchema(detectorConfigurationJson);
 export type DetectorConfiguration = z.infer<typeof detectorConfigurationSchema>;
 export type DetectorsSchema = z.infer<typeof detectorParametersSchema>;
 
 // Main schema for DetectorParameters
+// todo missing the definition for the full detector parameters schema
 export const detectorParametersSchema = z.object({
   shouldValidate: z.boolean(),
   detectorConfiguration: z.array(detectorConfigurationSchema),
@@ -73,6 +88,9 @@ export const outputParametersSchema = z.object({
   afterScriptName: z.string().optional(), // Optional since it can be empty
   beforeFirstRepetition: z.string().optional(), // Optional since it can be empty
 });
+
+export const outputParametersJson: JsonSchema = zodToJsonSchema(outputParametersSchema) as unknown as JsonSchema;
+export const outputParametersUiSchema = convertSchemaToUiSchema(outputParametersJson);
 
 // Schema for common motor position structure
 export const motorPositionSchema = z.object({
@@ -182,3 +200,39 @@ export const sampleParametersSchema = z.object({
   userstage: userStageSchema,
   sampleParameterMotorPosition: z.array(motorPositionSchema),
 });
+
+
+export const sampleParametersJson: JsonSchema = zodToJsonSchema(sampleParametersSchema) as unknown as JsonSchema;
+export const sampleParametersUiSchema = convertSchemaToUiSchema(sampleParametersJson);
+
+export const sampleDefinition: FormFileDefinition = {
+  fileName: "Sample_Parameters.xml",
+  schema: sampleParametersJson,
+  uiSchema: sampleParametersUiSchema,
+}
+
+export const detectorsDefinition: FormFileDefinition = {
+  fileName: "Detector_Parameters.xml",
+  schema: detectorConfigurationJson,
+  uiSchema: detectorConfigurationUiSchema,
+}
+
+export const qexafsDefinition: FormFileDefinition = {
+  fileName: "QEXAFS_Parameters.xml",
+  schema: qexafsParametersJson,
+  uiSchema: qexafsParametersUiSchema,
+}
+
+
+export const outputDefinition: FormFileDefinition = {
+  fileName: "Output_Parameters.xml",
+  schema: outputParametersJson,
+  uiSchema: outputParametersUiSchema,
+}
+
+export const formConfigsMap: Record<string, FormFileDefinition> = {
+  "Detector_Parameters.xml": detectorsDefinition,
+  "QEXAFS_Parameters.xml": qexafsDefinition,
+  "Sample_Parameters.xml": sampleDefinition,
+  "Output_Parameters.xml": outputDefinition
+};

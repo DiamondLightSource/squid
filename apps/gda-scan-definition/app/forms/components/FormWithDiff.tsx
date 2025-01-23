@@ -1,30 +1,42 @@
 import {
+  materialCells,
+  materialRenderers,
+} from '@jsonforms/material-renderers';
+import { JsonForms } from '@jsonforms/react';
+import { ArrowLeft, ArrowRight } from '@mui/icons-material';
+import {
   AppBar,
   Box,
   Button,
   Divider,
   Grid,
-  TextField,
   Toolbar,
   Typography
 } from '@mui/material';
+import { XMLParser } from "fast-xml-parser";
 import { useEffect, useState } from 'react';
+import { selectFileWithFetch } from '../../clients/selectors';
+import { formatXml } from '../../components/formatXml';
 import GenericEditor from '../../components/GenericEditor';
 import { useIDEDispatch, useIDEState } from '../../components/ideReducer';
-import { ConfigContextProvider, useConfigContext } from './ConfigContext';
+import { formConfigsMap, FormFileDefinition } from '../../schemas/qexafs';
+import { useConfigContext } from './ConfigContext';
 import ConfigFilesDrawer from './ConfigFIlesDrawer';
-import { ArrowRight, ArrowLeft } from '@mui/icons-material';
-import { formatXml } from '../../components/formatXml';
-import { selectFileWithFetch } from '../../clients/selectors';
+
+function getLastSegment(s: string, root: string): string {
+  return s.replace(root, '').replace(/^\//, ''); // Remove root and leading slash
+}
+
+const parser = new XMLParser();
 
 const FormWithDiffViewer = () => {
   const [currentContent, setCurrentContent] = useState<string>('');
   const [newContent, setNewContent] = useState<string>('');
   const configState = useConfigContext();
   const dispatch = useIDEDispatch();
-
-  const { activeTab, openTabs, fileTree, fileCache } = useIDEState();
-
+  const [formConfig, setFormConfig] = useState<FormFileDefinition>()
+  const { activeTab, fileCache } = useIDEState();
+  const [formData, setFormData] = useState<any>({});
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,11 +45,33 @@ const FormWithDiffViewer = () => {
       if (activeTab) {
         await selectFileWithFetch(dispatch, activeTab);
         console.log(`later cache: ${fileCache}`)
-
       }
     };
     fetchData();
   }, [activeTab]);
+
+
+  useEffect(() => {
+    if (activeTab) {
+      const content = fileCache[activeTab];
+      setCurrentContent(content);
+      setNewContent(content);
+
+      // NOTE This might be wrong
+      const parsedResult = parser.parse(content.toString());
+      console.log(`parsed result: ${Object.keys(parsedResult)}`);
+      setFormData(parsedResult);
+
+      const fileNameAsKey: string = getLastSegment(activeTab, configState.configUrl);
+      const config = formConfigsMap[fileNameAsKey];
+      if (!config) {
+        window.alert('wrong file name');
+      } else {
+        console.log(`refreshed new config: ${config}`);
+        setFormConfig(config);
+      }
+    }
+  }, [fileCache]);
 
 
   const handleRevertChanges = () => {
@@ -78,28 +112,23 @@ const FormWithDiffViewer = () => {
       <Box sx={{ flex: 1, display: 'flex', flexDirection: 'row', mt: 2 }}>
         {/* FORM */}
         <Grid container spacing={2} sx={{ width: '30%', p: 2 }}>
-          <Grid item xs={12}>
+          {/* <Grid item xs={12}>
             <Button variant="contained" color="primary" fullWidth>
               Add Component
             </Button>
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              label="Form Field 1"
-              variant="outlined"
-              fullWidth
-              value={currentContent}
-              onChange={(e) => setCurrentContent(e.target.value)}
+          </Grid> */}
+          <Grid item xs={12} color={'primary'} overflow="scroll">
+            <JsonForms
+              schema={formConfig?.schema}
+              uischema={formConfig?.uiSchema}
+              data={formData}
+              renderers={materialRenderers}
+              cells={materialCells}
+              onChange={({ data }) => setFormData(data)}
             />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              label="Form Field 2"
-              variant="outlined"
-              fullWidth
-              value={newContent}
-              onChange={(e) => setNewContent(e.target.value)}
-            />
+            <Button variant="contained" color="primary" fullWidth onClick={handleSaveToDisk}>
+              Save
+            </Button>
           </Grid>
         </Grid>
 
