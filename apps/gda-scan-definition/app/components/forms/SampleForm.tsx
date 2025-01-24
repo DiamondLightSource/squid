@@ -7,7 +7,7 @@ import {
 } from "../../schemas/qexafs";
 import { updateSampleParameters } from "../../actions/qexafs-actions";
 
-const initialMotorPosition: MotorPosition = {
+export const initialMotorPosition: MotorPosition = {
   scannableName: "",
   description: "",
   doMove: false,

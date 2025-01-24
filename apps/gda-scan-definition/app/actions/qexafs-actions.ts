@@ -1,4 +1,7 @@
 "use server";
+import { z } from "zod";
+import { convertXML } from "simple-xml-to-json";
+import { XMLBuilder, XMLParser } from "fast-xml-parser";
 import fs from "fs";
 import { create } from "xmlbuilder2";
 import {
@@ -11,8 +14,10 @@ import {
   outputParametersSchema,
   qexafsParametersSchema,
   sampleParametersSchema,
+  SampleParametersType,
 } from "../schemas/qexafs";
 import { basePath } from "./basePath";
+import { initialMotorPosition } from "../components/forms/SampleForm";
 
 // Helper to read existing data
 function readParameters(xmlPath: string): any[] {
@@ -71,3 +76,29 @@ export const updateOutputParameters = actionClient
 export const updateSampleParameters = actionClient
   .schema(sampleParametersSchema)
   .action(createParamsCallback(`${basePath}/Sample_Parameters.xml`));
+
+// todo add stuff
+
+const parser = new XMLParser();
+
+// todo maybe an enum for types in qexafs requests to solve quickly
+
+export const readDetectorParameters = actionClient
+  .schema(detectorParametersSchema)
+  .action(async () => {
+    // todo assert against the schema, completely obfuscate the existence of xml
+
+    console.log("reading remote files");
+    // TODO tempoary
+    const xmlPath = `${basePath}/Sample_Parameters.xml`;
+
+    if (!fs.existsSync(xmlPath)) return [];
+    const data = fs.readFileSync(xmlPath, "utf-8");
+    const myJson = convertXML(data);
+    const s: SampleParametersType = sampleParametersSchema.parse(myJson);
+
+    return s;
+  });
+
+// todo go to the file this is from and make this read detector params as the base - and no XML direct edition
+console.log(initialMotorPosition);

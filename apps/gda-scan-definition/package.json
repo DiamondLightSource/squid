@@ -46,6 +46,7 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.53.2",
     "react-xtermjs": "^1.0.9",
+    "simple-xml-to-json": "^1.2.3",
     "sqlite3": "^5.1.7",
     "xmlbuilder2": "^3.1.1",
     "zod": "link:@hookform/resolvers/zod",

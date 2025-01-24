@@ -89,6 +89,8 @@ export const outputParametersSchema = z.object({
   beforeFirstRepetition: z.string().optional(), // Optional since it can be empty
 });
 
+export type OutputParametersSchema = z.infer<typeof outputParametersSchema>;
+
 export const outputParametersJson: JsonSchema = zodToJsonSchema(outputParametersSchema) as unknown as JsonSchema;
 export const outputParametersUiSchema = convertSchemaToUiSchema(outputParametersJson);
 
@@ -202,6 +204,7 @@ export const sampleParametersSchema = z.object({
 });
 
 
+export type SampleParametersType = z.infer<typeof sampleParametersSchema>;
 export const sampleParametersJson: JsonSchema = zodToJsonSchema(sampleParametersSchema) as unknown as JsonSchema;
 export const sampleParametersUiSchema = convertSchemaToUiSchema(sampleParametersJson);
 
@@ -222,7 +225,6 @@ export const qexafsDefinition: FormFileDefinition = {
   schema: qexafsParametersJson,
   uiSchema: qexafsParametersUiSchema,
 }
-
 
 export const outputDefinition: FormFileDefinition = {
   fileName: "Output_Parameters.xml",
