@@ -25,13 +25,13 @@ export function ShowTables({
   transitions,
 }: ShowTablesProps) {
   return (
-    <div style={{ padding: "20px" }}>
+    <div style={{ padding: "10px" }}>
       {/* Properties Table */}
       <Typography variant="h6" gutterBottom>
         Element Properties
       </Typography>
-      <TableContainer component={Paper} style={{ marginBottom: "20px" }}>
-        <Table>
+      <TableContainer component={Paper} style={{ marginBottom: "10px" }}>
+        <Table size="small">
           <TableHead>
             <TableRow>
               <TableCell>
@@ -70,7 +70,7 @@ export function ShowTables({
         Absorption Edge Data
       </Typography>
       <TableContainer component={Paper} style={{ marginBottom: "20px" }}>
-        <Table>
+        <Table size="small">
           <TableHead>
             <TableRow>
               <TableCell>
@@ -113,7 +113,7 @@ export function ShowTables({
         X-Ray Transitions Data
       </Typography>
       <TableContainer component={Paper}>
-        <Table>
+        <Table size="small">
           <TableHead>
             <TableRow>
               <TableCell>

@@ -32,7 +32,6 @@ export default function XraylibPage() {
         // squareSize={25} margin={0.75}
       />
       <div>
-        <h2>other details</h2>
         <ShowTables
           properties={properties}
           absorption={xrayLevels}
