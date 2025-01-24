@@ -39,6 +39,7 @@
     "monaco-editor": "^0.52.2",
     "next": "^15.0.3",
     "next-safe-action": "^7.9.9",
+    "node-fetch": "^3.3.2",
     "promised-sqlite3": "^2.1.0",
     "rabbitmq-client": "^5.0.1",
     "react": "^18.2.0",

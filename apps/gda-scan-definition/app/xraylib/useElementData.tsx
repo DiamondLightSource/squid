@@ -1,31 +1,46 @@
 "use client";
 import {
+  AbsorptionEdgeResponseType,
+  ElementPropertiesResponseType,
+  EmissionDataResponseType,
+} from "../schemas/xraylibSchemas";
+import {
   actionGetAbsorptionEdgeEnergy,
+  actionGetElementProperties,
   actionGetFluorescenceYields,
+  actionGetTransitionsEmissionsForElement,
+  actionGetXrayLevelsForElement,
 } from "./xraylib-action";
 
 import { useState, useEffect } from "react";
 
+type ElementData = {
+  edgeEnergy: number;
+  fluorescenceYields: number;
+  properties: ElementPropertiesResponseType;
+  xrayLevels: AbsorptionEdgeResponseType;
+  transitions: EmissionDataResponseType;
+};
+
 type UseElementDataResult = {
-  data: {
-    edgeEnergy: number;
-    fluorescenceYields: number;
-    propertyX: number; // Example additional property
-    propertyY: number; // Example additional property
-  };
+  data: ElementData;
   loading: boolean;
   error: string | null;
+};
+
+const initState: ElementData = {
+  edgeEnergy: 0,
+  fluorescenceYields: 0,
+  properties: [],
+  xrayLevels: [],
+  transitions: [],
 };
 
 export function useElementData(
   selectedElementSymbol: string
 ): UseElementDataResult {
-  const [data, setData] = useState({
-    edgeEnergy: 0,
-    fluorescenceYields: 0,
-    propertyX: 0, // Initialize placeholders for additional data
-    propertyY: 0,
-  });
+  const [data, setData] = useState(initState);
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -39,15 +54,21 @@ export function useElementData(
         const [
           edgeEnergyResponse,
           fluorescenceYieldsResponse,
-          // propertyXResponse,
-          // propertyYResponse,
+          propertiesResponse,
+          xrayLevelsResponse,
+          transitionsResponse,
         ] = await Promise.all([
           actionGetAbsorptionEdgeEnergy({
             elementSymbol: selectedElementSymbol,
           }),
           actionGetFluorescenceYields({ elementSymbol: selectedElementSymbol }),
-          // actionGetPropertyX({ elementSymbol: selectedElementSymbol }), // Replace with your actual API call
-          // actionGetPropertyY({ elementSymbol: selectedElementSymbol }), // Replace with your actual API call
+          actionGetElementProperties({ elementSymbol: selectedElementSymbol }),
+          actionGetXrayLevelsForElement({
+            elementSymbol: selectedElementSymbol,
+          }),
+          actionGetTransitionsEmissionsForElement({
+            elementSymbol: selectedElementSymbol,
+          }),
         ]);
 
         // Extract and validate data fields
@@ -56,15 +77,17 @@ export function useElementData(
           fluorescenceYieldsResponse?.data?.yieldValue ?? 0;
         // const propertyX = propertyXResponse?.data?.value ?? 0; // Replace `value` with the actual field
         // const propertyY = propertyYResponse?.data?.value ?? 0; // Replace `value` with the actual field
+        const properties = propertiesResponse?.data?.data ?? [];
+        const xrayLevels = xrayLevelsResponse?.data?.data ?? [];
+        const transitions = transitionsResponse?.data?.data ?? [];
 
-        const propertyX = 0; // Replace `value` with the actual field
-        const propertyY = 0; // Replace `value` with the actual field
         // Update the state with fetched data
         setData({
           edgeEnergy,
           fluorescenceYields,
-          propertyX,
-          propertyY,
+          properties,
+          xrayLevels,
+          transitions,
         });
       } catch (err: any) {
         setError(
