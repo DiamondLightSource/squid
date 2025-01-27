@@ -27,7 +27,7 @@ const defaultFormData: DetectorsSchema = {
   detectorConfiguration: [defaultDetectorConfig],
 };
 
-type DetectorParametersFormProps = {
+export type DetectorParametersFormProps = {
   overrideDefaultValue?: DetectorsSchema;
   submitCallback?: (data: DetectorsSchema) => void;
 };
@@ -60,14 +60,14 @@ function DetectorParametersForm({
     });
   };
 
-  const handleRemoveConfiguration = (index) => {
+  const handleRemoveConfiguration = (index: number) => {
     const updatedConfigurations = formData.detectorConfiguration.filter(
       (_, i) => i !== index
     );
     setFormData({ ...formData, detectorConfiguration: updatedConfigurations });
   };
 
-  const handleUpdateConfiguration = (index, key, value) => {
+  const handleUpdateConfiguration = (index: number, key: any, value: any) => {
     const updatedConfigurations = formData.detectorConfiguration.map(
       (config, i) => (i === index ? { ...config, [key]: value } : config)
     );

@@ -1,6 +1,6 @@
 "use client";
 
-import DetectorParametersForm from "./forms/DetectorParametersForm";
+import DetectorParametersForm, { DetectorParametersFormProps } from "./forms/DetectorParametersForm";
 import OutputParametersForm from "./forms/OutputForm";
 import { ParamsForm } from "./forms/ParamsForm";
 import SampleParametersForm from "./forms/SampleForm";
@@ -15,7 +15,7 @@ export enum FilePrefix {
 const UnknownFileForm = () => <div>Unknown File Form</div>;
 
 type ComponentMap = {
-  [key in FilePrefix]: () => JSX.Element;
+  [key in FilePrefix]: (...args: any[]) => JSX.Element;
 };
 
 const componentMap: ComponentMap = {

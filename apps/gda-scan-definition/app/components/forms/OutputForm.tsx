@@ -30,11 +30,17 @@ export const OutputParametersForm = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    window.alert('this functionality got disabled');
     try {
       const validated: OutputsSchema = outputParametersSchema.parse(formData);
 
-      const { success, parameters } = await updateOutputParameters(validated);
+      const response  = await updateOutputParameters(validated);
 
+      if(response?.data == undefined){
+        alert('wrong response');
+        return;
+      }
+      const { success, parameters }  = response?.data;
       console.log(success, parameters);
 
       if (success) {

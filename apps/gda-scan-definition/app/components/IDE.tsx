@@ -28,7 +28,7 @@ const IDE: React.FC = () => {
           <Grid container item spacing={2} flex={1}>
             {/* File Explorer */}
             <Grid item xs={3}>
-              <FileExplorer />
+              {/* <FileExplorer /> */}
             </Grid>
 
             {/* Tabs and Editor */}
@@ -38,7 +38,7 @@ const IDE: React.FC = () => {
                 <EditorTabs />
 
                 {/* Editor */}
-                <Editor />
+                {/* <Editor /> */}
               </Container>
             </Grid>
 

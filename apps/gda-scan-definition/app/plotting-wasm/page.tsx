@@ -4,7 +4,6 @@ import "@h5web/app/dist/styles.css";
 import React, { useState } from "react";
 import type { ChangeEvent } from "react";
 import { App } from "@h5web/app";
-import { H5WasmProvider } from "@h5web/h5wasm";
 
 interface H5File {
   filename: string;
@@ -47,9 +46,9 @@ function PlottingWasmPage() {
 
   return (
     <div style={{ height: "100vh" }}>
-      <H5WasmProvider {...h5File}>
+      {/* <H5WasmProvider {...h5File}>
         <App />
-      </H5WasmProvider>
+      </H5WasmProvider> */}
     </div>
   );
 }

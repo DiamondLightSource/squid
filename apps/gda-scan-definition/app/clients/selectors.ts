@@ -15,7 +15,7 @@ export async function selectFileWithFetch(
       relativePath: "",
     });
     console.log(response);
-    if (!response) {
+    if (!response || !response.data) {
       throw new Error(`Failed to fetch file: ${fileId}`);
     }
     const { success, fileBuffer } = await response.data;
@@ -31,9 +31,10 @@ export async function selectFileWithFetch(
     dispatch({ type: "SELECT_FILE", payload: fileId });
   } catch (error) {
     console.error(error);
+    const errorMessage: string = (error as unknown as Record<string, string>)['message'] ?? 'no error message available';
     dispatch({
       type: "FILE_FETCH_ERROR",
-      payload: { id: fileId, error: error.message },
+      payload: { id: fileId, error: errorMessage },
     });
   }
 }

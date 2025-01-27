@@ -1,3 +1,4 @@
+"use client";
 import { Typography } from "@mui/material";
 import React, { useState } from "react";
 import { z } from "zod";
@@ -118,10 +119,10 @@ const SampleParametersForm = () => {
     }
   };
 
-  const handleUpdateField = (path, value) => {
+  const handleUpdateField = (path: any[], value: string | number | boolean) => {
     setFormData((prev) => {
       const updated = { ...prev };
-      path.reduce((obj, key, idx) => {
+      path.reduce((obj: { [x: string]: any; }, key: string | number, idx: number) => {
         if (idx === path.length - 1) obj[key] = value;
         return obj[key];
       }, updated);
@@ -139,7 +140,7 @@ const SampleParametersForm = () => {
     });
   };
 
-  const removeMotorPosition = (index) => {
+  const removeMotorPosition = (index: number) => {
     setFormData({
       ...formData,
       sampleParameterMotorPosition:
@@ -147,7 +148,7 @@ const SampleParametersForm = () => {
     });
   };
 
-  const handleMotorPositionChange = (index, field, value) => {
+  const handleMotorPositionChange = (index: number, field: string, value: string | number | boolean) => {
     const updatedMotors = [...formData.sampleParameterMotorPosition];
     updatedMotors[index][field] = value;
     setFormData({

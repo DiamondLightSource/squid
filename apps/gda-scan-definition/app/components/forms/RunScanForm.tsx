@@ -1,17 +1,17 @@
 "use client";
 
-import { AddCircleOutline as AddCircleOutlineIcon, RemoveCircleOutline as RemoveCircleOutlineIcon } from "@mui/icons-material";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { AddCircleOutline as AddCircleOutlineIcon, RemoveCircleOutline as RemoveCircleOutlineIcon } from "@mui/icons-material";
+import { Box, Button, Grid, IconButton, Slider, TextField, Typography } from "@mui/material";
+import { Key, SetStateAction, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import {
   scanRequestSchema,
   ScanRequestType
 } from "../../actions/run-scan";
-import { Box, Typography, TextField, Grid, IconButton, Button, Slider } from "@mui/material";
-import { useState } from "react";
 
 const defaultScanSchema: ScanRequestType = {
-  name: "",
+  name: "detectors",
   startStopStep: [],
   detectors: [],
   duration: 0,
@@ -31,19 +31,19 @@ export default function RunScanForm() {
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "detectors",
+    name: []
   });
 
-  const [startStop, setStartStop] = useState([0, 10]);
-  const [step, setStep] = useState(1);
+  const [startStop, setStartStop] = useState<number[]>([0, 10]);
+  const [step, setStep] = useState<number>(1);
 
-  const handleStartStopChange = (event, newValue) => {
+  const handleStartStopChange = (event: null, newValue:  number[]) => {
     setStartStop(newValue);
     setValue("startStopStep.0", newValue[0]);
     setValue("startStopStep.1", newValue[1]);
   };
 
-  const handleStepChange = (event, newValue) => {
+  const handleStepChange = (event: null, newValue: SetStateAction<number>) => {
     setStep(newValue);
     setValue("startStopStep.2", newValue);
   };
@@ -137,7 +137,7 @@ export default function RunScanForm() {
 
       <Box sx={{ mb: 3 }}>
         <Typography gutterBottom>Detectors</Typography>
-        {fields.map((field, index) => (
+        {fields.map((field: { id: Key | null | undefined; }, index: number) => (
           <Grid
             container
             spacing={2}

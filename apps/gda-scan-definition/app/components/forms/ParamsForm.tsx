@@ -30,8 +30,13 @@ export function ParamsForm() {
     e.preventDefault();
     try {
       const validated: ParamsSchema = qexafsParametersSchema.parse(formData);
+      const response = await updateQexafsParameters(validated);
 
-      const { success, parameters } = await updateQexafsParameters(validated);
+      if(response?.data == undefined){
+        alert('wrong response');
+        return;
+      }
+      const { success, parameters } = response?.data;
 
       console.log(success, parameters);
 

@@ -58,13 +58,14 @@ const CodeEditor: React.FC = () => {
       <ButtonGroup>
         <Button
           onClick={async () => {
-            if (fileRef.label === "Detector_Parameters.xml") {
-              const response = await modifyFileBuffer({
-                id: activeTabData.id,
-                content: activeTabData.content,
-              });
-              console.log(response);
-            }
+            // todo deal with this
+            // if (fileRef.label === "Detector_Parameters.xml") {
+            //   const response = await modifyFileBuffer({
+            //     id: activeTabData.id,
+            //     content: activeTabData.content,
+            //   });
+            //   console.log(response);
+            // }
           }}
         >
           Save{" "}

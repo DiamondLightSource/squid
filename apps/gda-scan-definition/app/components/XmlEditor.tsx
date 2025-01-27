@@ -8,27 +8,27 @@ const MonacoDiffEditorWithFormatting = () => {
     const [modified, setModified] = useState('<note><to>Tove</to><from>Jani</from></note>');
     const monacoRef = useRef<typeof DiffEditor | null>(null);
 
-    // Register the XML formatting provider
-    useEffect(() => {
-        monacoRef.current.languages.registerDocumentFormattingEditProvider('xml', {
-            async provideDocumentFormattingEdits(model, options, token) {
-                return [
-                    {
-                        range: model.getFullModelRange(),
-                        text: formatXml(model.getValue()),
-                    },
-                ];
-            },
-        });
-    }, []);
+    // // Register the XML formatting provider
+    // useEffect(() => {
+    //     monacoRef.current.languages.registerDocumentFormattingEditProvider('xml', {
+    //         async provideDocumentFormattingEdits(model, options, token) {
+    //             return [
+    //                 {
+    //                     range: model.getFullModelRange(),
+    //                     text: formatXml(model.getValue()),
+    //                 },
+    //             ];
+    //         },
+    //     });
+    // }, []);
 
     // Format XML in the Modified Editor
     const handleFormatModifiedContent = () => {
         if (monacoRef.current) {
-            const editor = monacoRef.current.getModifiedEditor(); // Get the "modified" editor instance
-            const model = editor.getModel(); // Get the model for the modified editor
-            const formattedText = formatXml(model.getValue()); // Format the XML
-            model.setValue(formattedText); // Update the model with formatted XML
+            // const editor = monacoRef.current.getModifiedEditor(); // Get the "modified" editor instance
+            // const model = editor.getModel(); // Get the model for the modified editor
+            // const formattedText = formatXml(model.getValue()); // Format the XML
+            // model.setValue(formattedText); // Update the model with formatted XML
         }
     };
 
@@ -42,7 +42,7 @@ const MonacoDiffEditorWithFormatting = () => {
                 original={original}
                 modified={modified}
                 onMount={(editor) => {
-                    monacoRef.current = editor; // Save the editor instance for later use
+                    // monacoRef.current = editor; // Save the editor instance for later use
                 }}
             />
 

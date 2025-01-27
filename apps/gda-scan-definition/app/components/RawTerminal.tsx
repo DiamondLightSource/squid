@@ -4,7 +4,7 @@ import { Terminal } from "@xterm/xterm";
 import "@xterm/xterm/css/xterm.css";
 
 const TerminalComponent = () => {
-  const terminalRef = useRef(null);
+  const terminalRef = useRef<any | null>(null);
 
   useEffect(() => {
     const terminal = new Terminal();
