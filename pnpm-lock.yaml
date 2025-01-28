@@ -484,7 +484,7 @@ importers:
         version: 15.0.3(@babel/core@7.24.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.81.0)
       next-safe-action:
         specifier: ^7.9.9
-        version: 7.9.9(next@15.0.3(@babel/core@7.24.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.81.0))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(yup@1.4.0)(zod@3.23.8)
+        version: 7.9.9(next@15.0.3(@babel/core@7.24.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.81.0))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(yup@1.4.0)(zod@apps+gda-scan-definition+@hookform+resolvers+zod)
       node-fetch:
         specifier: ^3.3.2
         version: 3.3.2
@@ -515,12 +515,18 @@ importers:
       xmlbuilder2:
         specifier: ^3.1.1
         version: 3.1.1
+      xterm:
+        specifier: ^5.3.0
+        version: 5.3.0
+      xterm-addon-fit:
+        specifier: ^0.8.0
+        version: 0.8.0(xterm@5.3.0)
       zod:
         specifier: link:@hookform/resolvers/zod
-        version: 3.23.8
+        version: link:@hookform/resolvers/zod
       zod-to-json-schema:
         specifier: ^3.24.1
-        version: 3.24.1(zod@3.23.8)
+        version: 3.24.1(zod@apps+gda-scan-definition+@hookform+resolvers+zod)
     devDependencies:
       '@next/eslint-plugin-next':
         specifier: ^14.1.1
@@ -10638,6 +10644,16 @@ packages:
     resolution: {integrity: sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ==}
     engines: {node: '>=0.4'}
 
+  xterm-addon-fit@0.8.0:
+    resolution: {integrity: sha512-yj3Np7XlvxxhYF/EJ7p3KHaMt6OdwQ+HDu573Vx1lRXsVxOcnVJs51RgjZOouIZOczTsskaS+CpXspK81/DLqw==}
+    deprecated: This package is now deprecated. Move to @xterm/addon-fit instead.
+    peerDependencies:
+      xterm: ^5.0.0
+
+  xterm@5.3.0:
+    resolution: {integrity: sha512-8QqjlekLUFTrU6x7xck1MsPzPA571K5zNqWm0M0oroYEWVOptZ0+ubQSkQ3uxIEhcIHRujJy6emDWX4A7qyFzg==}
+    deprecated: This package is now deprecated. Move to @xterm/xterm instead.
+
   y18n@4.0.3:
     resolution: {integrity: sha512-JKhqTOwSrqNA1NY5lSztJ1GrBiUodLMmIZuLiDaMRJ+itFd+ABVE8XBjOvIWL+rSqNDC74LCSFmlb/U4UZ4hJQ==}
 
@@ -19678,14 +19694,14 @@ snapshots:
       yup: 1.4.0
       zod: 3.23.8
 
-  next-safe-action@7.9.9(next@15.0.3(@babel/core@7.24.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.81.0))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(yup@1.4.0)(zod@3.23.8):
+  next-safe-action@7.9.9(next@15.0.3(@babel/core@7.24.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.81.0))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(yup@1.4.0)(zod@apps+gda-scan-definition+@hookform+resolvers+zod):
     dependencies:
       next: 15.0.3(@babel/core@7.24.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.81.0)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
     optionalDependencies:
       yup: 1.4.0
-      zod: 3.23.8
+      zod: link:apps/gda-scan-definition/@hookform/resolvers/zod
 
   next@14.2.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.81.0):
     dependencies:
@@ -22107,6 +22123,12 @@ snapshots:
 
   xtend@4.0.2: {}
 
+  xterm-addon-fit@0.8.0(xterm@5.3.0):
+    dependencies:
+      xterm: 5.3.0
+
+  xterm@5.3.0: {}
+
   y18n@4.0.3: {}
 
   y18n@5.0.8: {}
@@ -22178,9 +22200,9 @@ snapshots:
       compress-commons: 4.1.2
       readable-stream: 3.6.2
 
-  zod-to-json-schema@3.24.1(zod@3.23.8):
+  zod-to-json-schema@3.24.1(zod@apps+gda-scan-definition+@hookform+resolvers+zod):
     dependencies:
-      zod: 3.23.8
+      zod: link:apps/gda-scan-definition/@hookform/resolvers/zod
 
   zod@3.23.8: {}
 

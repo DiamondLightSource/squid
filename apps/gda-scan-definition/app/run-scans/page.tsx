@@ -7,8 +7,8 @@ export default function RunScanPage() {
     <div>
       <h1>run scan page</h1>
       <RunScanForm />
-      {/* <MyTerminal /> */}
-      {/* <RefTerminal /> */}
+      <MyTerminal />
+      <RefTerminal />
       <TerminalComponent />
     </div>
   );

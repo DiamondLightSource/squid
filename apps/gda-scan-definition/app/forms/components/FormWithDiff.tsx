@@ -117,7 +117,7 @@ const FormWithDiffViewer = () => {
               Add Component
             </Button>
           </Grid> */}
-          <Grid item xs={12} color={'primary'} overflow="scroll">
+          <Grid item xs={12} color={'primary'}  bgcolor='white' overflow="scroll">
             <JsonForms
               schema={formConfig?.schema}
               uischema={formConfig?.uiSchema}

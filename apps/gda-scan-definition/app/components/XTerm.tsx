@@ -11,13 +11,16 @@ export const MyTerminal = () => {
   };
 
   return (
+    <>
+    
     <div>not working atm</div>
-    // <XTerm
-    //   onData={onData}
-    //   onResize={onResize}
-    //   options={{ cursorBlink: true }}
-    //   style={{ width: "100%", height: "100%" }}
-    // />
+    <XTerm
+      onData={onData}
+      onResize={onResize}
+      options={{ cursorBlink: true }}
+      style={{ width: "100%", height: "100%" }}
+    />
+    </>
   );
 };
 

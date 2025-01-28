@@ -31,7 +31,7 @@ export default function RunScanForm() {
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: []
+    name: ''
   });
 
   const [startStop, setStartStop] = useState<number[]>([0, 10]);
