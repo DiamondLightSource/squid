@@ -48,6 +48,7 @@ export const qexafsParametersSchema = z.object({
   stepSize: z.number().positive().int(),
 });
 
+export type QexafsParametersType = z.infer<typeof qexafsParametersSchema>;
 export const qexafsParametersJson: JsonSchema = zodToJsonSchema(qexafsParametersSchema) as unknown as JsonSchema;
 export const qexafsParametersUiSchema = convertSchemaToUiSchema(qexafsParametersJson);
 
@@ -89,7 +90,7 @@ export const outputParametersSchema = z.object({
   beforeFirstRepetition: z.string().optional(), // Optional since it can be empty
 });
 
-export type OutputParametersSchema = z.infer<typeof outputParametersSchema>;
+export type OutputParametersType = z.infer<typeof outputParametersSchema>;
 
 export const outputParametersJson: JsonSchema = zodToJsonSchema(outputParametersSchema) as unknown as JsonSchema;
 export const outputParametersUiSchema = convertSchemaToUiSchema(outputParametersJson);
@@ -204,6 +205,119 @@ export const sampleParametersSchema = z.object({
 });
 
 
+export const fullQexafsSchema = z.object({
+  qexafsParameters: qexafsParametersSchema,
+  detectorParameters: detectorParametersSchema,
+  outputParameters: outputParametersSchema,
+  sampleParameters: sampleParametersSchema,
+});
+export type FullQexafsSchemaType = z.infer<typeof fullQexafsSchema>;
+
+
+export const initFullQexafsSchema: FullQexafsSchemaType = {
+  qexafsParameters: {
+    elementSymbol: "Fe",
+    edge: "K",
+    edgeEnergy: 7112,
+    initialEnergy: 7112,
+    finalEnergy: 7112,
+    speedMDegPerSecond: 1,
+    stepSize: 0.1,
+  },
+  detectorParameters: {
+    shouldValidate: true,
+    detectorConfiguration: [],
+  },
+  outputParameters: {
+    shouldValidate: true,
+    asciiFileName: "output.dat",
+    asciiDirectory: "/tmp",
+    nexusDirectory: "/tmp",
+    extraData: false,
+    signalActive: true,
+    metadataActive: true,
+    beforeScriptName: "",
+    afterScriptName: "",
+    beforeFirstRepetition: "",
+  },
+  sampleParameters: {
+    shouldValidate: true,
+    name: "Sample Name",
+    description1: "Description 1",
+    description2: "Description 2",
+    stage: "xythetastage",
+    temperaturecontrol: "ln2cryostage",
+    xythetastage: {
+      x: 0,
+      y: 0,
+      theta: 0,
+    },
+    ln2cryostage: {
+      height: 0,
+      angle: 0,
+      calibAngle: 0,
+      calibHeight: 0,
+      sampleNumberA: 0,
+      sampleNumberB: 0,
+      cylinderType: "",
+      manual: false,
+      editCalibration: false,
+    },
+    sxcryostage: {
+      height: 0,
+      rot: 0,
+      calibHeight: 0,
+      sampleNumber: 0,
+      manual: false,
+    },
+    pulsetubecryostat: {
+      temperature1: 0,
+      temperature2: 0,
+      pressure: 0,
+      setPoint: 0,
+      tolerance: 0,
+      time: 0,
+      controlFlag: false,
+    },
+    furnace: {
+      temperature: 0,
+      tolerance: 0,
+      time: 0,
+      controlFlag: false,
+    },
+    lakeshore: {
+      temp0: 0,
+      temp1: 0,
+      temp2: 0,
+      temp3: 0,
+      tempSelect0: false,
+      tempSelect1: false,
+      tempSelect2: false,
+      tempSelect3: false,
+      setPointSet: 0,
+      tolerance: 0,
+      time: 0,
+      controlFlag: false,
+    },
+    samplewheel: {
+      demand: 0,
+      filter: "",
+      manual: false,
+      wheelEnabled: false,
+    },
+    userstage: {
+      axis2: 0,
+      axis4: 0,
+      axis5: 0,
+      axis6: 0,
+      axis7: 0,
+      axis8: 0,
+    },
+    sampleParameterMotorPosition: [],
+  },
+
+  };
+
 export type SampleParametersType = z.infer<typeof sampleParametersSchema>;
 export const sampleParametersJson: JsonSchema = zodToJsonSchema(sampleParametersSchema) as unknown as JsonSchema;
 export const sampleParametersUiSchema = convertSchemaToUiSchema(sampleParametersJson);
@@ -238,3 +352,4 @@ export const formConfigsMap: Record<string, FormFileDefinition> = {
   "Sample_Parameters.xml": sampleDefinition,
   "Output_Parameters.xml": outputDefinition
 };
+

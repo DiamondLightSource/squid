@@ -36,7 +36,7 @@ registerCommand('help', 'Displays all available commands', () => {
 
 });
 
-registerCommand('greet', 'Greets the user with a message', (name) => {
+registerCommand('greet', 'Greets the user with a message', (name: string) => {
   return(`Hello, ${name}!`);
 });
 

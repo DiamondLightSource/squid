@@ -21,7 +21,7 @@ export const getFileBuffer = actionClient
       const fileBuffer = await fs.readFile(filePath);
       const s: string = fileBuffer.toString();
 
-      console.log(`fileBuffer: ${s}`);
+      // console.log(`fileBuffer: ${s}`);
       return { success: true, fileBuffer: s };
     } catch (error) {
       console.error("Error retrieving file buffer:", error);

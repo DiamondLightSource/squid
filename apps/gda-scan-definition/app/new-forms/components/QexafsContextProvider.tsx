@@ -1,11 +1,11 @@
 "use client";
 import { createContext, useContext } from "react";
-import { DetectorsSchema, OutputParametersSchema } from "../../schemas/qexafs";
+import { DetectorsSchema, OutputParametersType } from "../../schemas/qexafs";
 
 // this checks that all the file exist and read them from the FS and parses into JSON
 export type QexafsContext = {
   detectors: DetectorsSchema;
-  output: OutputParametersSchema;
+  output: OutputParametersType;
   // todo etc etc
 };
 
@@ -14,7 +14,7 @@ export type QexafsAction = {};
 
 const QexafsStateContext = createContext<QexafsContext | undefined>(undefined);
 
-const QuexafsDispatchContext = createContext<QexafsAction | undefined>(
+const QexafsDispatchContext = createContext<QexafsAction | undefined>(
   undefined
 );
 
@@ -26,8 +26,10 @@ export const QexafsContextProvider: React.FC<{
 }> = ({ startingValue, children }) => {
   return (
     <QexafsStateContext.Provider value={startingValue}>
-        <QuexafsDispatchContext.Provider value={}
-      {children}
+      <QexafsDispatchContext.Provider value={ }>
+        {children}
+      </QexafsDispatchContext.Provider>
+
     </QexafsStateContext.Provider>
   );
 };
