@@ -9,13 +9,17 @@
     "lint": "eslint . --max-warnings 0"
   },
   "dependencies": {
+    "@diamondlightsource/periodic-table": "workspace:*",
+    "@mui/material": "^6.4.2",
+    "@repo/eslint-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
     "@repo/ui": "workspace:*",
-    "next": "^14.1.1",
+    "next": "^15.0.3",
+    "next-safe-action": "^7.9.9",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "@repo/eslint-config": "workspace:*",
-    "@diamondlightsource/periodic-table": "workspace:*",
-    "@repo/typescript-config": "workspace:*"
+    "sqlite3": "^5.1.7",
+    "zod": "^3.24.1"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^14.1.1",

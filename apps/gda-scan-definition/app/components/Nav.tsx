@@ -12,9 +12,6 @@ export default function B18Nav() {
         <Link href="/forms">Forms</Link>
       </ListItem>
       <ListItem>
-        <Link href="/xraylib">Xraylib</Link>
-      </ListItem>
-      <ListItem>
         <Link href="/qexafs">qexafs</Link>
       </ListItem>
       <ListItem>
