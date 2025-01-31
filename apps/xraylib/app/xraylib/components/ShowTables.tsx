@@ -9,7 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import { AbsorptionEdgeResponseType, ElementPropertiesResponseType, EmissionDataResponseType } from "../../schemas/xraylibSchemas";
-
+import React from 'react';
 type ShowTablesProps = {
   properties: ElementPropertiesResponseType;
   absorption: AbsorptionEdgeResponseType;
@@ -21,6 +21,7 @@ export function ShowTables({
   absorption,
   transitions,
 }: ShowTablesProps) {
+  const rowEvenBackgroundColor = "#f9f9f9";
   return (
     <div style={{ padding: "10px" }}>
       {/* Properties Table */}
@@ -49,8 +50,8 @@ export function ShowTables({
             </TableRow>
           </TableHead>
           <TableBody>
-            {properties.map((property) => (
-              <TableRow key={property.atomic_number}>
+            {properties.map((property, i) => (
+              <TableRow key={property.atomic_number} sx={{ backgroundColor: i % 2 === 0 ? rowEvenBackgroundColor : "white" }}>
                 <TableCell>{property.atomic_number}</TableCell>
                 <TableCell>{property.element}</TableCell>
                 <TableCell>{property.molar_mass}</TableCell>
@@ -71,12 +72,6 @@ export function ShowTables({
           <TableHead>
             <TableRow>
               <TableCell>
-                <strong>ID</strong>
-              </TableCell>
-              <TableCell>
-                <strong>Element</strong>
-              </TableCell>
-              <TableCell>
                 <strong>IUPAC Symbol</strong>
               </TableCell>
               <TableCell>
@@ -91,10 +86,8 @@ export function ShowTables({
             </TableRow>
           </TableHead>
           <TableBody>
-            {absorption.map((edge) => (
-              <TableRow key={edge.id}>
-                <TableCell>{edge.id}</TableCell>
-                <TableCell>{edge.element}</TableCell>
+            {absorption.map((edge, i) => (
+              <TableRow key={edge.id} sx={{ backgroundColor: i % 2 === 0 ? rowEvenBackgroundColor : "white" }}>
                 <TableCell>{edge.iupac_symbol}</TableCell>
                 <TableCell>{edge.absorption_edge}</TableCell>
                 <TableCell>{edge.fluorescence_yield}</TableCell>
@@ -113,12 +106,6 @@ export function ShowTables({
         <Table size="small">
           <TableHead>
             <TableRow>
-              <TableCell>
-                <strong>ID</strong>
-              </TableCell>
-              <TableCell>
-                <strong>Element</strong>
-              </TableCell>
               <TableCell>
                 <strong>Initial Level</strong>
               </TableCell>
@@ -140,10 +127,8 @@ export function ShowTables({
             </TableRow>
           </TableHead>
           <TableBody>
-            {transitions.map((transition) => (
-              <TableRow key={transition.id}>
-                <TableCell>{transition.id}</TableCell>
-                <TableCell>{transition.element}</TableCell>
+            {transitions.map((transition, i) => (
+              <TableRow key={transition.id} sx={{ backgroundColor: i % 2 === 0 ? rowEvenBackgroundColor : "white" }}>
                 <TableCell>{transition.initial_level}</TableCell>
                 <TableCell>{transition.final_level}</TableCell>
                 <TableCell>{transition.emission_energy}</TableCell>

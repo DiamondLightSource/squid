@@ -17,7 +17,7 @@ function xmlQexafsConfigReducer(state: FullQexafsSchemaType, action: XmlQexafsCo
         case "START_CONFIG_READ":
             return action.payload;
         case "START_CONFIG_UPDATE":
-            return { ...state, ...action.payload };
+            return { ...state, ...action.payload };localhost
         default:
             return state;
     }

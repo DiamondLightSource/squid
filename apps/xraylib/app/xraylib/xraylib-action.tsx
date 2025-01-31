@@ -33,9 +33,9 @@ const db = new sqlite3.Database(dbPath, (err) => {
 const dbGet = promisify(db.get.bind(db));
 
 const testQuery = `SELECT * FROM xray_levels WHERE element = 'Fe'`;
-db.get(testQuery, (err, row) => {
+db.get(testQuery, (err, row: { absorption_edge: number }) => {
   console.log(
-    `starting the db with iron, some row: ${Object.keys(row)}  edge: ${row.absorption_edge}`
+    `starting the db with iron, some row: ${(row)}  edge: ${row["absorption_edge"]}`
   );
 });
 
@@ -52,7 +52,7 @@ process.on("exit", () => {
 // Define a function to get the absorption edge energy for a given element
 async function getAbsorptionEdgeEnergy(elementSymbol: string): Promise<number> {
   const query = `SELECT absorption_edge FROM xray_levels WHERE element = '${elementSymbol}';`;
-  const result = await dbGet(query);
+  const result = await dbGet(query) as { absorption_edge: number };
   console.log(`result: ${result}`);
 
   return result["absorption_edge"];
@@ -66,7 +66,7 @@ export async function getFluorescenceYields(
   elementSymbol: string
 ): Promise<FluorescenceOutput> {
   const query = `SELECT fluorescence_yield FROM xray_levels WHERE element = '${elementSymbol}';`;
-  const r = (await dbGet(query)) as { yield: number };
+  const r = (await dbGet(query)) as { fluorescence_yield: number };
   console.log(`keys: ${Object.keys(r)}`);
   const o: FluorescenceOutput = {
     yield: r["fluorescence_yield"],

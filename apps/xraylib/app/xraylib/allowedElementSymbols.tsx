@@ -1,6 +1,4 @@
-"use client";
 import { elements } from "@diamondlightsource/periodic-table/elements";
-
 
 export const allowedElementSymbols = elements
   .filter((e) => {
