@@ -1,0 +1,61 @@
+{
+  "name": "@diamondlightsource/periodic-table",
+  "version": "0.2.8",
+  "private": false,
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  },
+  "main": "src/PeriodicTable.tsx",
+  "module": "./dist/periodic-table.mjs",
+  "types": "./dist/PeriodicTable.d.ts",
+  "exports": {
+    "./table": "./src/PeriodicTable.tsx",
+    "./elements": "./src/elements.ts"
+  },
+  "dependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "react-mf": "^2.0.1",
+    "typescript": "^4.6.3",
+    "vite": "^6.0.11",
+    "web-vitals": "^2.1.4"
+  },
+  "scripts": {
+    "build": "npx vite build",
+    "publish-package": "npm run build && npm version patch --no-git-tag-version && cd dist && npm version patch && npm publish"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@types/eslint": "^8.56.1",
+    "@types/node": "^16.11.27",
+    "@types/react": "^18.0.5",
+    "@types/react-dom": "^18.0.0",
+    "vite-plugin-dts": "^3.7.3",
+    "@vitejs/plugin-react": "4.2.1"
+  },
+  "keywords": [
+    "periodic table",
+    "react",
+    "science",
+    "chemistry",
+    "Diamond Light Source"
+  ]
+}
