@@ -1,0 +1,4 @@
+.pnpm-store
+.turbo
+node_modules
+**/.next

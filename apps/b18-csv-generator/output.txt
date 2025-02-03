@@ -1,0 +1,23 @@
+
+b18-csv-generator:build: > b18-csv-generator@0.0.0 build
+b18-csv-generator:build: > tsc && vite build
+b18-csv-generator:build: 
+b18-csv-generator:build: src/editable-table/ChangeElementModal.tsx(1,1): error TS6133: 'React' is declared but its value is never read.
+b18-csv-generator:build: src/editable-table/ChangeElementModal.tsx(14,1): error TS6133: 'PeriodicTable' is declared but its value is never read.
+b18-csv-generator:build: src/editable-table/ChangeElementModal.tsx(15,1): error TS6133: 'ElementType' is declared but its value is never read.
+b18-csv-generator:build: src/editable-table/ChangeElementModal.tsx(21,36): error TS6133: 'callback' is declared but its value is never read.
+b18-csv-generator:build: src/editable-table/Filter.tsx(1,1): error TS6133: 'React' is declared but its value is never read.
+b18-csv-generator:build: src/editable-table/IndeterminateCheckbox.tsx(5,35): error TS2304: Cannot find name 'HTMLProps'.
+b18-csv-generator:build: src/editable-table/NewSamplesTable.tsx(3,10): error TS6133: 'Box' is declared but its value is never read.
+b18-csv-generator:build: src/editable-table/NewSamplesTable.tsx(25,1): error TS6133: 'makeSampleData' is declared but its value is never read.
+b18-csv-generator:build: src/editable-table/NewSamplesTable.tsx(58,51): error TS2322: Type 'unknown' is not assignable to type 'ReactNode'.
+b18-csv-generator:build: src/editable-table/NewSamplesTable.tsx(63,11): error TS2322: Type 'unknown' is not assignable to type 'string | number | readonly string[] | undefined'.
+b18-csv-generator:build: src/editable-table/NewSamplesTable.tsx(91,13): error TS2322: Type 'unknown' is not assignable to type 'string | number | readonly string[] | undefined'.
+b18-csv-generator:build: src/editable-table/NewSamplesTable.tsx(151,9): error TS6133: 'rerender' is declared but its value is never read.
+b18-csv-generator:build: src/editable-table/NewSamplesTable.tsx(261,9): error TS6133: 'refreshData' is declared but its value is never read.
+b18-csv-generator:build: npm ERR! Lifecycle script `build` failed with error: 
+b18-csv-generator:build: npm ERR! Error: command failed 
+b18-csv-generator:build: npm ERR!   in workspace: b18-csv-generator@0.0.0 
+b18-csv-generator:build: npm ERR!   at location: /app/apps/b18-csv-generator 
+b18-csv-generator:build: ERROR: command finished with error: command (/app/apps/b18-csv-generator) /usr/local/bin/npm run build exited (1)
+b18-csv-generator#build: command (/app/apps/b18-csv-generator) /usr/local/bin/npm run build exited (1)
