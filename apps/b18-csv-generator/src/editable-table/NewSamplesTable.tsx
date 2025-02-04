@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { Button, Input, Select, Stack } from "@chakra-ui/react";
 import { ElementType } from "@diamondlightsource/periodic-table/elements";
 import { PeriodicTable } from "@diamondlightsource/periodic-table/table";
-import { downloadFile } from "@repo/utils/download-file";
 import {
   ColumnDef,
   flexRender,
@@ -23,6 +22,7 @@ import { getCsvContent, ReadyRow } from "../utils/sampleHolderSize";
 import { Filter } from "./Filter";
 import { IndeterminateCheckbox } from "./IndeterminateCheckbox";
 import { useSkipper } from "./useSkipper";
+import { downloadFile } from "../utils/downlaodFile";
 
 declare module "@tanstack/react-table" {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

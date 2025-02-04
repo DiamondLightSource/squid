@@ -1,13 +1,13 @@
-import React from 'react';
-import { Grid, Button } from '@mui/material';
-import { Devices, AddBox, Edit, Delete, Visibility } from '@mui/icons-material';
+import React from "react";
+import { Grid, Button } from "@mui/material";
+import { Devices, AddBox, Edit, Delete, Visibility } from "@mui/icons-material";
 
 interface SidebarProps {
   plans: any[];
   devices: any[];
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ plans, devices }) => {
+const Sidebar: React.FC<SidebarProps> = ({}) => {
   return (
     <Grid item xs={2}>
       <Button startIcon={<Devices />}>Devices</Button>

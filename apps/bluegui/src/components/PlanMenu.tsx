@@ -24,7 +24,9 @@ export function PlansMenu({
         onChange={(newValue) => {
           setSelectedOption(newValue);
           const c = planMap.get(newValue.value);
-          setPlan(c);
+          if (c) {
+            setPlan(c);
+          }
         }}
         options={options}
       />

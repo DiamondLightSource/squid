@@ -17,7 +17,9 @@ const useWorkerStatus = () => {
       const data = await response.json();
       setStatus(data.status);
     } catch (err) {
-      setError(err.message);
+      if (typeof err === "string") {
+        setError(err);
+      }
     } finally {
       setLoading(false);
     }

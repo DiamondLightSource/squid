@@ -1,4 +1,3 @@
-import { Button } from '@chakra-ui/react'
 
 type SubmitButtonProps = {
     callback: () => void
@@ -6,7 +5,7 @@ type SubmitButtonProps = {
 
 function SubmitButton({ callback }: SubmitButtonProps) {
     return (
-        <Button color='red' margin={4} onClick={callback}>Submit</Button>
+        <button color='red' style={{margin:4 } } onClick={callback}>Submit</button>
     )
 }
 

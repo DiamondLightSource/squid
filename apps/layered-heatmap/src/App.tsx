@@ -1,16 +1,16 @@
+import { MockProvider } from "@h5web/app";
 import {
+  Annotation, DefaultInteractions, HeatmapVis,
   Overlay,
   Pan,
   ResetZoomButton,
   VisCanvas,
   Zoom,
-  mockValues,
   getDomain,
+  mockValues,
 } from "@h5web/lib";
-import { Annotation, DefaultInteractions, HeatmapVis } from "@h5web/lib";
-import "./App.css";
 import React from "react";
-import { App, MockProvider } from "@h5web/app";
+import "./App.css";
 
 const twoD = mockValues.twoD();
 const domain = getDomain(twoD.data);

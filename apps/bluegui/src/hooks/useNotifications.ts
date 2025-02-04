@@ -22,7 +22,9 @@ const useNotifications = () => {
       const data = await response.json();
       setNotifications(data);
     } catch (err) {
-      setError(err.message);
+      if (typeof err === "string") {
+        setError(err);
+      }
     } finally {
       setLoading(false);
     }

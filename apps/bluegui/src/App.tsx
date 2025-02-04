@@ -1,26 +1,25 @@
 // src/App.tsx
+import { Container, Grid } from "@mui/material";
 import React from "react";
-import Header from "./components/Header";
-import Sidebar from "./components/Sidebar";
-import PlanControlBar from "./components/MainContent";
 import Footer from "./components/Footer";
-import WorkerStatus from "./components/WorkerStatus";
-import TaskHistory from "./components/TaskHistory";
-import usePlans from "./hooks/usePlans";
-import useDevices from "./hooks/useDevices";
-import useWorkerStatus from "./hooks/useWorkerStatus";
-import useNotifications from "./hooks/useNotifications";
-import Tour from "./components/Tour";
+import Header from "./components/Header";
+import PlanControlBar from "./components/MainContent";
 import { NotificationBell } from "./components/NotificationBell";
-import { Container, Grid, Button } from "@mui/material";
-import JsonForm from "./components/JsonForm";
+import Sidebar from "./components/Sidebar";
+import TaskHistory from "./components/TaskHistory";
+import Tour from "./components/Tour";
+import WorkerStatus from "./components/WorkerStatus";
+import useDevices from "./hooks/useDevices";
+import useNotifications from "./hooks/useNotifications";
+import usePlans from "./hooks/usePlans";
+import useWorkerStatus from "./hooks/useWorkerStatus";
 
 const App: React.FC = () => {
   const { plans, fetchPlans } = usePlans();
   const { devices, fetchDevices } = useDevices();
   const { status, fetchWorkerStatus } = useWorkerStatus();
-  const { notifications, fetchNotifications } = useNotifications();
-  const [runTour, setRunTour] = React.useState(false);
+  const { notifications } = useNotifications();
+  const [_, setRunTour] = React.useState(false);
 
   return (
     <Container>
