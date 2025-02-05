@@ -4,6 +4,9 @@ name: Create and publish a Docker image
 # inspired from here
 
 on:
+  push:
+    branches:
+      - 42-deploy-xraylib-ui-on-argus # for debugging purposes
   release:
     types: [published]
 
