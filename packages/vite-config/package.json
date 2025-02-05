@@ -5,7 +5,6 @@
   "type": "module",
   "scripts": {
     "dev": "echo 'Add dev script here'",
-    "test": "echo 'Add test script here'",
     "lint": "echo 'Add lint script here'"
   },
   "dependencies": {
