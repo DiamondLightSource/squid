@@ -1,10 +1,8 @@
 "use client";
 import "@h5web/app/dist/styles.css";
 
-import { assertNonNull, enableBigIntSerialization } from "@h5web/app";
-
 import React from "react";
-import { App, MockProvider } from "@h5web/app";
+// import { App, MockProvider } from "@h5web/app";
 import dynamic from "next/dynamic";
 
 // Dynamically import the `App` and `MockProvider` components from @h5web/app

@@ -1,4 +1,4 @@
-import { trpc } from "../src/server/trpc";
+// import { trpc } from "../src/server/trpc";
 import { z } from "zod";
 import { useState } from "react";
 
@@ -9,8 +9,8 @@ const circleSchema = z.object({
 });
 
 export default function Home() {
-    const { data: circles, refetch } = trpc.useQuery(["circle.getAll"]);
-    const createCircle = trpc.useMutation(["circle.create"]);
+    // const { data: circles, refetch } = trpc.useQuery(["circle.getAll"]);
+    // const createCircle = trpc.useMutation(["circle.create"]);
 
     const [formData, setFormData] = useState({
         diameter: "",
@@ -19,19 +19,19 @@ export default function Home() {
     });
 
     const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        try {
-            const validated = circleSchema.parse({
-                diameter: Number(formData.diameter),
-                color: formData.color,
-                title: formData.title,
-            });
+        // e.preventDefault();
+        // try {
+        //     const validated = circleSchema.parse({
+        //         diameter: Number(formData.diameter),
+        //         color: formData.color,
+        //         title: formData.title,
+        //     });
 
-            await createCircle.mutateAsync(validated);
-            refetch();
-        } catch (err) {
-            alert(err.errors?.map((e: any) => e.message).join("\n"));
-        }
+        //     await createCircle.mutateAsync(validated);
+        //     refetch();
+        // } catch (err) {
+        //     alert(err.errors?.map((e: any) => e.message).join("\n"));
+        // }
     };
 
     return (
@@ -64,11 +64,11 @@ export default function Home() {
 
             <h2>Existing Circles</h2>
             <ul>
-                {circles?.map((circle, i) => (
+                {/* {circles?.map((circle, i) => (
                     <li key={i}>
                         {circle.title} - {circle.diameter} - {circle.color}
                     </li>
-                ))}
+                ))} */}
             </ul>
         </div>
     );

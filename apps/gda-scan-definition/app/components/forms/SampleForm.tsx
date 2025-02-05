@@ -103,10 +103,13 @@ const SampleParametersForm = () => {
         sampleParametersSchema.parse(formData);
 
       // Connect to the backend here
-      const { success, parameters } = await updateSampleParameters(validated);
-      console.log(success, parameters);
-      if (success) {
-        setFormData(initialFormData);
+      const result = await updateSampleParameters(validated);
+      if (result && result.data) {
+        const { success, parameters } = result.data;
+        console.log(success, parameters);
+        if (success) {
+          setFormData(initialFormData);
+        }
       }
     } catch (err) {
       if (err instanceof z.ZodError) {
@@ -150,7 +153,8 @@ const SampleParametersForm = () => {
 
   const handleMotorPositionChange = (index: number, field: string, value: string | number | boolean) => {
     const updatedMotors = [...formData.sampleParameterMotorPosition];
-    updatedMotors[index][field] = value;
+    // TODO fix indexing
+    // updatedMotors[index][field] = value;
     setFormData({
       ...formData,
       sampleParameterMotorPosition: updatedMotors,
@@ -161,7 +165,8 @@ const SampleParametersForm = () => {
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        handleSubmit(formData);
+        alert("form handling disabled temporarily")
+        // handleSubmit(formData);
       }}
       style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
     >

@@ -78,7 +78,7 @@ export function JsonFormExample() {
       data={data}
       renderers={materialRenderers}
       cells={materialCells}
-      onChange={({ data, _errors }) => setData(data)}
+      onChange={({ data }) => setData(data)}
     />
   );
 }

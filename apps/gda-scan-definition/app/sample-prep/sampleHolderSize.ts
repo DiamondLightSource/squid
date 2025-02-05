@@ -1,5 +1,6 @@
-import { ChemicalElement, allowedElements } from "../data/elements";
+import { ElementType} from "@diamondlightsource/periodic-table/elements";
 import { DetectionModeType, EdgeType, Holder } from "./initialTypes";
+import { allowedElementSymbols } from "../schemas/qexafs";
 
 const smallSampleHolder: Holder = { name: "small", width: 4, height: 6 };
 
@@ -22,7 +23,7 @@ export const AVAILABLE_HOLDERS: Holder[] = [
 ];
 
 export type ReadyRow = {
-  element: ChemicalElement; //validate between 13 and 93 Z
+  element: string; //validate between 13 and 93 Z
   edge: EdgeType;
   detectionMode: DetectionModeType;
   sampleName: string;
@@ -39,11 +40,11 @@ export const defaultGeneratorSetup: GeneratorSetup = {
   samplesNumber: 10,
   defaultRepetitionsNumber: 2,
   holder: smallSampleHolder,
-  defaultElement: allowedElements[0],
+  defaultElementSymbol: allowedElementSymbols[0],
 };
 
 export type GeneratorSetup = {
-  defaultElement: ChemicalElement;
+  defaultElementSymbol: string;
   defaultDetectionMode: DetectionModeType;
   sampleNamePrefix: string;
   startingCount: number;
@@ -73,7 +74,7 @@ export function generateRows({
     const colName = toAlphabet(colNumber);
 
     const r: ReadyRow = {
-      element: allowedElements[0],
+      element: allowedElementSymbols[0],
       edge: "K",
       detectionMode: defaultDetectionMode,
       sampleName: n,
@@ -113,7 +114,7 @@ export function getCsvContent(table: ReadyRow[]): string {
   console.log(table[0])
   const valueRows = table.map((e) =>
     [
-      e.element.symbol,
+      e.element,
       e.detectionMode,
       e.edge,
       e.sampleName,

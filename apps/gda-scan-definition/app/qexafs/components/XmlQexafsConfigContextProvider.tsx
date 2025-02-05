@@ -17,7 +17,7 @@ function xmlQexafsConfigReducer(state: FullQexafsSchemaType, action: XmlQexafsCo
         case "START_CONFIG_READ":
             return action.payload;
         case "START_CONFIG_UPDATE":
-            return { ...state, ...action.payload };localhost
+            return { ...state, ...action.payload };
         default:
             return state;
     }
@@ -25,6 +25,7 @@ function xmlQexafsConfigReducer(state: FullQexafsSchemaType, action: XmlQexafsCo
 
 export function XmlQexafsConfigContextProvider() {
     const [state, dispatch] = useReducer(xmlQexafsConfigReducer, initFullQexafsConfig);
-    return <QexafsContextProvider.
+    return <div>
+        <h3>XmlQexafsConfigContextProvider temporarily disabled </h3>
+    </div>
 }
-

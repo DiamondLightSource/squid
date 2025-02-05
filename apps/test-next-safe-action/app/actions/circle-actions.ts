@@ -13,7 +13,8 @@ function readCircles(): any[] {
   const data = fs.readFileSync(filePath, "utf-8");
   const parsed = create(data).end({ format: "object" });
   console.log("Read circles", parsed);
-  const circles = parsed["circles"]?.circle;
+  type ParsedCircles = { circles?: { circle: any[] } };
+  const circles = (parsed as ParsedCircles)["circles"]?.circle;
   return Array.isArray(circles) ? circles : [circles]; // Handle no or single entry cases
 }
 
