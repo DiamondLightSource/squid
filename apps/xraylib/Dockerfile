@@ -4,12 +4,17 @@ FROM node:22-alpine AS base
 # Make sure you update both files!
 # https://turbo.build/repo/docs/guides/tools/docker
 
+# ✅ Create a non-root user (ID 1001) and switch to it
+RUN adduser -D -u 1004 appuser
+USER appuser
+
 FROM base AS builder
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
 RUN apk update
 RUN apk add --no-cache libc6-compat
 # Set working directory
 WORKDIR /app
+
 RUN npm i -g pnpm
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
