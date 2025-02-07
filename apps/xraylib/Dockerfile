@@ -1,28 +1,30 @@
 FROM node:22-alpine AS base
+RUN apk update && apk add bash
 
 # This Dockerfile is copy-pasted into our main docs at /docs/handbook/deploying-with-docker.
 # Make sure you update both files!
 # https://turbo.build/repo/docs/guides/tools/docker
 
-# ✅ Create a non-root user (ID 1001) and switch to it
-RUN adduser -D -u 1004 appuser
-USER appuser
-
 FROM base AS builder
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
 RUN apk update
-RUN apk add --no-cache libc6-compat
+RUN apk add --no-cache libc6-compat bash wget
 # Set working directory
 WORKDIR /app
+COPY package.json package.json
 
-RUN npm i -g pnpm
-ENV PNPM_HOME="/pnpm"
-ENV PATH="$PNPM_HOME:$PATH"
-RUN corepack enable
+# bash
+RUN wget -qO- https://get.pnpm.io/install.sh | ENV="$HOME/.bashrc" SHELL="$(which bash)" bash -
+RUN source /root/.bashrc && pnpm i -g turbo
+# RUN source /root/.bashrc
+# RUN npm i -g pnpm
+# ENV PNPM_HOME="/pnpm"
+# ENV PATH="$PNPM_HOME:$PATH"
+# RUN corepack enable
 # RUN pnpm setup
-RUN pnpm i -g turbo
+# RUN pnpm i -g turbo
 COPY . .
-RUN turbo prune xraylib --docker
+RUN pnpx turbo prune xraylib --docker
 
 # Add lockfile and package.json's of isolated subworkspace
 FROM base AS installer
