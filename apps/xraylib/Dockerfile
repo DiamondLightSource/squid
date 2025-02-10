@@ -14,19 +14,27 @@ WORKDIR /app
 COPY package.json package.json
 
 # bash
-RUN wget -qO- https://get.pnpm.io/install.sh | ENV="$HOME/.bashrc" SHELL="$(which bash)" bash -
-RUN source /root/.bashrc && pnpm i -g turbo
 # https://pnpm.io/docker
+# corepack pnpm installation
+
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
+RUN corepack prepare pnpm@latest --activate
+RUN source /root/.bashrc && pnpm i -g turbo
+
+# alternative manual installation
+# RUN wget -qO- https://get.pnpm.io/install.sh | sh -
+# RUN wget -qO- https://get.pnpm.io/install.sh | ENV="$HOME/.bashrc" SHELL="$(which bash)" bash -
+# ENV PATH="/root/.local/share/pnpm:$PATH"
+
 # RUN source /root/.bashrc
 # RUN npm i -g pnpm
 # ENV PNPM_HOME="/pnpm"
 # ENV PATH="$PNPM_HOME:$PATH"
 # RUN corepack enable
 # RUN pnpm setup
-RUN pnpm i -g turbo
+# RUN pnpm i -g turbo
 COPY . .
 RUN pnpx turbo prune xraylib --docker
 
