@@ -7,8 +7,9 @@ RUN apt-get update && apt-get upgrade
 
 FROM base AS builder
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
-RUN apk update
-RUN apk add --no-cache libc6-compat bash wget
+# RUN apk update
+# RUN apk add --no-cache libc6-compat bash wget
+RUN apt-get install libc6-compat bash wget
 # Set working directory
 WORKDIR /app
 COPY package.json package.json
@@ -40,8 +41,9 @@ RUN pnpx turbo prune xraylib --docker
 
 # Add lockfile and package.json's of isolated subworkspace
 FROM base AS installer
-RUN apk update
-RUN apk add --no-cache libc6-compat
+# RUN apk update
+# RUN apk add --no-cache libc6-compat
+RUN apt-get install libc6-compat
 WORKDIR /app
 
 # First install the dependencies (as they change less often)
