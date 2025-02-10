@@ -1,4 +1,4 @@
-FROM node:22-slim AS base
+FROM node:22-bookworm AS base
 RUN apt-get update && apt-get upgrade
 
 # This Dockerfile is copy-pasted into our main docs at /docs/handbook/deploying-with-docker.
