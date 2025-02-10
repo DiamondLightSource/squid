@@ -26,9 +26,14 @@ COPY package.json package.json
 
 # alternative manual installation
 # RUN wget -qO- https://get.pnpm.io/install.sh | ENV="$HOME/.bashrc" SHELL="$(which bash)" bash -
-RUN wget -qO- https://get.pnpm.io/install.sh | sh -
-ENV PATH="/root/.local/share/pnpm:$PATH"
-RUN pnpm i -g turbo
+RUN wget -qO- https://get.pnpm.io/install.sh | sh - \
+    && export PNPM_HOME="/root/.local/share/pnpm" \
+    && export PATH="$PNPM_HOME:$PATH" \
+    && pnpm i -g turbo
+
+# RUN wget -qO- https://get.pnpm.io/install.sh | sh -
+# ENV PATH="/root/.local/share/pnpm:$PATH"
+# RUN pnpm i -g turbo
 
 # RUN source /root/.bashrc
 # RUN npm i -g pnpm
