@@ -1,5 +1,5 @@
-FROM node:22-alpine AS base
-RUN apk update && apk add bash
+FROM node:22-slim AS base
+RUN apt-get update && apt-get upgrade
 
 # This Dockerfile is copy-pasted into our main docs at /docs/handbook/deploying-with-docker.
 # Make sure you update both files!
