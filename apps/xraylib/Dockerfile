@@ -13,6 +13,7 @@ FROM base AS builder
 # Set working directory
 WORKDIR /app
 COPY package.json package.json
+COPY .dockerignore .dockerignore
 
 # bash
 # https://pnpm.io/docker
@@ -26,10 +27,21 @@ COPY package.json package.json
 
 # alternative manual installation
 # RUN wget -qO- https://get.pnpm.io/install.sh | ENV="$HOME/.bashrc" SHELL="$(which bash)" bash -
-RUN wget -qO- https://get.pnpm.io/install.sh | sh - \
-    && export PNPM_HOME="/root/.local/share/pnpm" \
-    && export PATH="$PNPM_HOME:$PATH" \
-    && pnpm i -g turbo
+
+ENV PNPM_HOME="/root/.local/share/pnpm"
+ENV PATH="${PATH}:${PNPM_HOME}"
+
+RUN npm install -g pnpm \
+    && SHELL=bash pnpm setup
+# && source /root/.bashrc
+# && source /root/.bashrc
+
+# RUN wget -qO- https://get.pnpm.io/install.sh | sh - \
+#     && export PNPM_HOME="/root/.local/share/pnpm" \
+#     && export PATH="$PNPM_HOME:$PATH" \
+#     && pnpm i -g turbo
+# RUN pnpm i -g turbo
+RUN pnpm i turbo
 
 # RUN wget -qO- https://get.pnpm.io/install.sh | sh -
 # ENV PATH="/root/.local/share/pnpm:$PATH"
@@ -55,10 +67,25 @@ WORKDIR /app
 COPY .gitignore .gitignore
 COPY --from=builder /app/out/json/ .
 COPY --from=builder /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
-RUN npm i -g pnpm
-ENV PNPM_HOME="/pnpm"
-ENV PATH="$PNPM_HOME:$PATH"
-RUN corepack enable
+
+ENV PNPM_HOME="/root/.local/share/pnpm"
+ENV PATH="${PATH}:${PNPM_HOME}"
+
+RUN npm install -g pnpm \
+    && SHELL=bash pnpm setup
+# && source /root/.bashrc
+# && source /root/.bashrc
+
+# RUN wget -qO- https://get.pnpm.io/install.sh | sh - \
+#     && export PNPM_HOME="/root/.local/share/pnpm" \
+#     && export PATH="$PNPM_HOME:$PATH" \
+#     && pnpm i -g turbo
+# RUN pnpm i -g turbo
+# RUN pnpm i turbo
+# RUN npm i -g pnpm
+# ENV PNPM_HOME="/pnpm"
+# ENV PATH="$PNPM_HOME:$PATH"
+# RUN corepack enable
 # RUN pnpm setup
 RUN pnpm install
 
