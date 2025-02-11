@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import React from 'react';
 
 export function CountButton() {
   const [count, setCount] = useState<number>(0);

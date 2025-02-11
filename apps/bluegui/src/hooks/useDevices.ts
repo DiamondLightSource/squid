@@ -23,7 +23,9 @@ const useDevices = () => {
       const data = await response.json();
       setDevices(data);
     } catch (err) {
-      setError(err.message);
+      if (typeof err === "string") {
+        setError(err);
+      }
     } finally {
       setLoading(false);
     }

@@ -25,7 +25,9 @@ const useTaskHistory = () => {
       const data = await response.json();
       setTasks(data);
     } catch (err) {
-      setError(err.message);
+      if (typeof err === "string") {
+        setError(err);
+      }
     } finally {
       setLoading(false);
     }

@@ -44,21 +44,21 @@ export default function Home() {
     try {
       const validated = circleSchema.parse(formData);
 
-      const { success, circle } = await addCircle({
-        diameter: Number(validated.diameter),
-        color: validated.color,
-        title: validated.title,
-      });
-      console.log(success, circle);
+      // const { success, circle } = await addCircle({
+      //   diameter: Number(validated.diameter),
+      //   color: validated.color,
+      //   title: validated.title,
+      // });
+      // console.log(success, circle);
 
-      if (success) {
-        setCircles((prev) => [...prev, circle]);
-        setFormData({ diameter: 1, color: "red", title: "" }); // Reset form
-      }
+      // if (success) {
+      //   setCircles((prev) => [...prev, circle]);
+      //   setFormData({ diameter: 1, color: "red", title: "" }); // Reset form
+      // }
     } catch (err) {
-      alert(
-        "Validation error: " + err.errors?.map((e: any) => e.message).join("\n")
-      );
+      // const someError = err.errors?.map((e: any) => e.message).join("\n");
+      const someError = "this page does not work";
+      alert("Validation error: " + someError);
     }
   };
 

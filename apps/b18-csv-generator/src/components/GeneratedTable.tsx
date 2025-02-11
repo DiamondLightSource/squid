@@ -1,9 +1,9 @@
 import { Button } from "@chakra-ui/react";
-import { downloadFile } from "@repo/utils/download-file";
 import { createColumnHelper } from "@tanstack/react-table";
 import { ReadyRow, getCsvContent } from "../utils/sampleHolderSize";
 import { SamplesTable } from "./SamplesTable";
 import { mockData } from "./mockData";
+import { downloadFile } from "../utils/downlaodFile";
 
 const columnHelper = createColumnHelper<ReadyRow>();
 

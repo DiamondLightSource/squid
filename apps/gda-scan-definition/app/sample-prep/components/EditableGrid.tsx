@@ -5,7 +5,7 @@ import {
   randomUpdatedDate,
 } from "@mui/x-data-grid-generator";
 
-const columns = [
+const columns: GridColDef[] = [
   {
     field: "name",
     headerName: "Element Name",

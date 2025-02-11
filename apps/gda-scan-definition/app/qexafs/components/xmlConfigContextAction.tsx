@@ -3,6 +3,7 @@ import fs from "fs";
 import { XMLBuilder, XMLParser } from "fast-xml-parser";
 import { z } from "zod";
 import { actionClient } from "../../clients/actionclient";
+import { detectorConfigurationSchema, detectorParametersSchema, DetectorsSchema } from "../../schemas/qexafs";
 
 export const folderSchema = z.object({
     name: z.string().min(1, "Folder name is required"),
@@ -12,12 +13,6 @@ export const folderSchema = z.object({
 
 const basePath: string = "/tmp/qexafs/experiment_1";
 
-/**
- * reads each of the files and compres if identical to the new ones, if not updates them
- */
-function updateFiles() {
-
-}
 
 // TODO this but for all four files
 
@@ -61,11 +56,12 @@ const samplePath = `${basePath}/Sample_Parameters.xml`
 const outputPath = `${basePath}/Output_Parameters.xml`
 
 // todo fill this out, good return values
-function ensureAllExist() {
+async function ensureAllExist(): Promise<boolean> {
+    return false;
 
 }
 
-export type FullQexafsConfig = {}:
+export type FullQexafsConfig = {};
 
 export type QexafsUpdate = Partial<FullQexafsConfig>;
 
@@ -74,7 +70,10 @@ async function readFiles(): Promise<FullQexafsConfig> {
 
     // read each file, return the parsed object
 
-    const detectorConfig = DetectorsSchema();
+    const detectorConfig: DetectorsSchema = {
+        shouldValidate: false,
+        detectorConfiguration: []
+    };
 
     const c: FullQexafsConfig = {};
     return c
@@ -83,15 +82,17 @@ async function readFiles(): Promise<FullQexafsConfig> {
 
 async function updateFiles(update: QexafsUpdate): Promise<null> {
     // read each file, compare to the update, if different, update
-    // return null
+    return null
 }
 
 // todo add request schema
 // todo add athe action
 export const readXmlContext = actionClient
-    .schema()
+    .schema(detectorConfigurationSchema)
     .action(readFiles);
 
 
-export const updateXmlContext = actionClient.schema().action(async({ parsedInput: {} }));
+export const updateXmlContext = actionClient.schema(detectorParametersSchema).action(async function ({ parsedInput: { } }) {
+    console.log('updateXmlContext');
+});
 

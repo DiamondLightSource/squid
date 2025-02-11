@@ -26,7 +26,7 @@ export function convertSchemaToUiSchema(schema: JsonSchema): UiSchema {
       scope: `#/properties/${property}`,
       // Add `label: false` if required to hide labels for boolean fields or others
       // label: schema.properties[property].type === 'boolean' ? false : undefined,
-      label: property,
+      label: true,
     };
 
     // Add the control to the elements

@@ -11,7 +11,7 @@ export default function Scripting() {
     <main className={styles.main}>
       <IDEProvider>
         <Container sx={{ display: "flex", gap: "10px" }}>
-          <FileExplorer />
+          {/* <FileExplorer /> */}
           <PythonEditor />
           <RunScanForm />
         </Container>

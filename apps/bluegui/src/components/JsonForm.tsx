@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Plan } from "../hooks/usePlans";
 import { PlansMenu } from "./PlanMenu";
 import { SinglePlanDisplay } from "./SinglePlanDisplay";
-import { Grid } from "@mui/material";
 
 interface PlansResponse {
   plans: Plan[];
@@ -21,7 +20,7 @@ function JsonForm() {
         const pr: PlansResponse = await r.json();
         setPlans(pr.plans);
         const entries: any[] = [];
-        const pm: Map<string, string> = new Map();
+        const pm: Map<string,Plan> = new Map();
         pr.plans.forEach((plan) => {
           pm.set(plan.name, plan);
           const entry = { value: plan.name, label: plan.name };

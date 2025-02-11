@@ -20,7 +20,7 @@ const App = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <input {...register("element")} />
+      <input {...register("elementSymbol")} />
       <input
         {...register("edgeEnergy", { valueAsNumber: true })}
         type="number"
@@ -49,11 +49,11 @@ export default function ParametersPage() {
         alert("No circles found");
         return;
       }
-      const circles: any[] = response.data.circles;
-      if (circles.length === 0) {
-        alert("No circles found");
-      }
-      setParams(circles);
+      // const circles: any[] = response.data.circles;
+      // if (circles.length === 0) {
+      //   alert("No circles found");
+      // }
+      // setParams(circles);
     } catch (error) {
       alert("Error fetching circles");
     }
@@ -63,23 +63,23 @@ export default function ParametersPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const validated = circleSchema.parse(formData);
+      // const validated = circleSchema.parse(formData);
 
-      const { success, circle } = await addCircle({
-        diameter: Number(validated.diameter),
-        color: validated.color,
-        title: validated.title,
-      });
-      console.log(success, circle);
+      // const { success, circle } = await addCircle({
+      //   diameter: Number(validated.diameter),
+      //   color: validated.color,
+      //   title: validated.title,
+      // });
+      // console.log(success, circle);
 
-      if (success) {
-        setParams((prev) => [...prev, circle]);
-        setFormData({ diameter: 1, color: "red", title: "" }); // Reset form
-      }
+      // if (success) {
+      //   setParams((prev) => [...prev, circle]);
+      //   setFormData({ diameter: 1, color: "red", title: "" }); // Reset form
+      // }
     } catch (err) {
-      alert(
-        "Validation error: " + err.errors?.map((e: any) => e.message).join("\n")
-      );
+      // const validationErrors = err.errors?.map((e: any) => e.message).join("\n");
+      const validationErrors = "not working yet";
+      alert("Validation error: " + validationErrors);
     }
   };
 

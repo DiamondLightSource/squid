@@ -1,6 +1,6 @@
-import React from 'react';
-import { AppBar, Toolbar, IconButton, Typography, Button } from '@mui/material';
 import { Notifications } from '@mui/icons-material';
+import { AppBar, Button, IconButton, Toolbar, Typography } from '@mui/material';
+import React from 'react';
 import Logo from './Logo';
 
 interface HeaderProps {
@@ -10,7 +10,7 @@ interface HeaderProps {
   handleStartTour: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ fetchPlans, fetchDevices, fetchWorkerStatus, handleStartTour }) => {
+const Header: React.FC<HeaderProps> = ({ handleStartTour }) => {
   const handleResetEnvironment = () => {
     // Reset environment logic
   };
