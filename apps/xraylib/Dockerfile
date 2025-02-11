@@ -6,61 +6,25 @@ RUN apt-get update && apt-get upgrade -y
 # https://turbo.build/repo/docs/guides/tools/docker
 
 FROM base AS builder
-# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
-# RUN apk update
-# RUN apk add --no-cache libc6-compat bash wget
-# RUN apt-get install libc6-compat bash wget
-# Set working directory
+
 WORKDIR /app
 COPY package.json package.json
 COPY .dockerignore .dockerignore
 
-# bash
-# https://pnpm.io/docker
-# corepack pnpm installation
-
-# ENV PNPM_HOME="/pnpm"
-# ENV PATH="$PNPM_HOME:$PATH"
-# RUN corepack enable
-# RUN corepack prepare pnpm@latest --activate
-# RUN source /root/.bashrc && pnpm i -g turbo
-
-# alternative manual installation
-# RUN wget -qO- https://get.pnpm.io/install.sh | ENV="$HOME/.bashrc" SHELL="$(which bash)" bash -
 
 ENV PNPM_HOME="/root/.local/share/pnpm"
 ENV PATH="${PATH}:${PNPM_HOME}"
 
 RUN npm install -g pnpm \
     && SHELL=bash pnpm setup
-# && source /root/.bashrc
-# && source /root/.bashrc
 
-# RUN wget -qO- https://get.pnpm.io/install.sh | sh - \
-#     && export PNPM_HOME="/root/.local/share/pnpm" \
-#     && export PATH="$PNPM_HOME:$PATH" \
-#     && pnpm i -g turbo
-# RUN pnpm i -g turbo
 RUN pnpm i turbo
 
-# RUN wget -qO- https://get.pnpm.io/install.sh | sh -
-# ENV PATH="/root/.local/share/pnpm:$PATH"
-# RUN pnpm i -g turbo
-
-# RUN source /root/.bashrc
-# RUN npm i -g pnpm
-# ENV PNPM_HOME="/pnpm"
-# ENV PATH="$PNPM_HOME:$PATH"
-# RUN corepack enable
-# RUN pnpm setup
 COPY . .
 RUN pnpx turbo prune xraylib --docker
 
 # Add lockfile and package.json's of isolated subworkspace
 FROM base AS installer
-# RUN apk update
-# RUN apk add --no-cache libc6-compat
-# RUN apt-get install libc6-compat
 WORKDIR /app
 
 # First install the dependencies (as they change less often)
@@ -73,20 +37,6 @@ ENV PATH="${PATH}:${PNPM_HOME}"
 
 RUN npm install -g pnpm \
     && SHELL=bash pnpm setup
-# && source /root/.bashrc
-# && source /root/.bashrc
-
-# RUN wget -qO- https://get.pnpm.io/install.sh | sh - \
-#     && export PNPM_HOME="/root/.local/share/pnpm" \
-#     && export PATH="$PNPM_HOME:$PATH" \
-#     && pnpm i -g turbo
-# RUN pnpm i -g turbo
-# RUN pnpm i turbo
-# RUN npm i -g pnpm
-# ENV PNPM_HOME="/pnpm"
-# ENV PATH="$PNPM_HOME:$PATH"
-# RUN corepack enable
-# RUN pnpm setup
 RUN pnpm install
 
 # Build the project
