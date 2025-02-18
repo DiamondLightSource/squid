@@ -7,7 +7,7 @@ function ColorsChart() {
     const handleStart = async () => {
         setStatus('starting');
         try {
-            const response = await fetch('/api/start', { method: 'POST' });
+            // const response = await fetch('/api/start', { method: 'POST' });
             setStatus('running');
             // if (response.ok) {
             //     setStatus('running');

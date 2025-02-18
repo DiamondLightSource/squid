@@ -51,7 +51,7 @@ export function OneColorCanvas({ name }: OneColorCanvasProps) {
     useEffect(() => {
         const connectWebSocket = () => {
             try {
-                ws.current = new WebSocket("/ws/colors");
+                ws.current = new WebSocket("ws://127.0.0.1:8000/ws/colors");
 
                 ws.current.onopen = () => {
                     console.log(`WebSocket connected for color: ${name}`);

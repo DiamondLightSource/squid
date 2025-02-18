@@ -30,7 +30,7 @@ function WebsocketChart() {
   useEffect(() => {
     const connectWebSocket = () => {
       setConnectionError(null); // Clear any existing errors
-      ws.current = new WebSocket("ws://localhost:8080/ws"); // Adjust your WebSocket URL
+      ws.current = new WebSocket("ws://127.0.0.1:8000/ws"); // Adjust your WebSocket URL
 
       ws.current.onopen = () => {
         console.log("WebSocket connected");

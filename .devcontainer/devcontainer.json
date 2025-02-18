@@ -20,12 +20,15 @@
   },
   // "initializeCommand": "bash -c 'for i in $HOME/.inputrc; do [ -f $i ] || touch $i; done'",
   "runArgs": [
-    // "--net=host",
+    "--net=host",
     "--security-opt=label=disable",
     // Mount the user sockets folder
     "-v${localEnv:XDG_RUNTIME_DIR}:${localEnv:XDG_RUNTIME_DIR}",
     // add the docker socket environment variable to the container
     "-e=DOCKER_HOST=${localEnv:DOCKER_HOST}"
+  ],
+  "forwardPorts": [
+    8000
   ],
   "mounts": [
     "source=${localEnv:HOME}/.ssh,target=/root/.ssh,type=bind",
