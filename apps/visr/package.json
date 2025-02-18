@@ -1,0 +1,49 @@
+{
+  "name": "visr",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "d": "vite",
+    "build": "tsc && vite build",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview",
+    "test": "npx vitest",
+    "t": "npx vitest",
+    "test:ui": "npx vitest --ui",
+    "coverage": "npx vitest run --coverage",
+    "arkit": "npx arkit  -c ./config/arkit.config.json"
+  },
+  "dependencies": {
+    "@chakra-ui/icons": "^2.1.1",
+    "@chakra-ui/react": "^2.8.2",
+    "@repo/eslint-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
+    "@repo/ui": "workspace:*",
+    "@repo/vite-config": "workspace:*",
+    "@testing-library/react": "^15.0.2",
+    "arkit": "^1.6.4",
+    "konva": "^9.3.18",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-konva": "^18.2.10",
+    "recharts": "^2.15.1"
+  },
+  "devDependencies": {
+    "@repo/jest-presets": "workspace:*",
+    "@types/react": "^18.2.43",
+    "@types/react-dom": "^18.2.17",
+    "@typescript-eslint/eslint-plugin": "^6.14.0",
+    "@typescript-eslint/parser": "^6.14.0",
+    "@vitejs/plugin-react-swc": "^3.5.0",
+    "@vitest/coverage-v8": "^1.5.0",
+    "@vitest/ui": "^1.5.0",
+    "eslint": "^8.55.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.5",
+    "typescript": "^5.2.2",
+    "vite": "^5.4.6",
+    "vitest": "^1.5.0"
+  }
+}
