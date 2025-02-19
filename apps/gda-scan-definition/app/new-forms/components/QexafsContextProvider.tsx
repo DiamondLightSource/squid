@@ -1,25 +1,33 @@
 "use client";
 import { createContext, useContext, useReducer } from "react";
-import { DetectorsSchema, OutputParametersType } from "../../schemas/qexafs";
+import { DetectorsSchema, FullQexafsSchemaType, OutputParametersType } from "../../schemas/qexafs";
+import { readDetectorParameters } from "../server-readxml";
+import { readScanDefinition } from "../actions";
 
 // this checks that all the file exist and read them from the FS and parses into JSON
-export type QexafsContext = {
-  detectors: DetectorsSchema;
-  output: OutputParametersType;
-  // todo etc etc
-};
-
 // todo complete the action
-export type QexafsAction = {};
+export type QexafsAction =
+    | { type: "START_CONFIG_READ"; payload: FullQexafsSchemaType }
+    | { type: "START_CONFIG_UPDATE"; payload: FullQexafsSchemaType };
 
-const QexafsStateContext = createContext<QexafsContext | undefined>(undefined);
+// todo can optimize by using partial
+
+const QexafsStateContext = createContext<FullQexafsSchemaType | undefined>(undefined);
 
 const QexafsDispatchContext = createContext<QexafsAction | undefined>(
   undefined
 );
 
-const qexafsReducer = (state: QexafsContext, action: QexafsAction) => {
-  switch (action) {
+
+const qexafsReducer = (state: FullQexafsSchemaType, action: QexafsAction) => {
+  switch (action.type){
+    case "START_CONFIG_READ":
+      const r = await readScanDefinition();
+      // todo fix the await part
+
+      return action.payload;
+    case "START_CONFIG_UPDATE":
+      return action.payload;
     default:
       return state;
   }
@@ -28,7 +36,7 @@ const qexafsReducer = (state: QexafsContext, action: QexafsAction) => {
 
 
 export const QexafsContextProvider: React.FC<{
-  startingValue: QexafsContext;
+  startingValue: FullQexafsSchemaType;
   children: React.ReactNode;
 }> = ({ startingValue, children }) => {
   const [state, dispatch] = useReducer(qexafsReducer, startingValue);

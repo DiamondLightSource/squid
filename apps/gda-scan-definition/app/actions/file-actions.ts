@@ -4,6 +4,7 @@ import path from "path";
 import { actionClient } from "../clients/actionclient";
 import { fileSchema } from "../schemas/filesystemSchemas";
 import { basePath } from "./basePath";
+import { SafeActionFn } from "next-safe-action";
 
 export const getFileBuffer = actionClient
   .schema(fileSchema)
@@ -35,7 +36,7 @@ export const getFileBuffer = actionClient
 
 export const modifyFileBuffer = actionClient
   .schema(fileSchema)
-  .action(async ({ parsedInput: { relativePath, name, content } }) => {
+  .action(async ({ parsedInput: { relativePath, name, content } }): Promise<{ success: boolean; filePath: string }> => {
     // Resolve the full file path
     if (content === undefined) {
       throw new Error("Content is undefined");

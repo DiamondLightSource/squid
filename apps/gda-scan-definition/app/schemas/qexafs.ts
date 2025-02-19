@@ -65,6 +65,7 @@ export const detectorConfigurationSchema = z.object({
   extraDetectorName: z.string().optional(),
 });
 
+
 export const detectorConfigurationJson: JsonSchema = zodToJsonSchema(detectorConfigurationSchema) as unknown as JsonSchema;
 export const detectorConfigurationUiSchema = convertSchemaToUiSchema(detectorConfigurationJson);
 export type DetectorConfiguration = z.infer<typeof detectorConfigurationSchema>;

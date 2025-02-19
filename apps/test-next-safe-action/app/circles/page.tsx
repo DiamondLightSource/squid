@@ -45,11 +45,13 @@ export default function Home() {
       const validated = circleSchema.parse(formData);
 
       // const { success, circle } = await addCircle({
-      //   diameter: Number(validated.diameter),
-      //   color: validated.color,
-      //   title: validated.title,
-      // });
-      // console.log(success, circle);
+      const r = await addCircle({
+        diameter: Number(validated.diameter),
+        color: validated.color,
+        title: validated.title,
+      });
+      const c = r?.data?.circle
+      // console.log(success,c);
 
       // if (success) {
       //   setCircles((prev) => [...prev, circle]);
