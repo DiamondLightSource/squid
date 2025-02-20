@@ -1,7 +1,7 @@
 import path from "path";
 import fs from "fs";
 
-  const rootDirectory = process.env.FILE_STORAGE_ROOT ||  "/tmp/qexafs/experiment_1";
+export const rootDirectory = process.env.FILE_STORAGE_ROOT ||  "/tmp/qexafs/experiment_1";
 
 /**
  * Resolves a safe file path for writing files based on a trusted root directory.

@@ -1,7 +1,6 @@
 "use client";
 import { createContext, useContext, useReducer } from "react";
-import { DetectorsSchema, FullQexafsSchemaType, OutputParametersType } from "../../schemas/qexafs";
-import { readDetectorParameters } from "../server-readxml";
+import { FullQexafsSchemaType } from "../../schemas/qexafs";
 import { readScanDefinition, updateScanDefinition } from "../actions";
 
 // this checks that all the file exist and read them from the FS and parses into JSON

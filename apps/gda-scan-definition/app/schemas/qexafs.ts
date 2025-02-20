@@ -39,12 +39,13 @@ export const allowedEdges = [
 // Define the schema for validation
 
 export const qexafsParametersSchema = z.object({
-  elementSymbol: z.enum(allowedElementSymbols),
+  element: z.enum(allowedElementSymbols),
   edge: z.enum(allowedEdges),
-  edgeEnergy: z.number().positive().int(),
+  // edgeEnergy: z.number().positive().int(),
   initialEnergy: z.number().positive().int(),
   finalEnergy: z.number().positive().int(),
-  speedMDegPerSecond: z.number().positive().min(0.1).max(85100),
+  // speed is in MDegPerSecond
+  speed: z.number().positive().min(0.1).max(85100),
   stepSize: z.number().positive().int(),
 });
 
@@ -217,9 +218,9 @@ export type FullQexafsSchemaType = z.infer<typeof fullQexafsSchema>;
 
 export const initFullQexafsSchema: FullQexafsSchemaType = {
   qexafsParameters: {
-    elementSymbol: "Fe",
+    element: "Fe",
     edge: "K",
-    edgeEnergy: 7112,
+    // edgeEnergy: 7112,
     initialEnergy: 7112,
     finalEnergy: 7112,
     speedMDegPerSecond: 1,

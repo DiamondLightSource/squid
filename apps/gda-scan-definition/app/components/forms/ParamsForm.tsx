@@ -12,7 +12,7 @@ import { useState } from "react";
 import { updateQexafsParameters } from "../../actions/qexafs-actions";
 
 const defaultData: ParamsSchema = {
-  elementSymbol: "",
+  element: "",
   edge: "",
   edgeEnergy: 0,
   initialEnergy: 0,
@@ -63,9 +63,9 @@ export function ParamsForm() {
       <label>
         Element:
         <select
-          value={formData.elementSymbol}
+          value={formData.element}
           onChange={(e) =>
-            setFormData({ ...formData, elementSymbol: e.target.value })
+            setFormData({ ...formData, element: e.target.value })
           }
         >
           {allowedElementSymbols.map((element) => (
