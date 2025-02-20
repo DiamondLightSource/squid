@@ -1,8 +1,10 @@
+
 export type JsonSchema = {
   type: string;
   properties: Record<string, any>;
-  required?: string[];
+  required: string[];
 };
+
 
 export type UiSchema = {
   type: string;
@@ -19,19 +21,51 @@ export function convertSchemaToUiSchema(schema: JsonSchema): UiSchema {
     elements: [],
   };
 
-  // Iterate through each property in the schema
-  Object.keys(schema.properties).forEach((property) => {
-    const element = {
-      type: 'Control',
-      scope: `#/properties/${property}`,
-      // Add `label: false` if required to hide labels for boolean fields or others
-      // label: schema.properties[property].type === 'boolean' ? false : undefined,
-      label: true,
-    };
+  // Recursive helper to handle nested properties
+  function processProperties(schema: JsonSchema, parentPath = '#/properties'): any {
+    const elements: any[] = [];
 
-    // Add the control to the elements
-    uiSchema.elements.push(element);
-  });
+    Object.keys(schema.properties || {}).forEach((property) => {
+      const propertySchema = schema.properties[property];
+
+      // Check if the property is a nested object (with its own properties)
+      if (propertySchema.type === 'object' && propertySchema.properties) {
+        // Create a nested layout for the object
+        const nestedUiSchema = {
+          type: 'Group',
+          label: property,
+          elements: processProperties(propertySchema, `${parentPath}/${property}`), // Recursively process nested properties
+        };
+        elements.push(nestedUiSchema);
+      } else if (propertySchema.type === 'array' && propertySchema.items && propertySchema.items.type === 'object') {
+        // Handle arrays of objects (nested schemas in arrays)
+        const nestedArrayUiSchema = {
+          type: 'Control',
+          scope: `${parentPath}/${property}`,
+          options: {
+            detail: {
+              type: 'VerticalLayout',
+              elements: processProperties(propertySchema.items, `${parentPath}/${property}/items`),
+            },
+          },
+        };
+        elements.push(nestedArrayUiSchema);
+      } else {
+        // Add a control element for simple types
+        const controlElement = {
+          type: 'Control',
+          scope: `${parentPath}/${property}`,
+          label: propertySchema.type === 'boolean' ? false : property, // Optional: Hide labels for boolean fields
+        };
+        elements.push(controlElement);
+      }
+    });
+
+    return elements;
+  }
+
+  // Process the root schema
+  uiSchema.elements = processProperties(schema);
 
   return uiSchema;
 }

@@ -14,10 +14,11 @@ import { updateQexafsParameters } from "../../actions/qexafs-actions";
 const defaultData: ParamsSchema = {
   element: "",
   edge: "",
-  edgeEnergy: 0,
+  // edgeEnergy: 0,
   initialEnergy: 0,
   finalEnergy: 0,
-  speedMDegPerSecond: 0,
+  // speedMDegPerSecond: 0,
+  speed: 0,
   stepSize: 0,
 };
 
@@ -32,7 +33,7 @@ export function ParamsForm() {
       const validated: ParamsSchema = qexafsParametersSchema.parse(formData);
       const response = await updateQexafsParameters(validated);
 
-      if(response?.data == undefined){
+      if (response?.data == undefined) {
         alert('wrong response');
         return;
       }

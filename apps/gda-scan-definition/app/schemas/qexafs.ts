@@ -3,7 +3,6 @@ import { elements } from "@diamondlightsource/periodic-table/elements";
 import zodToJsonSchema from "zod-to-json-schema";
 import { convertSchemaToUiSchema, JsonSchema, UiSchema } from "../forms/schemaToUiSchema";
 
-
 export type FormFileDefinition = {
   fileName: string;
   schema: JsonSchema;
@@ -213,7 +212,13 @@ export const fullQexafsSchema = z.object({
   outputParameters: outputParametersSchema,
   sampleParameters: sampleParametersSchema,
 });
+
 export type FullQexafsSchemaType = z.infer<typeof fullQexafsSchema>;
+export const fullQexafsJson: JsonSchema = zodToJsonSchema(fullQexafsSchema) as unknown as JsonSchema;
+console.log("full qexafs json",fullQexafsJson);
+export const fullQexafsUiSchema: UiSchema = convertSchemaToUiSchema(fullQexafsJson);
+console.log('fullQexafsUiSchema', fullQexafsUiSchema);
+
 
 
 export const initFullQexafsSchema: FullQexafsSchemaType = {
@@ -223,7 +228,8 @@ export const initFullQexafsSchema: FullQexafsSchemaType = {
     // edgeEnergy: 7112,
     initialEnergy: 7112,
     finalEnergy: 7112,
-    speedMDegPerSecond: 1,
+    // speedMDegPerSecond: 1,
+    speed: 1,
     stepSize: 0.1,
   },
   detectorParameters: {
@@ -325,33 +331,34 @@ export const sampleParametersJson: JsonSchema = zodToJsonSchema(sampleParameters
 export const sampleParametersUiSchema = convertSchemaToUiSchema(sampleParametersJson);
 
 export const sampleDefinition: FormFileDefinition = {
-  fileName: "Sample_Parameters.xml",
+  fileName: "Sample_Parameters",
   schema: sampleParametersJson,
   uiSchema: sampleParametersUiSchema,
 }
 
 export const detectorsDefinition: FormFileDefinition = {
-  fileName: "Detector_Parameters.xml",
+  fileName: "Detector_Parameters",
   schema: detectorConfigurationJson,
   uiSchema: detectorConfigurationUiSchema,
 }
 
 export const qexafsDefinition: FormFileDefinition = {
-  fileName: "QEXAFS_Parameters.xml",
+  fileName: "QEXAFS_Parameters",
   schema: qexafsParametersJson,
   uiSchema: qexafsParametersUiSchema,
 }
 
 export const outputDefinition: FormFileDefinition = {
-  fileName: "Output_Parameters.xml",
+  fileName: "Output_Parameters",
   schema: outputParametersJson,
   uiSchema: outputParametersUiSchema,
 }
 
 export const formConfigsMap: Record<string, FormFileDefinition> = {
-  "Detector_Parameters.xml": detectorsDefinition,
-  "QEXAFS_Parameters.xml": qexafsDefinition,
-  "Sample_Parameters.xml": sampleDefinition,
-  "Output_Parameters.xml": outputDefinition
+  "Detector_Parameters": detectorsDefinition,
+  "QEXAFS_Parameters": qexafsDefinition,
+  "Sample_Parameters": sampleDefinition,
+  "Output_Parameters": outputDefinition
 };
+
 

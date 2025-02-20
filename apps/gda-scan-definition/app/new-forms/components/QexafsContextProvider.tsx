@@ -3,8 +3,6 @@ import { createContext, useContext, useReducer } from "react";
 import { FullQexafsSchemaType } from "../../schemas/qexafs";
 import { readScanDefinition, updateScanDefinition } from "../actions";
 
-// this checks that all the file exist and read them from the FS and parses into JSON
-// todo complete the action
 export type QexafsAction =
   | { type: "START_CONFIG_READ"; }
   | { type: "START_CONFIG_UPDATE"; }
@@ -52,6 +50,8 @@ const qexafsReducer = (state: QexafsState, action: QexafsAction) => {
         ...state,
         isLoading: true,
       };
+
+    
 
     case "CONFIG_UPDATE_SUCCESS":
       return {
