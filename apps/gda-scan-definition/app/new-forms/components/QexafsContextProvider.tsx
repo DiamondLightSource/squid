@@ -2,41 +2,79 @@
 import { createContext, useContext, useReducer } from "react";
 import { DetectorsSchema, FullQexafsSchemaType, OutputParametersType } from "../../schemas/qexafs";
 import { readDetectorParameters } from "../server-readxml";
-import { readScanDefinition } from "../actions";
+import { readScanDefinition, updateScanDefinition } from "../actions";
 
 // this checks that all the file exist and read them from the FS and parses into JSON
 // todo complete the action
 export type QexafsAction =
-    | { type: "START_CONFIG_READ"; payload: FullQexafsSchemaType }
-    | { type: "START_CONFIG_UPDATE"; payload: FullQexafsSchemaType };
+  | { type: "START_CONFIG_READ"; }
+  | { type: "START_CONFIG_UPDATE"; }
+  | { type: "CONFIG_READ_SUCCESS"; payload: FullQexafsSchemaType }
+  | { type: "CONFIG_UPDATE_SUCCESS"; }
+  | { type: "CONFIG_ERROR"; payload: string };
 
 // todo can optimize by using partial
 
-const QexafsStateContext = createContext<FullQexafsSchemaType | undefined>(undefined);
+type QexafsState = {
+  config?: FullQexafsSchemaType,
+  isLoading: boolean
+  error: string
+}
 
-const QexafsDispatchContext = createContext<QexafsAction | undefined>(
+export const initialState: QexafsState = {
+  config: undefined,
+  isLoading: false,
+  error: "",
+};
+
+const QexafsStateContext = createContext<QexafsState>(initialState);
+
+const QexafsDispatchContext = createContext<React.Dispatch<QexafsAction> | undefined>(
   undefined
 );
 
-
-const qexafsReducer = (state: FullQexafsSchemaType, action: QexafsAction) => {
-  switch (action.type){
+const qexafsReducer = (state: QexafsState, action: QexafsAction) => {
+  switch (action.type) {
     case "START_CONFIG_READ":
-      const r = await readScanDefinition();
-      // todo fix the await part
+      return {
+        ...state,
+        isLoading: true,
+      };
 
-      return action.payload;
+    case "CONFIG_READ_SUCCESS":
+      return {
+        ...state,
+        isLoading: false,
+        config: action.payload,
+      };
+
     case "START_CONFIG_UPDATE":
-      return action.payload;
+      return {
+        ...state,
+        isLoading: true,
+      };
+
+    case "CONFIG_UPDATE_SUCCESS":
+      return {
+        ...state,
+        isLoading: false,
+      };
+
+    case "CONFIG_ERROR":
+      return {
+        ...state,
+        isLoading: false,
+        error: action.payload,
+      };
+
     default:
       return state;
   }
 };
-// todo add a reducer
 
 
 export const QexafsContextProvider: React.FC<{
-  startingValue: FullQexafsSchemaType;
+  startingValue: QexafsState;
   children: React.ReactNode;
 }> = ({ startingValue, children }) => {
   const [state, dispatch] = useReducer(qexafsReducer, startingValue);
@@ -50,7 +88,7 @@ export const QexafsContextProvider: React.FC<{
   );
 };
 
-export const useQexafsConfigContext = () => {
+export const useQexafsState = () => {
   const context = useContext(QexafsStateContext);
   if (!context)
     throw new Error("useIDEState must be used within ConfigContextProvider");
@@ -58,9 +96,42 @@ export const useQexafsConfigContext = () => {
 };
 
 
-export const useQexafsDispatchContext = () => {
+export const useQexafsDispatch = () => {
   const context = useContext(QexafsDispatchContext);
   if (!context)
     throw new Error("useIDEState must be used within QexafsDispatchContext");
   return context;
+};
+
+export const startConfigRead = async (dispatch: React.Dispatch<QexafsAction>) => {
+  dispatch({ type: "START_CONFIG_READ" });
+
+  try {
+    const response = await readScanDefinition();
+    if (response?.data?.success && response?.data?.data) {
+      dispatch({ type: "CONFIG_READ_SUCCESS", payload: response.data?.data });
+    } else {
+      dispatch({ type: "CONFIG_ERROR", payload: `Error reading configuration: ${response}` });
+    }
+  } catch (error) {
+    dispatch({ type: "CONFIG_ERROR", payload: "Config server error" });
+  }
+};
+
+export const startConfigUpdate = async (
+  dispatch: React.Dispatch<QexafsAction>,
+  newConfig: FullQexafsSchemaType
+) => {
+  dispatch({ type: "START_CONFIG_UPDATE" });
+
+  try {
+    const response = await updateScanDefinition(newConfig);
+    if (response === undefined) {
+      dispatch({ type: "CONFIG_ERROR", payload: "Error updating configuration" });
+    } else {
+      dispatch({ type: "CONFIG_UPDATE_SUCCESS" });
+    }
+  } catch (error) {
+    dispatch({ type: "CONFIG_ERROR", payload: "Config server error" });
+  }
 };

@@ -32,13 +32,13 @@ export function readQexafsParameters(): QexafsParametersType {
     console.log("Parsed result", parsedResult);
     // todo here validate
     const qexafsParameters: QexafsParametersType = {
-        elementSymbol: parsedResult.QEXAFS_Parameters.elementSymbol,
-        edge: parsedResult.QEXAFS_Parameters.edge,
-        edgeEnergy: parsedResult.QEXAFS_Parameters.edgeEnergy,
-        initialEnergy: parsedResult.QEXAFS_Parameters.initialEnergy,
-        finalEnergy: parsedResult.QEXAFS_Parameters.finalEnergy,
-        speedMDegPerSecond: parsedResult.QEXAFS_Parameters.speedMDegPerSecond,
-        stepSize: parsedResult.QEXAFS_Parameters.stepSize,
+        elementSymbol: parsedResult.QEXAFSParameters["element"],
+        edge: parsedResult.QEXAFSParameters["edge"],
+        edgeEnergy: parsedResult.QEXAFSParameters["edgeEnergy"],
+        initialEnergy: parsedResult.QEXAFSParameters["initialEnergy"],
+        finalEnergy: parsedResult.QEXAFSParameters["finalEnergy"],
+        speedMDegPerSecond: parsedResult.QEXAFSParameters["speedMDegPerSecond"],
+        stepSize: parsedResult.QEXAFSParameters["stepSize"],
     };
 
     return qexafsParameters;

@@ -1,19 +1,13 @@
-import {
-  ConfigContext,
-  ConfigContextProvider,
-} from "../forms/components/ConfigContext";
-
-const startingContext: ConfigContext = {
-  beamlineIdentifier: "i18",
-  configUrl: "/tmp/qexafs/experiment_1",
-};
+import QexafsComponent from "./components/QexafsComponent";
+import { initialState, QexafsContextProvider } from "./components/QexafsContextProvider";
 
 export default function NewForms() {
   return (
     <div>
-      <ConfigContextProvider startingValue={startingContext}>
+      <QexafsContextProvider startingValue={initialState} >
         <h2>test</h2>
-      </ConfigContextProvider>
+        <QexafsComponent />
+      </QexafsContextProvider>
     </div>
   );
 }
