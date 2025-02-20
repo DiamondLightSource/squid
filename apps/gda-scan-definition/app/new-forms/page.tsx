@@ -6,9 +6,8 @@ export default function NewForms() {
   return (
     <div>
       <QexafsContextProvider startingValue={initialState} >
-        <h2>test</h2>
         <IntegratedForm />
-        <QexafsComponent />
+        {/* <QexafsComponent /> */}
       </QexafsContextProvider>
     </div>
   );

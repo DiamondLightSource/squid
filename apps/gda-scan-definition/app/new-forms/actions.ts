@@ -3,7 +3,7 @@
 
 import { actionClient } from "../clients/actionclient";
 import { fullQexafsSchema, FullQexafsSchemaType } from "../schemas/qexafs";
-import { readDetectorParameters, readOutputParameters, readQexafsParameters, readSampleParameters, updateDetectorParameters, updateOutputParameters, updateQexafsParameters, updateSampleParameters } from "./server-readxml";
+import { readDetectorParameters, readOutputParameters, readQexafsParameters, readSampleParameters, updateDetectorParameters, updateOutputParameters, updateQexafsParameters, updateSampleParameters } from "./server-xml";
 
 export const readScanDefinition = actionClient.action(async (): Promise<{ success: boolean, data: FullQexafsSchemaType | null }> => {
 

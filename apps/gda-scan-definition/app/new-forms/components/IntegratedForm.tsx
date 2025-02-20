@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { JsonForms } from "@jsonforms/react";
 import { materialRenderers } from "@jsonforms/material-renderers";
-import { fullQexafsSchema, fullQexafsUiSchema, FullQexafsSchemaType } from "../../schemas/qexafs";
+import { fullQexafsSchema, fullQexafsUiSchema, FullQexafsSchemaType, fullQexafsJson } from "../../schemas/qexafs";
 import { useQexafsState, useQexafsDispatch, startConfigRead, startConfigUpdate } from "./QexafsContextProvider";
 
 const IntegratedForm = () => {
@@ -41,8 +41,8 @@ const IntegratedForm = () => {
                     <JsonForms
                         data={formData}
                         onChange={({ data }) => setFormData(data)}
-                        schema={fullQexafsSchema}
-                        uischema={fullQexafsUiSchema}
+                        schema={fullQexafsJson}
+                        // uischema={fullQexafsUiSchema}
                         renderers={materialRenderers}
                     />
                 </div>

@@ -4,17 +4,17 @@ import fs from "fs";
 import { detectorParametersSchema, DetectorsSchema, outputParametersSchema, OutputParametersType, qexafsParametersSchema, QexafsParametersType, sampleParametersSchema, SampleParametersType } from "../schemas/qexafs";
 import { rootDirectory } from "./server-safety";
 
-const parser = new XMLParser();
-
 const options: XmlBuilderOptions = {
-    processEntities: false,
-    preserveOrder: true,
+    // processEntities: false,
+    // preserveOrder: true,
     format: true,
-    ignoreAttributes: false,
-    commentPropName: "phone"
+    // ignoreAttributes: false,
+    // commentPropName: "phone"
 };
 
+const parser = new XMLParser();
 const builder = new XMLBuilder(options);
+// const builder = new XMLBuilder();
 
 const basePath: string = rootDirectory;
 
@@ -25,24 +25,43 @@ const samplePath = `${basePath}/Sample_Parameters.xml`
 const outputPath = `${basePath}/Output_Parameters.xml`
 
 
+
+
+const PREPEND_FOR_XML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+
 export function updateQexafsParameters(data: QexafsParametersType): void {
-    const xml = builder.build(data);
-    fs.writeFileSync(qexafsPath, xml);
+    const fullObject = {
+        "QEXAFSParameters": data
+    }
+    const xml = builder.build(fullObject);
+    fs.writeFileSync(qexafsPath, `${PREPEND_FOR_XML}\n${xml}`);
 }
 
 export function updateDetectorParameters(data: DetectorsSchema): void {
-    const xml = builder.build(data);
-    fs.writeFileSync(detectorsPath, xml);
+    const fullObject = {
+        "DetectorParameters": data
+    }
+
+    const xml = builder.build(fullObject);
+    fs.writeFileSync(detectorsPath, `${PREPEND_FOR_XML}\n${xml}`);
 }
 
 export function updateSampleParameters(data: SampleParametersType): void {
-    const xml = builder.build(data);
-    fs.writeFileSync(samplePath, xml);
+    const fullObject = {
+        "B18SampleParameters": data
+    }
+
+    const xml = builder.build(fullObject);
+    fs.writeFileSync(samplePath,`${PREPEND_FOR_XML}\n${xml}`);
 }
 
 export function updateOutputParameters(data: OutputParametersType): void {
-    const xml = builder.build(data);
-    fs.writeFileSync(outputPath, xml);
+    const fullObject = {
+        "OutputParameters": data
+    }
+
+    const xml = builder.build(fullObject);
+    fs.writeFileSync(outputPath, `${PREPEND_FOR_XML}\n${xml}`);
 }
 
 export function readQexafsParameters(): QexafsParametersType {
@@ -52,12 +71,12 @@ export function readQexafsParameters(): QexafsParametersType {
     console.log("Parsed result", parsedResult);
     const p = parsedResult.QEXAFSParameters;
     try {
-        const params:  QexafsParametersType= qexafsParametersSchema.parse(p);
+        const params: QexafsParametersType = qexafsParametersSchema.parse(p);
         return params
     } catch (e) {
         console.log("Error", e);
     }
-    throw new Error("Failed to parse output parameters");
+    throw new Error("Failed to parse quesafs parameters at path " + qexafsPath);
 }
 
 export function readDetectorParameters(): DetectorsSchema {
@@ -65,13 +84,14 @@ export function readDetectorParameters(): DetectorsSchema {
     const parsedResult = parser.parse(content.toString());
 
     const p = parsedResult.DetectorParameters;
+    console.log("Parsed result", parsedResult);
     try {
-        const params:  DetectorsSchema  = detectorParametersSchema.parse(p);
+        const params: DetectorsSchema = detectorParametersSchema.parse(p);
         return params
     } catch (e) {
         console.log("Error", e);
     }
-    throw new Error("Failed to parse output parameters");
+    throw new Error("Failed to parse output parameters at path " + detectorsPath);
 }
 
 export function readSampleParameters(): SampleParametersType {
@@ -85,7 +105,7 @@ export function readSampleParameters(): SampleParametersType {
     } catch (e) {
         console.log("Error", e);
     }
-    throw new Error("Failed to parse sample parameters");
+    throw new Error("Failed to parse sample parameters at path " + samplePath);
 }
 
 export function readOutputParameters(): OutputParametersType {
@@ -94,10 +114,10 @@ export function readOutputParameters(): OutputParametersType {
 
     const p = parsedResult.OutputParameters;
     try {
-        const params:  OutputParametersType= outputParametersSchema.parse(p);
+        const params: OutputParametersType = outputParametersSchema.parse(p);
         return params
     } catch (e) {
         console.log("Error", e);
     }
-    throw new Error("Failed to parse output parameters");
+    throw new Error("Failed to parse output parameters at path " + outputPath);
 }
