@@ -29,11 +29,11 @@ function listCommands(): string[] {
   return r
 }
 
+// todo this should be more declarative not imperative
 // Example commands
 registerCommand('help', 'Displays all available commands', () => {
   const r= listCommands();
   return r;
-
 });
 
 registerCommand('greet', 'Greets the user with a message', (name: string) => {
