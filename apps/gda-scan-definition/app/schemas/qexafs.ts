@@ -342,6 +342,8 @@ export const detectorsDefinition: FormFileDefinition = {
   uiSchema: detectorConfigurationUiSchema,
 }
 
+console.dir(detectorConfigurationJson, {depth: null})
+
 export const qexafsDefinition: FormFileDefinition = {
   fileName: "QEXAFS_Parameters",
   schema: qexafsParametersJson,

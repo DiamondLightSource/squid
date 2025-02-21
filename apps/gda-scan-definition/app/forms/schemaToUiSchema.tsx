@@ -38,6 +38,7 @@ export function convertSchemaToUiSchema(schema: JsonSchema): UiSchema {
         };
         elements.push(nestedUiSchema);
       } else if (propertySchema.type === 'array' && propertySchema.items && propertySchema.items.type === 'object') {
+
         // Handle arrays of objects (nested schemas in arrays)
         const nestedArrayUiSchema = {
           type: 'Control',
@@ -49,6 +50,7 @@ export function convertSchemaToUiSchema(schema: JsonSchema): UiSchema {
             },
           },
         };
+        console.log(`trying to render array: ${property}, with ${nestedArrayUiSchema.type}, ${nestedArrayUiSchema.scope}`);
         elements.push(nestedArrayUiSchema);
       } else {
         // Add a control element for simple types
@@ -61,6 +63,8 @@ export function convertSchemaToUiSchema(schema: JsonSchema): UiSchema {
       }
     });
 
+    console.log(`elements: ${elements}`);
+    console.dir(elements, {depth: null});
     return elements;
   }
 

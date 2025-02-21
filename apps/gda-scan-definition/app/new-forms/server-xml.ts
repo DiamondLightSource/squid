@@ -1,7 +1,7 @@
 
 import { XMLBuilder, XmlBuilderOptions, XMLParser } from "fast-xml-parser";
 import fs from "fs";
-import { detectorParametersSchema, DetectorsSchema, outputParametersSchema, OutputParametersType, qexafsParametersSchema, QexafsParametersType, sampleParametersSchema, SampleParametersType } from "../schemas/qexafs";
+import { detectorParametersSchema, DetectorsSchema, motorPositionSchema, outputParametersSchema, OutputParametersType, qexafsParametersSchema, QexafsParametersType, sampleParametersSchema, SampleParametersType } from "../schemas/qexafs";
 import { rootDirectory } from "./server-safety";
 
 const options: XmlBuilderOptions = {
@@ -12,7 +12,19 @@ const options: XmlBuilderOptions = {
     // commentPropName: "phone"
 };
 
-const parser = new XMLParser();
+
+const parserOptions = {
+    ignoreAttributes: false, // Keep attributes if present
+    //   alwaysCreateTextNode: true, // Ensures text nodes are explicitly stored
+    isArray: (name: string, jpath) => {
+        // Define elements that should be arrays when duplicated
+        console.log(`arrach check for : ${name}, ${jpath}`);
+        const arrayFields = ["sampleParameterMotorPosition", "detectorConfiguration"]; // Example duplicated elements
+        return arrayFields.includes(name); // Only convert these to arrays
+    },
+};
+
+const parser = new XMLParser(parserOptions);
 const builder = new XMLBuilder(options);
 // const builder = new XMLBuilder();
 
@@ -52,7 +64,7 @@ export function updateSampleParameters(data: SampleParametersType): void {
     }
 
     const xml = builder.build(fullObject);
-    fs.writeFileSync(samplePath,`${PREPEND_FOR_XML}\n${xml}`);
+    fs.writeFileSync(samplePath, `${PREPEND_FOR_XML}\n${xml}`);
 }
 
 export function updateOutputParameters(data: OutputParametersType): void {
@@ -101,6 +113,10 @@ export function readSampleParameters(): SampleParametersType {
     const p = parsedResult.B18SampleParameters;
     try {
         const sampleParameters: SampleParametersType = sampleParametersSchema.parse(p);
+        const motors = sampleParameters.sampleParameterMotorPosition.map(i => motorPositionSchema.parse(i));
+        console.log(`motor params: ${Object.keys(sampleParameters.sampleParameterMotorPosition[0])}`)
+        sampleParameters.sampleParameterMotorPosition = motors;
+        console.log(sampleParameters.sampleParameterMotorPosition);
         return sampleParameters
     } catch (e) {
         console.log("Error", e);
