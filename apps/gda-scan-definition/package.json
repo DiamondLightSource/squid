@@ -42,7 +42,7 @@
     "fast-xml-parser": "^4.5.0",
     "lz-string": "^1.5.0",
     "monaco-editor": "^0.52.2",
-    "next": "^15.0.3",
+    "next": "^14.2.21",
     "next-safe-action": "^7.9.9",
     "node-fetch": "^3.3.2",
     "openapi-client-axios": "^7.5.5",
