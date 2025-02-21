@@ -5,7 +5,8 @@ type SinglePlanDisplayProps = {
   currentPlan: Plan;
 };
 
-export function SinglePlanDisplay({ currentPlan }: SinglePlanDisplayProps) {
+  export function SinglePlanDisplay({ currentPlan }: SinglePlanDisplayProps) {
+  console.log(currentPlan["schema"]);
   return (
     <div>
       <h2> Basic {currentPlan.name} plan UI</h2>

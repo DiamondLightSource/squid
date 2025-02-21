@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { elements } from "@diamondlightsource/periodic-table/elements";
 import zodToJsonSchema from "zod-to-json-schema";
-import { convertSchemaToUiSchema, JsonSchema, UiSchema } from "../forms/schemaToUiSchema";
+import { convertSchemaToUiSchema, JsonSchema, UiSchema } from "../forms-editor/schemaToUiSchema";
 
 export type FormFileDefinition = {
   fileName: string;

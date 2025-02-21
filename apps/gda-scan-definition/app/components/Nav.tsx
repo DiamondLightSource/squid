@@ -9,9 +9,6 @@ export default function B18Nav() {
         <Link href="/sample-prep">Sample Prep</Link>
       </ListItem>
       <ListItem>
-        <Link href="/forms">Forms</Link>
-      </ListItem>
-      <ListItem>
         <Link href="/qexafs">qexafs</Link>
       </ListItem>
       <ListItem>
@@ -20,9 +17,7 @@ export default function B18Nav() {
       <ListItem>
         <Link href="/run-scans">Run scans</Link>
       </ListItem>
-      {/* <ListItem>
-        <Link href="/simple-parameters">Simple params</Link>
-      </ListItem> */}
+
       <BasicMenu />
     </>
   );
