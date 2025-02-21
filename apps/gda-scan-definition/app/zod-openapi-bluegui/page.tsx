@@ -42,7 +42,7 @@ export default function ZodOpenapiBluegui() {
         <p> get plan by name</p>
         <form onSubmit={async (e) => {
             e.preventDefault();
-            const r = await client.get_device_by_name_devices__name__get(search);
+            const r = await client.get_device_by_name_devices__name__get({ name: search });
             console.log(r);
             setFound(r);
         }}>
