@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircle, faPlay, faPause, faStop, faExclamationTriangle, faQuestionCircle, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 
-export const statusMapping = {
+export const workerStatusMapping = {
     IDLE: { color: 'gray', icon: faCircle },
     RUNNING: { color: 'green', icon: faPlay },
     PAUSING: { color: 'orange', icon: faPause },

@@ -20,10 +20,29 @@ import {
     TableRow,
     Paper,
 } from "@mui/material";
-import { useCurrentTask, useDevices, useEnvironment, usePlans, useTaskById, useWorkerState } from "../hooks";
+import { TaskDetails, useCurrentTask, useDevices, useEnvironment, usePlans, useTaskById, useWorkerState } from "../hooks";
 import PlanForm from "./PlanForm";
-import { environmentStatusMapping } from "./Icons";
+import { environmentStatusMapping, taskStatusEnumMapping, workerStatusMapping } from "./Icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+
+
+function getTaskDisplay(task: TaskDetails | null) {
+    if (!task) {
+        return taskStatusEnumMapping.ERROR;
+    }
+    if (task.errors && task.errors.length !== 0) {
+        return taskStatusEnumMapping.ERROR;
+    }
+    if (task.is_complete) {
+        return taskStatusEnumMapping.COMPLETE
+    }
+    if (task.is_pending) {
+        return taskStatusEnumMapping.PENDING
+    }
+    return taskStatusEnumMapping.RUNNING;
+
+}
 
 // const beamlineName = process.env.BEAMLINE;
 const beamlineName = "i22";
@@ -49,10 +68,16 @@ const IoTDashboard: React.FC = () => {
     // todo make devices panel max height and scroll
 
 
-    const environmentStatusInfo = environmentStatusMapping(environment.initialized);
+    const environmentStatusForDisplay = environmentStatusMapping(environment.initialized);
+    const workerStateForDisplay = workerState ? workerStatusMapping[workerState] : workerStatusMapping.UNKNOWN;
+    const taskStateForDisplay = getTaskDisplay(task);
+
 
     console.dir(task)
+    console.dir(taskDetails)
+    const lastTask = taskDetails;
     console.dir(workerState)
+
     return (
         <Container maxWidth='xl'>
             <Typography variant="h4" gutterBottom>
@@ -66,6 +91,10 @@ const IoTDashboard: React.FC = () => {
                         <CardContent>
                             <Typography variant="h6">Worker Status</Typography>
                             <Typography>Status: {workerState}</Typography>
+                            <div style={{ color: workerStateForDisplay.color, display: 'flex', alignItems: 'center' }}>
+                                <FontAwesomeIcon icon={workerStateForDisplay.icon} style={{ marginRight: 8 }} />
+                                <span>{workerState}</span>
+                            </div>
                         </CardContent>
                     </Card>
                 </Grid>
@@ -74,8 +103,8 @@ const IoTDashboard: React.FC = () => {
                     <Card>
                         <CardContent>
                             <Typography variant="h6">Environment</Typography>
-                            <div style={{ color: environmentStatusInfo.color, display: 'flex', alignItems: 'center', marginTop: 10 }}>
-                                <FontAwesomeIcon icon={environmentStatusInfo.icon} style={{ marginRight: 8 }} />
+                            <div style={{ color: environmentStatusForDisplay.color, display: 'flex', alignItems: 'center', marginTop: 10 }}>
+                                <FontAwesomeIcon icon={environmentStatusForDisplay.icon} style={{ marginRight: 8 }} />
                                 <span>initalized: {environment.initialized ? 'YES' : 'NO'}</span>
                                 <Typography>{environment.error_message ? `error: ${environment.error_message}` : ``}</Typography>
                             </div>
@@ -90,8 +119,12 @@ const IoTDashboard: React.FC = () => {
                             {
                                 taskDetails !== null &&
                                 <>
-                                    <Typography>Complete?: {taskDetails.is_complete}</Typography>
-                                    <Typography>Pending?: {taskDetails.is_pending}</Typography>
+                                    <Typography>Complete?: {lastTask.is_complete ? 'YES' : 'NO'}</Typography>
+                                    <Typography>Pending?: {lastTask.is_pending ? 'YES' : 'NO'}</Typography>
+                                    <div style={{ color: taskStateForDisplay.color, display: 'flex', alignItems: 'center' }}>
+                                        <FontAwesomeIcon icon={taskStateForDisplay.icon} style={{ marginRight: 8 }} />
+                                        <span>{lastTask.task && lastTask.task.name}</span>
+                                    </div>
                                 </>
                             }
                         </CardContent>

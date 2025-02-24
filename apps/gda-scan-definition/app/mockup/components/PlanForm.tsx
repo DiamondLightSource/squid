@@ -7,19 +7,52 @@ import { JsonForms } from '@jsonforms/react';
 import { Button } from '@mui/material';
 import { usePlanByName } from '../hooks';
 
+const prefixesToChange = ['dodal.', 'ophyd.', 'ophyd_async.', 'bluesky.'];
+
+
 function modifySchemaTypes(schema: any): any {
     if (schema && schema.properties) {
         Object.keys(schema.properties).forEach((key) => {
             const property = schema.properties[key];
-            // Check if the type starts with 'dodal.' or 'ophyd.'
-            if (typeof property === 'object' && property.type &&
-                (property.type.startsWith('dodal.') || property.type.startsWith('ophyd.') || property.type.startsWith('bluesky.'))) {
-                property.type = 'string';
+            console.dir(property);
+
+            // Check if the property is an object and has a type property
+            if (typeof property === 'object') {
+                // If the type exists and matches one of the prefixes, change it to string
+                if (property.type && prefixesToChange.some(prefix => property.type.startsWith(prefix))) {
+                    property.type = 'string';
+                }
+
+                // Recurse into nested properties if they are objects with properties
+                if (property.properties) {
+                    modifySchemaTypes(property);
+                }
+
+                // Handle nested items array (like in your 'detectors' property)
+                if (property.items) {
+                    Object.keys(property.items).forEach((item, i) => {
+                        if (item.type && prefixesToChange.some(prefix => item.type.startsWith(prefix))) {
+                            property.items[i].type = 'string';
+                        }
+
+                    })
+                }
+                // todo this would need to be added to baseline, devices, etc, etc not just detectors and otherwise it would fail
+                if (property.detectors && property.detectors.items) {
+                    Object.keys(property.detectors.items).forEach((item, i) => {
+                        console.log(`item: ${item}`)
+                        if (item.type && prefixesToChange.some(prefix => item.type.startsWith(prefix))) {
+                            property.detectors.items.type = 'string';
+                        }
+
+                    })
+                }
             }
         });
     }
     return schema;
 }
+
 
 const PlanForm = ({ planName }: { planName: string }) => {
     const { plan, loading, error } = usePlanByName(planName);

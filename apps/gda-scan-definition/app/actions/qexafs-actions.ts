@@ -77,19 +77,14 @@ export const updateSampleParameters = actionClient
   .schema(sampleParametersSchema)
   .action(createParamsCallback(`${basePath}/Sample_Parameters.xml`));
 
-// todo add stuff
 
 const parser = new XMLParser();
 
-// todo maybe an enum for types in qexafs requests to solve quickly
 
 export const readDetectorParameters = actionClient
   .schema(detectorParametersSchema)
   .action(async () => {
-    // todo assert against the schema, completely obfuscate the existence of xml
-
     console.log("reading remote files");
-    // TODO tempoary
     const xmlPath = `${basePath}/Sample_Parameters.xml`;
 
     if (!fs.existsSync(xmlPath)) return [];

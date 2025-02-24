@@ -116,7 +116,7 @@ export const useCurrentTask = () => {
 
 
 
-type TaskDetails = {
+export type TaskDetails = {
     task_id: string,
     task: {
         name: string,
@@ -134,7 +134,7 @@ export const useTaskById = (name: string) => {
 
     useEffect(() => {
         api.get(`/tasks/${name}`)
-            .then(response => setTaskDetails(response.data))
+            .then(response => setTaskDetails(response.data.tasks[0]))
             .finally(() => setLoading(false));
     }, [taskDetails]);
 
