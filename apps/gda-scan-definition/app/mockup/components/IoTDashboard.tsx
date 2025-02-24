@@ -143,7 +143,7 @@ const IoTDashboard: React.FC = () => {
             />
 
             {/* Active Devices Table */}
-            <TableContainer component={Paper}>
+            <TableContainer component={Paper} sx={{ maxHeight: '50vh', overflowY: 'scroll' }}>
                 <Table>
                     <TableHead>
                         <TableRow>
