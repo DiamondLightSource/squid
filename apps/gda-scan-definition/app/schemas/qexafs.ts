@@ -66,17 +66,17 @@ export const detectorConfigurationSchema = z.object({
 });
 
 
-export const detectorConfigurationJson: JsonSchema = zodToJsonSchema(detectorConfigurationSchema) as unknown as JsonSchema;
-export const detectorConfigurationUiSchema = convertSchemaToUiSchema(detectorConfigurationJson);
-export type DetectorConfiguration = z.infer<typeof detectorConfigurationSchema>;
-export type DetectorsSchema = z.infer<typeof detectorParametersSchema>;
-
 // Main schema for DetectorParameters
 // todo missing the definition for the full detector parameters schema
 export const detectorParametersSchema = z.object({
   shouldValidate: z.boolean(),
   detectorConfiguration: z.array(detectorConfigurationSchema),
 });
+
+export const detectorConfigurationJson: JsonSchema = zodToJsonSchema(detectorConfigurationSchema) as unknown as JsonSchema;
+export const detectorConfigurationUiSchema = convertSchemaToUiSchema(detectorConfigurationJson);
+export type DetectorConfiguration = z.infer<typeof detectorConfigurationSchema>;
+export type DetectorsSchema = z.infer<typeof detectorParametersSchema>;
 
 export const outputParametersSchema = z.object({
   shouldValidate: z.boolean(),
@@ -342,7 +342,7 @@ export const detectorsDefinition: FormFileDefinition = {
   uiSchema: detectorConfigurationUiSchema,
 }
 
-console.dir(detectorConfigurationJson, {depth: null})
+// console.dir(detectorConfigurationJson, {depth: null})
 
 export const qexafsDefinition: FormFileDefinition = {
   fileName: "QEXAFS_Parameters",

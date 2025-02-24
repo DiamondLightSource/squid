@@ -4,6 +4,39 @@ import fs from "fs";
 import { detectorParametersSchema, DetectorsSchema, motorPositionSchema, outputParametersSchema, OutputParametersType, qexafsParametersSchema, QexafsParametersType, sampleParametersSchema, SampleParametersType } from "../schemas/qexafs";
 import { rootDirectory } from "./server-safety";
 
+/**
+ * todo this might need deletion as the auto parser does ok and it's the jsonform that fails
+ * @param xml 
+ * @param tagName 
+ * @param listName 
+ * @returns 
+ */
+function fixXmlToWrapInList(xml: string, tagName:string, listName:string): string {
+    // Find the first occurrence of <myTagItem>
+    const openingTag = `<${tagName}>`;
+    const closingTag = `</${tagName}>`;
+    const listOpeningTag = `<${listName}>`;
+    const listClosingTag = `</${listName}>`;
+
+    const firstIndex = xml.indexOf(openingTag);
+    if (firstIndex === -1) {
+        // No <myTagItem> found, return the original XML
+        return xml;
+    }
+
+    // Insert <myTagList> before the first <myTagItem>
+    let fixedXml = xml.substring(0, firstIndex) + listOpeningTag + xml.substring(firstIndex);
+
+    // Find the last occurrence of </myTagItem> to close the list
+    const lastIndex = fixedXml.lastIndexOf(closingTag);
+    if (lastIndex !== -1) {
+        // Insert </myTagList> after the last </myTagItem>
+        fixedXml = fixedXml.substring(0, lastIndex + closingTag.length) + listClosingTag + fixedXml.substring(lastIndex + closingTag.length);
+    }
+
+    return fixedXml;
+}
+
 const options: XmlBuilderOptions = {
     // processEntities: false,
     // preserveOrder: true,
@@ -17,8 +50,8 @@ const parserOptions = {
     ignoreAttributes: false, // Keep attributes if present
     //   alwaysCreateTextNode: true, // Ensures text nodes are explicitly stored
     isArray: (name: string, jpath) => {
+        return false;
         // Define elements that should be arrays when duplicated
-        console.log(`arrach check for : ${name}, ${jpath}`);
         const arrayFields = ["sampleParameterMotorPosition", "detectorConfiguration"]; // Example duplicated elements
         return arrayFields.includes(name); // Only convert these to arrays
     },
@@ -80,7 +113,6 @@ export function readQexafsParameters(): QexafsParametersType {
     const content = fs.readFileSync(qexafsPath);
     const parsedResult = parser.parse(content.toString());
 
-    console.log("Parsed result", parsedResult);
     const p = parsedResult.QEXAFSParameters;
     try {
         const params: QexafsParametersType = qexafsParametersSchema.parse(p);
@@ -93,9 +125,14 @@ export function readQexafsParameters(): QexafsParametersType {
 
 export function readDetectorParameters(): DetectorsSchema {
     const content = fs.readFileSync(detectorsPath);
-    const parsedResult = parser.parse(content.toString());
-
-    const p = parsedResult.DetectorParameters;
+    const fixed = fixXmlToWrapInList(content.toString(), "detectorConfiguration", "detectorConfigurationList" )
+    const parsedResult = parser.parse(fixed);
+    console.dir(parsedResult);
+    let p = parsedResult.DetectorParameters;
+    const r =  parsedResult.DetectorParameters.detectorConfigurationList.detectorConfiguration;
+    console.dir(r);
+    delete p.detectorConfigurationList;
+    p.detectorConfiguration = r;
     console.log("Parsed result", parsedResult);
     try {
         const params: DetectorsSchema = detectorParametersSchema.parse(p);
@@ -108,15 +145,18 @@ export function readDetectorParameters(): DetectorsSchema {
 
 export function readSampleParameters(): SampleParametersType {
     const content = fs.readFileSync(samplePath);
-    const parsedResult = parser.parse(content.toString());
+    const fixed = fixXmlToWrapInList(content.toString(), "sampleParameterMotorPosition", "sampleParameterMotorPositionList" )
+    const parsedResult = parser.parse(fixed);
+
     console.log("Parsed result", parsedResult);
-    const p = parsedResult.B18SampleParameters;
+    let p = parsedResult.B18SampleParameters;
+    const r =  parsedResult.B18SampleParameters.sampleParameterMotorPositionList.sampleParameterMotorPosition;
+    delete p.sampleParameterMotorPositionList
+    p.sampleParameterMotorPosition = r;
     try {
         const sampleParameters: SampleParametersType = sampleParametersSchema.parse(p);
         const motors = sampleParameters.sampleParameterMotorPosition.map(i => motorPositionSchema.parse(i));
-        console.log(`motor params: ${Object.keys(sampleParameters.sampleParameterMotorPosition[0])}`)
         sampleParameters.sampleParameterMotorPosition = motors;
-        console.log(sampleParameters.sampleParameterMotorPosition);
         return sampleParameters
     } catch (e) {
         console.log("Error", e);
@@ -133,7 +173,7 @@ export function readOutputParameters(): OutputParametersType {
         const params: OutputParametersType = outputParametersSchema.parse(p);
         return params
     } catch (e) {
-        console.log("Error", e);
+        console.error("Error", e);
     }
     throw new Error("Failed to parse output parameters at path " + outputPath);
 }

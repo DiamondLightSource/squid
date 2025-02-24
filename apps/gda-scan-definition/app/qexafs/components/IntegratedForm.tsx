@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { JsonForms } from "@jsonforms/react";
-import { materialRenderers } from "@jsonforms/material-renderers";
+import { materialRenderers, MaterialArrayControlRenderer } from "@jsonforms/material-renderers";
 import { fullQexafsSchema, fullQexafsUiSchema, FullQexafsSchemaType, fullQexafsJson } from "../../schemas/qexafs";
 import { useQexafsState, useQexafsDispatch, startConfigRead, startConfigUpdate } from "./QexafsContextProvider";
 

@@ -21,12 +21,16 @@ export function convertSchemaToUiSchema(schema: JsonSchema): UiSchema {
     elements: [],
   };
 
+  console.dir(schema)
+
   // Recursive helper to handle nested properties
   function processProperties(schema: JsonSchema, parentPath = '#/properties'): any {
     const elements: any[] = [];
 
     Object.keys(schema.properties || {}).forEach((property) => {
       const propertySchema = schema.properties[property];
+      console.log(`noew another property: ${property}`)
+      console.dir(propertySchema);
 
       // Check if the property is a nested object (with its own properties)
       if (propertySchema.type === 'object' && propertySchema.properties) {
@@ -50,7 +54,7 @@ export function convertSchemaToUiSchema(schema: JsonSchema): UiSchema {
             },
           },
         };
-        console.log(`trying to render array: ${property}, with ${nestedArrayUiSchema.type}, ${nestedArrayUiSchema.scope}`);
+        // console.log(`trying to render array: ${property}, with ${nestedArrayUiSchema.type}, ${nestedArrayUiSchema.scope}`);
         elements.push(nestedArrayUiSchema);
       } else {
         // Add a control element for simple types
@@ -63,8 +67,8 @@ export function convertSchemaToUiSchema(schema: JsonSchema): UiSchema {
       }
     });
 
-    console.log(`elements: ${elements}`);
-    console.dir(elements, {depth: null});
+    // console.log(`elements: ${elements}`);
+    // console.dir(elements, {depth: null});
     return elements;
   }
 
@@ -97,5 +101,5 @@ const schema = {
   required: ['name', 'due_date'],
 };
 
-const uischema = convertSchemaToUiSchema(schema);
-console.log(JSON.stringify(uischema, null, 2));
+// const uischema = convertSchemaToUiSchema(schema);
+// console.log(JSON.stringify(uischema, null, 2));
