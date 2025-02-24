@@ -25,6 +25,7 @@ import PlanForm from "./PlanForm";
 import { environmentStatusMapping, taskStatusEnumMapping, workerStatusMapping } from "./Icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Grade } from "@mui/icons-material";
+import QueueManager from "./QueueManager";
 
 
 
@@ -202,6 +203,7 @@ const IoTDashboard: React.FC = () => {
                             <p>{selectedPlan.description ?? 'no description'}</p>
                         </Grid>
                         <Grid item xs={6}>
+                            <QueueManager />
                             <PlanForm planName={selectedPlan.name} />
                         </Grid>
                     </Grid>

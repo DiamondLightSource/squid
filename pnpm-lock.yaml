@@ -502,7 +502,7 @@ importers:
         version: 5.5.0
       '@zodios/core':
         specifier: ^10.9.6
-        version: 10.9.6(axios@1.7.9)(zod@apps+gda-scan-definition+@hookform+resolvers+zod)
+        version: 10.9.6(axios@1.7.9)(zod@3.24.1)
       Grid2:
         specifier: link:@mui/material/Grid2
         version: link:@mui/material/Grid2
@@ -523,7 +523,7 @@ importers:
         version: 14.2.21(@babel/core@7.24.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.81.0)
       next-safe-action:
         specifier: ^7.9.9
-        version: 7.9.9(next@14.2.21(@babel/core@7.24.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.81.0))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(yup@1.4.0)(zod@apps+gda-scan-definition+@hookform+resolvers+zod)
+        version: 7.9.9(next@14.2.21(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.81.0))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(yup@1.4.0)(zod@3.24.1)
       node-fetch:
         specifier: ^3.3.2
         version: 3.3.2
@@ -554,6 +554,9 @@ importers:
       sqlite3:
         specifier: ^5.1.7
         version: 5.1.7
+      uuid:
+        specifier: ^11.1.0
+        version: 11.1.0
       xmlbuilder2:
         specifier: ^3.1.1
         version: 3.1.1
@@ -565,10 +568,10 @@ importers:
         version: 0.8.0(xterm@5.3.0)
       zod:
         specifier: link:@hookform/resolvers/zod
-        version: link:@hookform/resolvers/zod
+        version: 3.24.1
       zod-to-json-schema:
         specifier: ^3.24.1
-        version: 3.24.1(zod@apps+gda-scan-definition+@hookform+resolvers+zod)
+        version: 3.24.1(zod@3.24.1)
     devDependencies:
       '@next/eslint-plugin-next':
         specifier: ^14.1.1
@@ -10948,6 +10951,10 @@ packages:
     resolution: {integrity: sha512-pMZTvIkT1d+TFGvDOqodOclx0QWkkgi6Tdoa8gC8ffGAAqz9pzPTZWAybbsHHoED/ztMtkv/VoYTYyShUn81hA==}
     engines: {node: '>= 0.4.0'}
 
+  uuid@11.1.0:
+    resolution: {integrity: sha512-0/A9rDy9P7cJ+8w1c9WD9V//9Wj15Ce2MPz8Ri6032usz+NfePxx5AcN3bN+r6ZL6jEo066/yNYB3tn4pQEx+A==}
+    hasBin: true
+
   uuid@8.3.2:
     resolution: {integrity: sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==}
     hasBin: true
@@ -16813,10 +16820,10 @@ snapshots:
       axios: 1.7.3
       zod: 3.24.1
 
-  '@zodios/core@10.9.6(axios@1.7.9)(zod@apps+gda-scan-definition+@hookform+resolvers+zod)':
+  '@zodios/core@10.9.6(axios@1.7.9)(zod@3.24.1)':
     dependencies:
       axios: 1.7.9
-      zod: link:apps/gda-scan-definition/@hookform/resolvers/zod
+      zod: 3.24.1
 
   abbrev@1.1.1:
     optional: true
@@ -20818,15 +20825,6 @@ snapshots:
 
   neo-async@2.6.2: {}
 
-  next-safe-action@7.9.9(next@14.2.21(@babel/core@7.24.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.81.0))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(yup@1.4.0)(zod@apps+gda-scan-definition+@hookform+resolvers+zod):
-    dependencies:
-      next: 14.2.21(@babel/core@7.24.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.81.0)
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-    optionalDependencies:
-      yup: 1.4.0
-      zod: link:apps/gda-scan-definition/@hookform/resolvers/zod
-
   next-safe-action@7.9.9(next@14.2.21(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.81.0))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(yup@1.4.0)(zod@3.23.8):
     dependencies:
       next: 14.2.21(@babel/core@7.24.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.81.0)
@@ -23098,6 +23096,8 @@ snapshots:
 
   utils-merge@1.0.1: {}
 
+  uuid@11.1.0: {}
+
   uuid@8.3.2: {}
 
   uuid@9.0.1: {}
@@ -23477,9 +23477,9 @@ snapshots:
       compress-commons: 4.1.2
       readable-stream: 3.6.2
 
-  zod-to-json-schema@3.24.1(zod@apps+gda-scan-definition+@hookform+resolvers+zod):
+  zod-to-json-schema@3.24.1(zod@3.24.1):
     dependencies:
-      zod: link:apps/gda-scan-definition/@hookform/resolvers/zod
+      zod: 3.24.1
 
   zod@3.23.8: {}
 
