@@ -20,25 +20,18 @@ import {
     TableRow,
     Paper,
 } from "@mui/material";
+import { useDevices, usePlans } from "../hooks";
 
 const IoTDashboard: React.FC = () => {
     const [search, setSearch] = useState("");
     const [selectedPlan, setSelectedPlan] = useState("");
     const [params, setParams] = useState({ param1: "", param2: "", param3: "" });
 
-    const devices = [
-        { id: 1001, name: "Sensor A", status: "Online", lastSeen: "5 sec ago" },
-        { id: 1002, name: "Sensor B", status: "Offline", lastSeen: "3 min ago" },
-        { id: 1003, name: "Actuator X", status: "Online", lastSeen: "10 sec ago" },
-        { id: 1004, name: "Camera Y", status: "Online", lastSeen: "15 sec ago" },
-    ];
-
-    const plans = [
-        "Temperature Calibration",
-        "Humidity Sync",
-        "Security Sweep",
-        "Custom Data Capture",
-    ];
+    const { devices, loading: devicesLoading } = useDevices();
+    console.dir(devices);
+    const { plans, loading: plansLoading } = usePlans();
+    console.log(`plans: ${plans}`)
+    console.dir(plans)
 
     return (
         <Container>
@@ -95,9 +88,8 @@ const IoTDashboard: React.FC = () => {
                 <Table>
                     <TableHead>
                         <TableRow>
-                            <TableCell>ID</TableCell>
                             <TableCell>Name</TableCell>
-                            <TableCell>Status</TableCell>
+                            <TableCell>Protocols</TableCell>
                             <TableCell>Last Seen</TableCell>
                         </TableRow>
                     </TableHead>
@@ -108,9 +100,10 @@ const IoTDashboard: React.FC = () => {
                             )
                             .map((device) => (
                                 <TableRow key={device.id}>
-                                    <TableCell>{device.id}</TableCell>
                                     <TableCell>{device.name}</TableCell>
-                                    <TableCell>{device.status}</TableCell>
+                                    <TableCell>{device.protocols.map(m => {
+                                        return <span>{m} {" "}</span>
+                                    })}</TableCell>
                                     <TableCell>{device.lastSeen}</TableCell>
                                 </TableRow>
                             ))}
@@ -129,7 +122,7 @@ const IoTDashboard: React.FC = () => {
                         >
                             {plans.map((plan, index) => (
                                 <MenuItem key={index} value={plan}>
-                                    {plan}
+                                    {plan["name"]}
                                 </MenuItem>
                             ))}
                         </Select>

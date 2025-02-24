@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from './api';
 
 export const useDevices = () => {
     const [devices, setDevices] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        axios.get('/devices')
+        api.get('/devices')
             .then(response => setDevices(response.data.devices))
             .finally(() => setLoading(false));
     }, []);
@@ -19,7 +19,7 @@ export const useDeviceByName = (name: string) => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        axios.get(`/devices/${name}`)
+        api.get(`/devices/${name}`)
             .then(response => setDevice(response.data))
             .finally(() => setLoading(false));
     }, [name]);
@@ -32,7 +32,7 @@ export const useEnvironment = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        axios.get('/environment')
+        api.get('/environment')
             .then(response => setEnvironment(response.data))
             .finally(() => setLoading(false));
     }, []);
@@ -45,7 +45,7 @@ export const usePlans = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        axios.get('/plans')
+        api.get('/plans')
             .then(response => setPlans(response.data.plans))
             .finally(() => setLoading(false));
     }, []);
@@ -58,7 +58,7 @@ export const usePlanByName = (name: string) => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        axios.get(`/plans/${name}`)
+        api.get(`/plans/${name}`)
             .then(response => setPlan(response.data))
             .finally(() => setLoading(false));
     }, [name]);
