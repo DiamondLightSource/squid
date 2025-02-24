@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { Suspense, useMemo, useState } from 'react';
 import {
     materialCells,
     materialRenderers,
@@ -73,6 +73,7 @@ const PlanForm = ({ planName }: { planName: string }) => {
         console.log('Form submitted with:', formData);
     };
 
+    const Fallback = () => <div>Loading...</div>;
     if (loading) return <p>Loading...</p>;
     if (error) return <p style={{ color: 'black' }}>Error: {error}</p>;
     if (!plan) return <p>No plan found.</p>;
@@ -80,15 +81,6 @@ const PlanForm = ({ planName }: { planName: string }) => {
     return (
         <div>
             <h2 style={{ color: 'black' }}>Run Plan: {plan.name}</h2>
-            <p>{plan.description}</p>
-            <JsonForms
-                schema={schema}
-                // uischema={uischema}
-                data={data}
-                renderers={materialRenderers}
-                cells={materialCells}
-                onChange={({ data }) => setData(data)}
-            />
             <Button variant="contained" color="primary" sx={{ mt: 2 }} onClick={
                 () => {
                     handleSubmit(data)
@@ -96,6 +88,17 @@ const PlanForm = ({ planName }: { planName: string }) => {
             }>
                 Submit Plan
             </Button>
+            <Suspense fallback={<Fallback />}>
+                {/* <JsonForms
+                    schema={schema}
+                    // uischema={uischema}
+                    data={data}
+                    renderers={materialRenderers}
+                    cells={materialCells}
+                    onChange={({ data }) => setData(data)}
+                /> */}
+            </Suspense >
+
         </div>
     );
 };

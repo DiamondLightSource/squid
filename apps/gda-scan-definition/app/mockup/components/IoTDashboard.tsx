@@ -24,6 +24,7 @@ import { TaskDetails, useCurrentTask, useDevices, useEnvironment, usePlans, useT
 import PlanForm from "./PlanForm";
 import { environmentStatusMapping, taskStatusEnumMapping, workerStatusMapping } from "./Icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Grade } from "@mui/icons-material";
 
 
 
@@ -86,7 +87,7 @@ const IoTDashboard: React.FC = () => {
 
             {/* Worker & Environment Info */}
             <Grid container spacing={2}>
-                <Grid item xs={4}>
+                <Grid item xs={2}>
                     <Card>
                         <CardContent>
                             <Typography variant="h6">Worker Status</Typography>
@@ -108,6 +109,7 @@ const IoTDashboard: React.FC = () => {
                                 <span>initalized: {environment.initialized ? 'YES' : 'NO'}</span>
                                 <Typography>{environment.error_message ? `error: ${environment.error_message}` : ``}</Typography>
                             </div>
+                            <p>Devices available: {devices.length}</p>
                         </CardContent>
                     </Card>
                 </Grid>
@@ -119,8 +121,8 @@ const IoTDashboard: React.FC = () => {
                             {
                                 taskDetails !== null &&
                                 <>
-                                    <Typography>Complete?: {lastTask.is_complete ? 'YES' : 'NO'}</Typography>
-                                    <Typography>Pending?: {lastTask.is_pending ? 'YES' : 'NO'}</Typography>
+                                    <Typography>Complete: {lastTask.is_complete ? 'YES' : 'NO'}</Typography>
+                                    <Typography>Pending: {lastTask.is_pending ? 'YES' : 'NO'}</Typography>
                                     <div style={{ color: taskStateForDisplay.color, display: 'flex', alignItems: 'center' }}>
                                         <FontAwesomeIcon icon={taskStateForDisplay.icon} style={{ marginRight: 8 }} />
                                         <span>{lastTask.task && lastTask.task.name}</span>
@@ -132,71 +134,79 @@ const IoTDashboard: React.FC = () => {
                 </Grid>
             </Grid>
 
-            {/* Search Devices */}
-            <TextField
-                label="Search Devices"
-                variant="outlined"
-                fullWidth
-                margin="normal"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-            />
+            <Grid container spacing={2}>
 
-            {/* Active Devices Table */}
-            <TableContainer component={Paper} sx={{ maxHeight: '50vh', overflowY: 'scroll' }}>
-                <Table>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>Name</TableCell>
-                            <TableCell>Protocols</TableCell>
-                            {/* <TableCell>Last Seen</TableCell> */}
-                        </TableRow>
-                    </TableHead>
-                    <TableBody sx={{ maxHeight: '50vh', overflowY: 'scroll' }}>
-                        {devices
-                            .filter((device) => {
 
-                                const p = device.protocols.join(" ").toLowerCase();
-                                const n = device.name.toLowerCase();
-                                return [p, n].some(i => i.includes(search.toLowerCase()))
-                            }
-                            )
-                            .map((device) => (
-                                <TableRow key={device.id}>
-                                    <TableCell>{device.name}</TableCell>
-                                    <TableCell>{device.protocols.map(m => {
-                                        return <span>{m} {" "}</span>
-                                    })}</TableCell>
+                <Grid item xs={6}>
+
+                    {/* Search Devices */}
+                    <TextField
+                        label="Search Devices"
+                        variant="outlined"
+                        fullWidth
+                        margin="normal"
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                    />
+
+                    {/* Active Devices Table */}
+                    <TableContainer component={Paper} sx={{ maxHeight: '50vh', overflowY: 'scroll' }}>
+                        <Table>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>Name</TableCell>
+                                    <TableCell>Protocols</TableCell>
+                                    {/* <TableCell>Last Seen</TableCell> */}
                                 </TableRow>
-                            ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+                            </TableHead>
+                            <TableBody sx={{ maxHeight: '50vh', overflowY: 'scroll' }}>
+                                {devices
+                                    .filter((device) => {
 
-            {/* Plans & Parameter Submission */}
-            <Grid container spacing={2} mt={2}>
-                <Grid item xs={6}>
-                    <FormControl fullWidth>
-                        <InputLabel>Select Plan</InputLabel>
-                        <Select
-                            value={selectedPlan}
-                            onChange={(e) => setSelectedPlan(e.target.value)}
-                        >
-                            {plans.map((plan, index) => (
-                                <MenuItem key={index} value={plan}>
-                                    {plan["name"]}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
+                                        const p = device.protocols.join(" ").toLowerCase();
+                                        const n = device.name.toLowerCase();
+                                        return [p, n].some(i => i.includes(search.toLowerCase()))
+                                    }
+                                    )
+                                    .map((device) => (
+                                        <TableRow key={device.id}>
+                                            <TableCell>{device.name}</TableCell>
+                                            <TableCell>{device.protocols.map(m => {
+                                                return <span>{m} {" "}</span>
+                                            })}</TableCell>
+                                        </TableRow>
+                                    ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
                 </Grid>
+
                 <Grid item xs={6}>
-                    <PlanForm planName={selectedPlan.name} />
-                </Grid>
-            </Grid>
-            <Button variant="contained" color="primary" sx={{ mt: 2 }}>
-                Submit Plan
-            </Button>
+
+                    {/* Plans & Parameter Submission */}
+                    <Grid container spacing={2} mt={2}>
+                        <Grid item xs={6}>
+                            <FormControl fullWidth>
+                                <InputLabel>Select Plan</InputLabel>
+                                <Select
+                                    value={selectedPlan}
+                                    onChange={(e) => setSelectedPlan(e.target.value)}
+                                >
+                                    {plans.map((plan, index) => (
+                                        <MenuItem key={index} value={plan}>
+                                            {plan["name"]}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                            <p>{selectedPlan.description ?? 'no description'}</p>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <PlanForm planName={selectedPlan.name} />
+                        </Grid>
+                    </Grid>
+                </Grid >
+            </Grid >
         </Container>
     );
 };
