@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     Container,
     Grid,
@@ -20,23 +20,43 @@ import {
     TableRow,
     Paper,
 } from "@mui/material";
-import { useDevices, usePlans } from "../hooks";
+import { useCurrentTask, useDevices, useEnvironment, usePlans, useTaskById, useWorkerState } from "../hooks";
+import PlanForm from "./PlanForm";
+import { environmentStatusMapping } from "./Icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+// const beamlineName = process.env.BEAMLINE;
+const beamlineName = "i22";
 
 const IoTDashboard: React.FC = () => {
     const [search, setSearch] = useState("");
-    const [selectedPlan, setSelectedPlan] = useState("");
-    const [params, setParams] = useState({ param1: "", param2: "", param3: "" });
+    const [selectedPlan, setSelectedPlan] = useState({});
 
+    const { state: workerState, loading: workerLoading } = useWorkerState();
+    const { task, loading: taskLoading } = useCurrentTask();
     const { devices, loading: devicesLoading } = useDevices();
     console.dir(devices);
     const { plans, loading: plansLoading } = usePlans();
-    console.log(`plans: ${plans}`)
-    console.dir(plans)
+    // console.log(`plans: ${plans}`)
+    // console.dir(plans)
 
+    const { taskDetails, loading: taskDetailsLoading } = useTaskById(task ?? '');
+    const { environment, loading: environmentLoading } = useEnvironment();
+
+    // todo add worker status icons and together with env status and on the left
+    // todo and add a guiding tour package
+    // todo add active panel on the right with current task status and plan description etc
+    // todo make devices panel max height and scroll
+
+
+    const environmentStatusInfo = environmentStatusMapping(environment.initialized);
+
+    console.dir(task)
+    console.dir(workerState)
     return (
-        <Container>
+        <Container maxWidth='xl'>
             <Typography variant="h4" gutterBottom>
-                IoT Dashboard
+                {beamlineName} Athena
             </Typography>
 
             {/* Worker & Environment Info */}
@@ -45,9 +65,20 @@ const IoTDashboard: React.FC = () => {
                     <Card>
                         <CardContent>
                             <Typography variant="h6">Worker Status</Typography>
-                            <Typography>Status: Active</Typography>
-                            <Typography>Worker #42</Typography>
-                            <Typography>CPU: 45%</Typography>
+                            <Typography>Status: {workerState}</Typography>
+                        </CardContent>
+                    </Card>
+                </Grid>
+
+                <Grid item xs={4}>
+                    <Card>
+                        <CardContent>
+                            <Typography variant="h6">Environment</Typography>
+                            <div style={{ color: environmentStatusInfo.color, display: 'flex', alignItems: 'center', marginTop: 10 }}>
+                                <FontAwesomeIcon icon={environmentStatusInfo.icon} style={{ marginRight: 8 }} />
+                                <span>initalized: {environment.initialized ? 'YES' : 'NO'}</span>
+                                <Typography>{environment.error_message ? `error: ${environment.error_message}` : ``}</Typography>
+                            </div>
                         </CardContent>
                     </Card>
                 </Grid>
@@ -55,19 +86,14 @@ const IoTDashboard: React.FC = () => {
                     <Card>
                         <CardContent>
                             <Typography variant="h6">Current Task</Typography>
-                            <Typography>Processing Data</Typography>
-                            <Typography>Task: Sensor Sync</Typography>
-                            <Typography>Progress: 75%</Typography>
-                        </CardContent>
-                    </Card>
-                </Grid>
-                <Grid item xs={4}>
-                    <Card>
-                        <CardContent>
-                            <Typography variant="h6">Environment</Typography>
-                            <Typography>Temperature: 22°C</Typography>
-                            <Typography>Humidity: 60%</Typography>
-                            <Typography>Pressure: 1013 hPa</Typography>
+                            <Typography>{task ? task.name : 'no task'}</Typography>
+                            {
+                                taskDetails !== null &&
+                                <>
+                                    <Typography>Complete?: {taskDetails.is_complete}</Typography>
+                                    <Typography>Pending?: {taskDetails.is_pending}</Typography>
+                                </>
+                            }
                         </CardContent>
                     </Card>
                 </Grid>
@@ -90,13 +116,17 @@ const IoTDashboard: React.FC = () => {
                         <TableRow>
                             <TableCell>Name</TableCell>
                             <TableCell>Protocols</TableCell>
-                            <TableCell>Last Seen</TableCell>
+                            {/* <TableCell>Last Seen</TableCell> */}
                         </TableRow>
                     </TableHead>
-                    <TableBody>
+                    <TableBody sx={{ maxHeight: '50vh', overflowY: 'scroll' }}>
                         {devices
-                            .filter((device) =>
-                                device.name.toLowerCase().includes(search.toLowerCase())
+                            .filter((device) => {
+
+                                const p = device.protocols.join(" ").toLowerCase();
+                                const n = device.name.toLowerCase();
+                                return [p, n].some(i => i.includes(search.toLowerCase()))
+                            }
                             )
                             .map((device) => (
                                 <TableRow key={device.id}>
@@ -104,7 +134,6 @@ const IoTDashboard: React.FC = () => {
                                     <TableCell>{device.protocols.map(m => {
                                         return <span>{m} {" "}</span>
                                     })}</TableCell>
-                                    <TableCell>{device.lastSeen}</TableCell>
                                 </TableRow>
                             ))}
                     </TableBody>
@@ -129,28 +158,7 @@ const IoTDashboard: React.FC = () => {
                     </FormControl>
                 </Grid>
                 <Grid item xs={6}>
-                    <TextField
-                        label="Parameter 1"
-                        fullWidth
-                        value={params.param1}
-                        onChange={(e) => setParams({ ...params, param1: e.target.value })}
-                    />
-                </Grid>
-                <Grid item xs={6}>
-                    <TextField
-                        label="Parameter 2"
-                        fullWidth
-                        value={params.param2}
-                        onChange={(e) => setParams({ ...params, param2: e.target.value })}
-                    />
-                </Grid>
-                <Grid item xs={6}>
-                    <TextField
-                        label="Parameter 3"
-                        fullWidth
-                        value={params.param3}
-                        onChange={(e) => setParams({ ...params, param3: e.target.value })}
-                    />
+                    <PlanForm planName={selectedPlan.name} />
                 </Grid>
             </Grid>
             <Button variant="contained" color="primary" sx={{ mt: 2 }}>
