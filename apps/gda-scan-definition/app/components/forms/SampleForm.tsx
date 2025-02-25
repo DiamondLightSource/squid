@@ -1,5 +1,5 @@
 "use client";
-import { Box, Button, Checkbox, Grid, Input, InputLabel, Typography } from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Checkbox, Grid, Input, InputLabel, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { z } from "zod";
 import {
@@ -95,6 +95,56 @@ type SampleParametersFormProps = {
   submitCallback?: (data: SampleParametersSchema) => void;
 }
 
+type SingleDetectorParametersProps = { motor: { scannableName: string; description: string; doMove: boolean; demandPosition: number; }, handleMotorPositionChange: (index: number, field: string, value: string | number | boolean) => void, index: number, removeMotorPosition: (index: number) => void }
+
+function SingleMotorParameter({ motor, handleMotorPositionChange, removeMotorPosition, index }: SingleDetectorParametersProps) {
+  return <Accordion>
+    <AccordionSummary>
+      <InputLabel>
+        Scannable Name:
+        <Input
+          type="text"
+          value={motor.scannableName}
+          onChange={(e) => handleMotorPositionChange(
+            index,
+            "scannableName",
+            e.target.value
+          )} />
+      </InputLabel>
+    </AccordionSummary>
+    <AccordionDetails>
+      <InputLabel>
+        Description:
+        <Input
+          type="text"
+          value={motor.description}
+          onChange={(e) => handleMotorPositionChange(index, "description", e.target.value)} />
+      </InputLabel>
+      <InputLabel>
+        Do Move:
+        <Input
+          type="checkbox"
+          checked={motor.doMove}
+          onChange={(e) => handleMotorPositionChange(index, "doMove", e.target.checked)} />
+      </InputLabel>
+      <InputLabel>
+        Demand Position:
+        <Input
+          type="number"
+          value={motor.demandPosition}
+          onChange={(e) => handleMotorPositionChange(
+            index,
+            "demandPosition",
+            parseFloat(e.target.value)
+          )} />
+      </InputLabel>
+      <Button type="button" onClick={() => removeMotorPosition(index)}>
+        Remove
+      </Button>
+    </AccordionDetails>
+  </Accordion>;
+}
+
 
 export default function SampleParametersForm({ overrideDefaultValue, submitCallback }: SampleParametersFormProps) {
   const [formData, setFormData] =
@@ -177,8 +227,19 @@ export default function SampleParametersForm({ overrideDefaultValue, submitCallb
         e.preventDefault();
         handleSubmit();
       }}
-      style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
+      style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}
     >
+      <Typography variant="h5" color='black'>Sample parameters</Typography>
+
+      <InputLabel>
+        Name:
+        <Input
+          type="text"
+          value={formData.name}
+          onChange={(e) => handleUpdateField(["name"], e.target.value)}
+          required
+        />
+      </InputLabel>
       <Typography variant="h6">Sample Parameters</Typography>
       <InputLabel>
         Validate:
@@ -187,15 +248,6 @@ export default function SampleParametersForm({ overrideDefaultValue, submitCallb
           onChange={(e) =>
             handleUpdateField(["shouldValidate"], e.target.checked)
           }
-        />
-      </InputLabel>
-      <InputLabel>
-        Name:
-        <Input
-          type="text"
-          value={formData.name}
-          onChange={(e) => handleUpdateField(["name"], e.target.value)}
-          required
         />
       </InputLabel>
       <InputLabel>
@@ -288,66 +340,14 @@ export default function SampleParametersForm({ overrideDefaultValue, submitCallb
               gap: "1rem",
             }}
           >
-            <InputLabel>
-              Scannable Name:
-              <Input
-                type="text"
-                value={motor.scannableName}
-                onChange={(e) =>
-                  handleMotorPositionChange(
-                    index,
-                    "scannableName",
-                    e.target.value
-                  )
-                }
-              />
-            </InputLabel>
-            <InputLabel>
-              Description:
-              <Input
-                type="text"
-                value={motor.description}
-                onChange={(e) =>
-                  handleMotorPositionChange(index, "description", e.target.value)
-                }
-              />
-            </InputLabel>
-            <InputLabel>
-              Do Move:
-              <Input
-                type="checkbox"
-                checked={motor.doMove}
-                onChange={(e) =>
-                  handleMotorPositionChange(index, "doMove", e.target.checked)
-                }
-              />
-            </InputLabel>
-            <InputLabel>
-              Demand Position:
-              <Input
-                type="number"
-                value={motor.demandPosition}
-                onChange={(e) =>
-                  handleMotorPositionChange(
-                    index,
-                    "demandPosition",
-                    parseFloat(e.target.value)
-                  )
-                }
-              />
-            </InputLabel>
-            <Button type="button" onClick={() => removeMotorPosition(index)}>
-              Remove
-            </Button>
+            <SingleMotorParameter motor={motor} handleMotorPositionChange={handleMotorPositionChange} index={index} removeMotorPosition={removeMotorPosition} />
           </Grid>
         ))}
       </Grid>
       <Button type="button" onClick={addMotorPosition}>
         Add Motor Position
       </Button >
-
       <Button type="submit">Submit</Button >
     </form>
   );
 };
-

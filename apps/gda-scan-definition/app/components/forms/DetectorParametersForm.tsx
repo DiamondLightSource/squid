@@ -83,13 +83,21 @@ function DetectorParametersForm({
   }, [overrideDefaultValue]);
 
   return (
-    <Grid container sx={{ color: 'black' }}>
+    <Grid container sx={{
+      color: 'black',
+      flexDirection: "column", gap: "0.125rem"
+
+    }}>
       <Grid item xs={8}>
+
+        <div style={{ width: '100%', backgroundColor: 'red', height: '100%' }}>
+
+          <p> test</p>
+        </div>
         <form
           onSubmit={(e) => handleSubmit(e)}
-          style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
         >
-          <Typography variant="h6">Detector Parameters</Typography>
+          {/* <Typography variant="h5">Detector Parameters</Typography>
           <InputLabel>
             Validate:
             <CheckBox
@@ -98,14 +106,20 @@ function DetectorParametersForm({
                 setFormData({ ...formData, shouldValidate: !formData.shouldValidate })
               }
             />
-          </InputLabel>
-
+          </InputLabel> */}
+          <Button type="submit">Submit</Button>
           <Typography variant="h6">Detector Configurations</Typography>
-          <Grid container>
+          <Button type="button" onClick={handleAddConfiguration}>
+            Add Configuration
+          </Button>
+          <div style={{ width: '100%', backgroundColor: 'red', height: '100%' }}>
+
+            <p> test</p>
+          </div>
+          {/* <Grid container>
 
             {formData.detectorConfiguration.map((config, index) => (
               <Grid item xs={4}>
-
                 <SingleDetectorParameters
                   index={index}
                   config={config}
@@ -114,12 +128,9 @@ function DetectorParametersForm({
                 />
               </Grid>
             ))}
-          </Grid>
+          </Grid> */}
 
-          <Button type="button" onClick={handleAddConfiguration}>
-            Add Configuration
-          </Button>
-          <Button type="submit">Submit</Button>
+
         </form>
       </Grid>
       {/* <Grid item xs={8}>

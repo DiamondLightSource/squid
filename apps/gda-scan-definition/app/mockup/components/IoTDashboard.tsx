@@ -83,7 +83,7 @@ const IoTDashboard: React.FC = () => {
     return (
         <Container maxWidth='xl'>
             <Typography variant="h4" gutterBottom>
-                {beamlineName} Athena
+                {beamlineName} data collection
             </Typography>
 
             {/* Worker & Environment Info */}
@@ -188,7 +188,7 @@ const IoTDashboard: React.FC = () => {
                     <Grid container spacing={2} mt={2}>
                         <Grid item xs={6}>
                             <FormControl fullWidth>
-                                <InputLabel>Select Plan</InputLabel>
+                                <InputLabel sx={{margin: '1rem'}}>Select Plan</InputLabel>
                                 <Select
                                     value={selectedPlan}
                                     onChange={(e) => setSelectedPlan(e.target.value)}
@@ -200,6 +200,7 @@ const IoTDashboard: React.FC = () => {
                                     ))}
                                 </Select>
                             </FormControl>
+                            <text>plan description: </text>
                             <p>{selectedPlan.description ?? 'no description'}</p>
                         </Grid>
                         <Grid item xs={6}>

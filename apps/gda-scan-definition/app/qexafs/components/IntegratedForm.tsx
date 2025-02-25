@@ -7,7 +7,7 @@ import { fullQexafsSchema, fullQexafsUiSchema, FullQexafsSchemaType, fullQexafsJ
 import { useQexafsState, useQexafsDispatch, startConfigRead, startConfigUpdate } from "./QexafsContextProvider";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
-import { Typography } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import SampleParametersForm from "../../components/forms/SampleForm";
 import DetectorParametersForm from "../../components/forms/DetectorParametersForm";
 import { Preview } from "@mui/icons-material";
@@ -37,7 +37,7 @@ const IntegratedForm = () => {
     const partial = true;
     return (
         <div>
-            <h1>QEXAFS Configuration</h1>
+            <Typography variant="h1" color="black" >QEXAFS Configuration</Typography>
             <Box style={{ marginTop: "20px" }}>
                 <Button onClick={handleReadConfig} disabled={isLoading}>
                     Read Config
@@ -58,29 +58,38 @@ const IntegratedForm = () => {
                     </Typography>
                     {
                         formData ? (
-                            <div>
+                            <Grid container sx={{ margin: '2rem' }} spacing={2}>
                                 {/* JSON Forms integration */}
-                                < JsonForms
-                                    data={formData}
-                                    onChange={({ data }) => setFormData(data)}
-                                    schema={partialQexafsJson}
-                                    // uischema={fullQexafsUiSchema}
-                                    renderers={materialRenderers}
-                                />
-                                <DetectorParametersForm overrideDefaultValue={formData.detectorParameters} submitCallback={(d: DetectorsSchema) => setFormData((prev) => {
-                                    if (prev == undefined) {
-                                        return prev;
-                                    }
-                                    return { ...prev, detectorParameters: d }
-                                })} />
-                                <SampleParametersForm overrideDefaultValue={formData.sampleParameters} submitCallback={(s: SampleParametersType) => setFormData((prev) => {
-                                    if (prev == undefined) {
-                                        return prev;
-                                    }
-                                    return { ...prev, sampleParameters: s }
-                                })} />
+                                <Grid item xs={2}>
 
-                            </div>
+                                    < JsonForms
+                                        data={formData}
+                                        onChange={({ data }) => setFormData(data)}
+                                        schema={partialQexafsJson}
+                                        // uischema={fullQexafsUiSchema}
+                                        renderers={materialRenderers}
+                                    />
+                                </Grid>
+                                <Grid item xs={6}>
+
+                                    <DetectorParametersForm overrideDefaultValue={formData.detectorParameters} submitCallback={(d: DetectorsSchema) => setFormData((prev) => {
+                                        if (prev == undefined) {
+                                            return prev;
+                                        }
+                                        return { ...prev, detectorParameters: d }
+                                    })} />
+                                </Grid>
+                                <Grid item xs={4}>
+
+                                    <SampleParametersForm overrideDefaultValue={formData.sampleParameters} submitCallback={(s: SampleParametersType) => setFormData((prev) => {
+                                        if (prev == undefined) {
+                                            return prev;
+                                        }
+                                        return { ...prev, sampleParameters: s }
+                                    })} />
+                                </Grid>
+
+                            </Grid>
                         ) : (
                             <p>No configuration available. Please fetch the configuration.</p>
                         )
