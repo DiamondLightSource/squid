@@ -1,5 +1,5 @@
 import { DiffEditor } from "@monaco-editor/react";
-import { Grid } from "@mui/material";
+import { Grid, Input, InputLabel } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { XMLBuilder } from "fast-xml-parser";
 import React, { useEffect, useState } from "react";
@@ -82,16 +82,16 @@ function DetectorParametersForm({
   }, [overrideDefaultValue]);
 
   return (
-    <Grid container>
+    <Grid container sx={{ color: 'black' }}>
       <Grid item xs={4}>
         <form
           onSubmit={(e) => handleSubmit(e)}
           style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
         >
           <Typography variant="h6">Detector Parameters</Typography>
-          <label>
+          <InputLabel>
             Validate:
-            <input
+            <Input
               type="checkbox"
               value={formData.shouldValidate.toString()}
               checked={formData.shouldValidate}
@@ -99,9 +99,9 @@ function DetectorParametersForm({
                 setFormData({ ...formData, shouldValidate: e.target.checked })
               }
             />
-          </label>
+          </InputLabel>
 
-          <h3>Detector Configurations</h3>
+          <Typography variant="h6">Detector Configurations</Typography>
           <Grid container>
 
             {formData.detectorConfiguration.map((config, index) => (
@@ -120,7 +120,7 @@ function DetectorParametersForm({
           <button type="submit">Submit</button>
         </form>
       </Grid>
-      <Grid item xs={8}>
+      {/* <Grid item xs={8}>
         <DiffEditor
           original={builder.build(initialData)}
           width="70vw"
@@ -128,7 +128,7 @@ function DetectorParametersForm({
           language="html"
           modified={builder.build(formData)}
         />
-      </Grid>
+      </Grid> */}
     </Grid>
   );
 }

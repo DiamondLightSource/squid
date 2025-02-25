@@ -1,5 +1,5 @@
 "use client";
-import { Typography } from "@mui/material";
+import { Box, Button, Input, InputLabel, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { z } from "zod";
 import {
@@ -171,55 +171,55 @@ const SampleParametersForm = () => {
       style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
     >
       <Typography variant="h6">Sample Parameters</Typography>
-      <label>
+      <InputLabel>
         Validate:
-        <input
+        <Input
           type="checkbox"
           checked={formData.shouldValidate}
           onChange={(e) =>
             handleUpdateField(["shouldValidate"], e.target.checked)
           }
         />
-      </label>
-      <label>
+      </InputLabel>
+      <InputLabel>
         Name:
-        <input
+        <Input
           type="text"
           value={formData.name}
           onChange={(e) => handleUpdateField(["name"], e.target.value)}
           required
         />
-      </label>
-      <label>
+      </InputLabel>
+      <InputLabel>
         Description 1:
-        <input
+        <Input
           type="text"
           value={formData.description1}
           onChange={(e) => handleUpdateField(["description1"], e.target.value)}
           required
         />
-      </label>
-      <label>
+      </InputLabel>
+      <InputLabel>
         Description 2:
-        <input
+        <Input
           type="text"
           value={formData.description2}
           onChange={(e) => handleUpdateField(["description2"], e.target.value)}
           required
         />
-      </label>
-      <label>
+      </InputLabel>
+      <InputLabel>
         Stage:
-        <input
+        <Input
           type="text"
           value={formData.stage}
           onChange={(e) => handleUpdateField(["stage"], e.target.value)}
           required
         />
-      </label>
-      <label>
+      </InputLabel>
+      <InputLabel>
         Temperature Control:
-        <input
+        <Input
           type="text"
           value={formData.temperaturecontrol}
           onChange={(e) =>
@@ -227,32 +227,32 @@ const SampleParametersForm = () => {
           }
           required
         />
-      </label>
+      </InputLabel>
 
       <h3>XY Theta Stage</h3>
-      <label>
+      <InputLabel>
         X:
-        <input
+        <Input
           type="number"
           value={formData.xythetastage.x}
           onChange={(e) =>
             handleUpdateField(["xythetastage", "x"], parseFloat(e.target.value))
           }
         />
-      </label>
-      <label>
+      </InputLabel>
+      <InputLabel>
         Y:
-        <input
+        <Input
           type="number"
           value={formData.xythetastage.y}
           onChange={(e) =>
             handleUpdateField(["xythetastage", "y"], parseFloat(e.target.value))
           }
         />
-      </label>
-      <label>
+      </InputLabel>
+      <InputLabel>
         Theta:
-        <input
+        <Input
           type="number"
           value={formData.xythetastage.theta}
           onChange={(e) =>
@@ -262,15 +262,15 @@ const SampleParametersForm = () => {
             )
           }
         />
-      </label>
+      </InputLabel>
 
       {/* Repeat similar structures for other stage schemas like ln2cryostage, furnace, etc. */}
 
-      <h3>Motor Positions</h3>
+      <Typography variant="h3">Motor Positions</Typography>
       {formData.sampleParameterMotorPosition.map((motor, index) => (
-        <div
+        <Box
           key={index}
-          style={{
+          xx={{
             border: "1px solid #ccc",
             marginBottom: "1rem",
             display: "flex",
@@ -278,9 +278,9 @@ const SampleParametersForm = () => {
             gap: "1rem",
           }}
         >
-          <label>
+          <InputLabel>
             Scannable Name:
-            <input
+            <Input
               type="text"
               value={motor.scannableName}
               onChange={(e) =>
@@ -291,30 +291,30 @@ const SampleParametersForm = () => {
                 )
               }
             />
-          </label>
-          <label>
+          </InputLabel>
+          <InputLabel>
             Description:
-            <input
+            <Input
               type="text"
               value={motor.description}
               onChange={(e) =>
                 handleMotorPositionChange(index, "description", e.target.value)
               }
             />
-          </label>
-          <label>
+          </InputLabel>
+          <InputLabel>
             Do Move:
-            <input
+            <Input
               type="checkbox"
               checked={motor.doMove}
               onChange={(e) =>
                 handleMotorPositionChange(index, "doMove", e.target.checked)
               }
             />
-          </label>
-          <label>
+          </InputLabel>
+          <InputLabel>
             Demand Position:
-            <input
+            <Input
               type="number"
               value={motor.demandPosition}
               onChange={(e) =>
@@ -325,17 +325,17 @@ const SampleParametersForm = () => {
                 )
               }
             />
-          </label>
-          <button type="button" onClick={() => removeMotorPosition(index)}>
+          </InputLabel>
+          <Button type="button" onClick={() => removeMotorPosition(index)}>
             Remove
-          </button>
-        </div>
+          </Button>
+        </Box>
       ))}
-      <button type="button" onClick={addMotorPosition}>
+      <Button type="button" onClick={addMotorPosition}>
         Add Motor Position
-      </button>
+      </Button >
 
-      <button type="submit">Submit</button>
+      <Button type="submit">Submit</Button >
     </form>
   );
 };

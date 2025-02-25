@@ -213,6 +213,17 @@ export const fullQexafsSchema = z.object({
   sampleParameters: sampleParametersSchema,
 });
 
+
+export const partialQexafsSchema = z.object({
+  qexafsParameters: qexafsParametersSchema,
+  outputParameters: outputParametersSchema,
+})
+
+export type PartialQexafsSchemaType = z.infer<typeof partialQexafsSchema>;
+
+export const partialQexafsJson: JsonSchema  = zodToJsonSchema(partialQexafsSchema) as unknown as JsonSchema;
+
+
 export type FullQexafsSchemaType = z.infer<typeof fullQexafsSchema>;
 export const fullQexafsJson: JsonSchema = zodToJsonSchema(fullQexafsSchema) as unknown as JsonSchema;
 console.log("full qexafs json",fullQexafsJson);

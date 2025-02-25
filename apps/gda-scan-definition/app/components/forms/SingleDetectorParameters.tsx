@@ -1,3 +1,7 @@
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Input from "@mui/material/Input";
+import InputLabel from "@mui/material/InputLabel";
 import React from "react";
 
 type SingleDetectorParametersProps = {
@@ -18,9 +22,9 @@ type SingleDetectorParametersProps = {
 };
 
 export function SingleDetectorParameters({ index, config, handleUpdateConfiguration, handleRemoveConfiguration }: SingleDetectorParametersProps): React.JSX.Element {
-  return <div
+  return <Box
     key={index}
-    style={{
+    sx={{
       marginBottom: "1rem",
       border: "1px solid #ccc",
       padding: "1rem",
@@ -29,9 +33,9 @@ export function SingleDetectorParameters({ index, config, handleUpdateConfigurat
       gap: "1rem",
     }}
   >
-    <label>
+    <InputLabel>
       Description:
-      <input
+      <Input
         type="text"
         placeholder="Description"
         value={config.description}
@@ -41,11 +45,11 @@ export function SingleDetectorParameters({ index, config, handleUpdateConfigurat
           e.target.value
         )}
         required />
-    </label>
+    </InputLabel>
 
-    <label>
+    <InputLabel>
       Detector Name:
-      <input
+      <Input
         type="text"
         placeholder="Detector Name"
         value={config.detectorName || ""}
@@ -54,11 +58,11 @@ export function SingleDetectorParameters({ index, config, handleUpdateConfigurat
           "detectorName",
           e.target.value
         )} />
-    </label>
+    </InputLabel>
 
-    <label>
+    <InputLabel>
       Config File Name:
-      <input
+      <Input
         type="text"
         placeholder="Config File Name"
         value={config.configFileName || ""}
@@ -67,11 +71,11 @@ export function SingleDetectorParameters({ index, config, handleUpdateConfigurat
           "configFileName",
           e.target.value
         )} />
-    </label>
+    </InputLabel>
 
-    <label>
+    <InputLabel>
       Script Command:
-      <input
+      <Input
         type="text"
         placeholder="Script Command"
         value={config.scriptCommand || ""}
@@ -80,11 +84,11 @@ export function SingleDetectorParameters({ index, config, handleUpdateConfigurat
           "scriptCommand",
           e.target.value
         )} />
-    </label>
+    </InputLabel>
 
-    <label>
+    <InputLabel>
       Use Detector In Scan:
-      <input
+      <Input
         type="checkbox"
         checked={config.useDetectorInScan}
         onChange={(e) => handleUpdateConfiguration(
@@ -92,11 +96,11 @@ export function SingleDetectorParameters({ index, config, handleUpdateConfigurat
           "useDetectorInScan",
           e.target.checked
         )} />
-    </label>
+    </InputLabel>
 
-    <label>
+    <InputLabel>
       Use Script Command:
-      <input
+      <Input
         type="checkbox"
         checked={config.useScriptCommand}
         onChange={(e) => handleUpdateConfiguration(
@@ -104,11 +108,11 @@ export function SingleDetectorParameters({ index, config, handleUpdateConfigurat
           "useScriptCommand",
           e.target.checked
         )} />
-    </label>
+    </InputLabel>
 
-    <label>
+    <InputLabel>
       Use Config File:
-      <input
+      <Input
         type="checkbox"
         checked={config.useConfigFile}
         onChange={(e) => handleUpdateConfiguration(
@@ -116,11 +120,11 @@ export function SingleDetectorParameters({ index, config, handleUpdateConfigurat
           "useConfigFile",
           e.target.checked
         )} />
-    </label>
+    </InputLabel>
 
-    <label>
+    <InputLabel>
       Always Use Detector In Scan:
-      <input
+      <Input
         type="checkbox"
         checked={config.alwaysUseDetectorInScan || false}
         onChange={(e) => handleUpdateConfiguration(
@@ -128,11 +132,11 @@ export function SingleDetectorParameters({ index, config, handleUpdateConfigurat
           "alwaysUseDetectorInScan",
           e.target.checked
         )} />
-    </label>
+    </InputLabel>
 
-    <label>
+    <InputLabel>
       Extra Detector Name:
-      <input
+      <Input
         type="text"
         placeholder="Extra Detector Name"
         value={config.extraDetectorName || ""}
@@ -141,13 +145,13 @@ export function SingleDetectorParameters({ index, config, handleUpdateConfigurat
           "extraDetectorName",
           e.target.value
         )} />
-    </label>
+    </InputLabel>
 
-    <button
+    <Button
       type="button"
       onClick={() => handleRemoveConfiguration(index)}
     >
       Remove Configuration
-    </button>
-  </div>;
+    </Button>
+  </Box>;
 }

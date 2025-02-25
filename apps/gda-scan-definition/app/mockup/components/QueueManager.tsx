@@ -39,7 +39,7 @@ export default function QueueManager() {
 
     return (
         <div>
-            <h2>Anonymous Queue</h2>
+            <h2>Plan Queue</h2>
             <ul>
                 {queue.map((item, index) => (
                     <li key={index}>

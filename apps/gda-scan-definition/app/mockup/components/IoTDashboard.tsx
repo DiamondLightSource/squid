@@ -56,7 +56,7 @@ const IoTDashboard: React.FC = () => {
     const { state: workerState, loading: workerLoading } = useWorkerState();
     const { task, loading: taskLoading } = useCurrentTask();
     const { devices, loading: devicesLoading } = useDevices();
-    console.dir(devices);
+    // console.dir(devices);
     const { plans, loading: plansLoading } = usePlans();
     // console.log(`plans: ${plans}`)
     // console.dir(plans)
@@ -75,10 +75,10 @@ const IoTDashboard: React.FC = () => {
     const taskStateForDisplay = getTaskDisplay(task);
 
 
-    console.dir(task)
-    console.dir(taskDetails)
+    // console.dir(task)
+    // console.dir(taskDetails)
     const lastTask = taskDetails;
-    console.dir(workerState)
+    // console.dir(workerState)
 
     return (
         <Container maxWidth='xl'>
