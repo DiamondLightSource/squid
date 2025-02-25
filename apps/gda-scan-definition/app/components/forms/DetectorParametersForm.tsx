@@ -1,5 +1,5 @@
 import { DiffEditor } from "@monaco-editor/react";
-import { Grid, Input, InputLabel } from "@mui/material";
+import { Button, Grid, Input, InputLabel } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { XMLBuilder } from "fast-xml-parser";
 import React, { useEffect, useState } from "react";
@@ -7,6 +7,7 @@ import {
   DetectorConfiguration, DetectorsSchema
 } from "../../schemas/qexafs";
 import { SingleDetectorParameters } from "./SingleDetectorParameters";
+import { CheckBox } from "@mui/icons-material";
 
 const builder = new XMLBuilder();
 const defaultDetectorConfig: DetectorConfiguration = {
@@ -83,7 +84,7 @@ function DetectorParametersForm({
 
   return (
     <Grid container sx={{ color: 'black' }}>
-      <Grid item xs={4}>
+      <Grid item xs={8}>
         <form
           onSubmit={(e) => handleSubmit(e)}
           style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
@@ -91,12 +92,10 @@ function DetectorParametersForm({
           <Typography variant="h6">Detector Parameters</Typography>
           <InputLabel>
             Validate:
-            <Input
-              type="checkbox"
-              value={formData.shouldValidate.toString()}
+            <CheckBox
               checked={formData.shouldValidate}
               onChange={(e) =>
-                setFormData({ ...formData, shouldValidate: e.target.checked })
+                setFormData({ ...formData, shouldValidate: !formData.shouldValidate })
               }
             />
           </InputLabel>
@@ -105,19 +104,22 @@ function DetectorParametersForm({
           <Grid container>
 
             {formData.detectorConfiguration.map((config, index) => (
-              <SingleDetectorParameters
-                index={index}
-                config={config}
-                handleUpdateConfiguration={handleUpdateConfiguration}
-                handleRemoveConfiguration={handleRemoveConfiguration}
-              />
+              <Grid item xs={4}>
+
+                <SingleDetectorParameters
+                  index={index}
+                  config={config}
+                  handleUpdateConfiguration={handleUpdateConfiguration}
+                  handleRemoveConfiguration={handleRemoveConfiguration}
+                />
+              </Grid>
             ))}
           </Grid>
 
-          <button type="button" onClick={handleAddConfiguration}>
+          <Button type="button" onClick={handleAddConfiguration}>
             Add Configuration
-          </button>
-          <button type="submit">Submit</button>
+          </Button>
+          <Button type="submit">Submit</Button>
         </form>
       </Grid>
       {/* <Grid item xs={8}>

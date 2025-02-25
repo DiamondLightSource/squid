@@ -1,5 +1,5 @@
 "use client";
-import { Box, Button, Input, InputLabel, Typography } from "@mui/material";
+import { Box, Button, Checkbox, Grid, Input, InputLabel, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { z } from "zod";
 import {
@@ -90,25 +90,35 @@ const initialFormData: SampleParametersSchema = {
 type MotorPosition = z.infer<typeof motorPositionSchema>;
 type SampleParametersSchema = z.infer<typeof sampleParametersSchema>;
 
-const SampleParametersForm = () => {
-  const [formData, setFormData] =
-    useState<SampleParametersSchema>(initialFormData);
+type SampleParametersFormProps = {
+  overrideDefaultValue?: SampleParametersSchema,
+  submitCallback?: (data: SampleParametersSchema) => void;
+}
 
-  const handleSubmit = async (e: React.SyntheticEvent) => {
+
+export default function SampleParametersForm({ overrideDefaultValue, submitCallback }: SampleParametersFormProps) {
+  const [formData, setFormData] =
+    useState<SampleParametersSchema>(overrideDefaultValue || initialFormData);
+
+  const handleSubmit = async () => {
     console.log(formData);
 
-    e.preventDefault();
     try {
       const validated: SampleParametersSchema =
         sampleParametersSchema.parse(formData);
 
-      // Connect to the backend here
-      const result = await updateSampleParameters(validated);
-      if (result && result.data) {
-        const { success, parameters } = result.data;
-        console.log(success, parameters);
-        if (success) {
-          setFormData(initialFormData);
+      if (submitCallback) {
+        submitCallback(formData);
+      } else {
+
+        // Connect to the backend here
+        const result = await updateSampleParameters(validated);
+        if (result && result.data) {
+          const { success, parameters } = result.data;
+          console.log(success, parameters);
+          if (success) {
+            setFormData(initialFormData);
+          }
         }
       }
     } catch (err) {
@@ -165,16 +175,14 @@ const SampleParametersForm = () => {
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        alert("form handling disabled temporarily")
-        // handleSubmit(formData);
+        handleSubmit();
       }}
       style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
     >
       <Typography variant="h6">Sample Parameters</Typography>
       <InputLabel>
         Validate:
-        <Input
-          type="checkbox"
+        <Checkbox
           checked={formData.shouldValidate}
           onChange={(e) =>
             handleUpdateField(["shouldValidate"], e.target.checked)
@@ -267,70 +275,73 @@ const SampleParametersForm = () => {
       {/* Repeat similar structures for other stage schemas like ln2cryostage, furnace, etc. */}
 
       <Typography variant="h3">Motor Positions</Typography>
-      {formData.sampleParameterMotorPosition.map((motor, index) => (
-        <Box
-          key={index}
-          xx={{
-            border: "1px solid #ccc",
-            marginBottom: "1rem",
-            display: "flex",
-            flexDirection: "column",
-            gap: "1rem",
-          }}
-        >
-          <InputLabel>
-            Scannable Name:
-            <Input
-              type="text"
-              value={motor.scannableName}
-              onChange={(e) =>
-                handleMotorPositionChange(
-                  index,
-                  "scannableName",
-                  e.target.value
-                )
-              }
-            />
-          </InputLabel>
-          <InputLabel>
-            Description:
-            <Input
-              type="text"
-              value={motor.description}
-              onChange={(e) =>
-                handleMotorPositionChange(index, "description", e.target.value)
-              }
-            />
-          </InputLabel>
-          <InputLabel>
-            Do Move:
-            <Input
-              type="checkbox"
-              checked={motor.doMove}
-              onChange={(e) =>
-                handleMotorPositionChange(index, "doMove", e.target.checked)
-              }
-            />
-          </InputLabel>
-          <InputLabel>
-            Demand Position:
-            <Input
-              type="number"
-              value={motor.demandPosition}
-              onChange={(e) =>
-                handleMotorPositionChange(
-                  index,
-                  "demandPosition",
-                  parseFloat(e.target.value)
-                )
-              }
-            />
-          </InputLabel>
-          <Button type="button" onClick={() => removeMotorPosition(index)}>
-            Remove
-          </Button>
-        </Box>
-      ))}
+      <Grid container>
+        {formData.sampleParameterMotorPosition.map((motor, index) => (
+          <Grid item
+            xs={4}
+            key={index}
+            sx={{
+              border: "1px solid #ccc",
+              marginBottom: "1rem",
+              display: "flex",
+              flexDirection: "column",
+              gap: "1rem",
+            }}
+          >
+            <InputLabel>
+              Scannable Name:
+              <Input
+                type="text"
+                value={motor.scannableName}
+                onChange={(e) =>
+                  handleMotorPositionChange(
+                    index,
+                    "scannableName",
+                    e.target.value
+                  )
+                }
+              />
+            </InputLabel>
+            <InputLabel>
+              Description:
+              <Input
+                type="text"
+                value={motor.description}
+                onChange={(e) =>
+                  handleMotorPositionChange(index, "description", e.target.value)
+                }
+              />
+            </InputLabel>
+            <InputLabel>
+              Do Move:
+              <Input
+                type="checkbox"
+                checked={motor.doMove}
+                onChange={(e) =>
+                  handleMotorPositionChange(index, "doMove", e.target.checked)
+                }
+              />
+            </InputLabel>
+            <InputLabel>
+              Demand Position:
+              <Input
+                type="number"
+                value={motor.demandPosition}
+                onChange={(e) =>
+                  handleMotorPositionChange(
+                    index,
+                    "demandPosition",
+                    parseFloat(e.target.value)
+                  )
+                }
+              />
+            </InputLabel>
+            <Button type="button" onClick={() => removeMotorPosition(index)}>
+              Remove
+            </Button>
+          </Grid>
+        ))}
+      </Grid>
       <Button type="button" onClick={addMotorPosition}>
         Add Motor Position
       </Button >
@@ -340,4 +351,3 @@ const SampleParametersForm = () => {
   );
 };
 
-export default SampleParametersForm;

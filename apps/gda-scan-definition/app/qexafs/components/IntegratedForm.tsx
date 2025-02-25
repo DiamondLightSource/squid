@@ -3,13 +3,14 @@
 import React, { useEffect, useState } from "react";
 import { JsonForms } from "@jsonforms/react";
 import { materialRenderers, MaterialArrayControlRenderer } from "@jsonforms/material-renderers";
-import { fullQexafsSchema, fullQexafsUiSchema, FullQexafsSchemaType, fullQexafsJson, partialQexafsJson } from "../../schemas/qexafs";
+import { fullQexafsSchema, fullQexafsUiSchema, FullQexafsSchemaType, fullQexafsJson, partialQexafsJson, DetectorsSchema, SampleParametersType } from "../../schemas/qexafs";
 import { useQexafsState, useQexafsDispatch, startConfigRead, startConfigUpdate } from "./QexafsContextProvider";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import { Typography } from "@mui/material";
 import SampleParametersForm from "../../components/forms/SampleForm";
 import DetectorParametersForm from "../../components/forms/DetectorParametersForm";
+import { Preview } from "@mui/icons-material";
 
 const IntegratedForm = () => {
     const { config, isLoading, error } = useQexafsState();
@@ -53,7 +54,7 @@ const IntegratedForm = () => {
                 <div>
                     <Typography variant="h5" sx={{ color: 'black' }}>
 
-                        here logic to display the partial and the manual parts
+                        Form for qexafs
                     </Typography>
                     {
                         formData ? (
@@ -66,8 +67,18 @@ const IntegratedForm = () => {
                                     // uischema={fullQexafsUiSchema}
                                     renderers={materialRenderers}
                                 />
-                                <DetectorParametersForm />
-                                <SampleParametersForm />
+                                <DetectorParametersForm overrideDefaultValue={formData.detectorParameters} submitCallback={(d: DetectorsSchema) => setFormData((prev) => {
+                                    if (prev == undefined) {
+                                        return prev;
+                                    }
+                                    return { ...prev, detectorParameters: d }
+                                })} />
+                                <SampleParametersForm overrideDefaultValue={formData.sampleParameters} submitCallback={(s: SampleParametersType) => setFormData((prev) => {
+                                    if (prev == undefined) {
+                                        return prev;
+                                    }
+                                    return { ...prev, sampleParameters: s }
+                                })} />
 
                             </div>
                         ) : (
