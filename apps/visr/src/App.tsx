@@ -6,6 +6,10 @@ import ColorsChart from './components/ColorsChart';
 
 import "./App.css";
 import { useState, useEffect } from "react";
+import { StateViewer } from './components/StateViewer';
+import { ButtonGroup, Button } from '@chakra-ui/react';
+import { DatasetShapeViewer } from './components/DatasetShapeViewer';
+import ParsedPointsChart from './components/ParsedPointsChart';
 
 function App() {
   const [response, setResponse] = useState<string>('');
@@ -22,15 +26,31 @@ function App() {
 
     fetchHelloWorld();
   }, []);
+  const [backend, setBackend] = useState<'colors' | 'hdf'>('hdf');
+
   return (
     <>
-      <h1>Vite + React</h1>
+      <h1>testing the fastapi ws and matlplotlib endpoints</h1>
+
       <div><h3> hello response:</h3>
         <p>{response}</p>
       </div>
-      <Plot />
-      <WebsocketChart />
-      <ColorsChart />
+      <ButtonGroup>
+        <Button onClick={() => setBackend('colors')}> use colors backend</Button>
+        <Button onClick={() => setBackend('hdf')}>use hdf backend</Button>
+      </ButtonGroup>
+      {
+        backend === 'colors' ?
+          <>
+            <Plot />
+            <WebsocketChart />
+            <ColorsChart />
+          </>
+          : backend === 'hdf' ? <>
+            <DatasetShapeViewer />
+            <ParsedPointsChart />
+            <StateViewer /> </> : <p>error rendering - unknown backend</p>
+      }
     </>
   );
 }

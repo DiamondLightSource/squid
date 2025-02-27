@@ -4,7 +4,7 @@ import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { defineConfig } from "vite";
 
-const baseUrlCopy = "http://127.0.0.1:8000";
+const baseUrlCopy = "http://127.0.0.1:8002";
 
 export default defineConfig({
   ...config,
@@ -25,6 +25,7 @@ export default defineConfig({
     setupFiles: ["./setupTests.ts"],
   },
   server: {
+    // todo make more endpoints, for hdf and colors separately
     proxy: {
       "/api": {
         target: baseUrlCopy,
@@ -32,7 +33,7 @@ export default defineConfig({
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
       "/ws": {
-        target: "ws://localhost:8000/ws",
+        target: "ws://localhost:8002/ws",
         changeOrigin: true,
         rewriteWsOrigin: true,
         ws: true, // Enable WebSocket proxying

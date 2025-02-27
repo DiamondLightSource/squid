@@ -3,18 +3,18 @@ import { ResponsiveContainer, LineChart, CartesianGrid, XAxis, YAxis, Tooltip, L
 
 
 type Dataset = {
-    label: string,
-    data: any[]
+  label: string,
+  data: any[]
 }
 
 type Data = {
-    labels: any[],
-    datasets: Dataset[]
+  labels: any[],
+  datasets: Dataset[]
 
 }
 type DataPoint = {
-    time: number;
-    value: number;
+  time: number;
+  value: number;
 };
 
 
@@ -30,7 +30,7 @@ function WebsocketChart() {
   useEffect(() => {
     const connectWebSocket = () => {
       setConnectionError(null); // Clear any existing errors
-      ws.current = new WebSocket("ws://127.0.0.1:8000/ws"); // Adjust your WebSocket URL
+      ws.current = new WebSocket("ws://127.0.0.1:8002/ws"); // Adjust your WebSocket URL
 
       ws.current.onopen = () => {
         console.log("WebSocket connected");

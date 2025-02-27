@@ -10,7 +10,7 @@ type ColorEvent = {
     i: number
 }
 
-const intensityClosure = (name: Colors) => {
+export const intensityClosure = (name: Colors) => {
     let getHex = (intensity: number) => "#000000";
     switch (name) {
         case 'r':
@@ -146,6 +146,5 @@ export function OneColorCanvas({ name }: OneColorCanvasProps) {
         </div>
     );
 }
-
 
 
