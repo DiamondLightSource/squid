@@ -7,7 +7,7 @@ import ColorsChart from './components/ColorsChart';
 import "./App.css";
 import { useState, useEffect } from "react";
 import { StateViewer } from './components/StateViewer';
-import { ButtonGroup, Button } from '@chakra-ui/react';
+import { ButtonGroup, Button, Stack } from '@chakra-ui/react';
 import { DatasetShapeViewer } from './components/DatasetShapeViewer';
 import ParsedPointsChart from './components/ParsedPointsChart';
 
@@ -47,9 +47,12 @@ function App() {
             <ColorsChart />
           </>
           : backend === 'hdf' ? <>
-            <DatasetShapeViewer />
+            <Stack direction='row'>
+              <DatasetShapeViewer />
+              <StateViewer />
+            </Stack>
             <ParsedPointsChart />
-            <StateViewer /> </> : <p>error rendering - unknown backend</p>
+          </> : <p>error rendering - unknown backend</p>
       }
     </>
   );
