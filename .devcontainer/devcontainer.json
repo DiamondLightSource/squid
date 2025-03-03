@@ -48,7 +48,8 @@
         "rodrigovallades.es7-react-js",
         "Vercel.turbo-vsc",
         "kamikillerto.vscode-colorize",
-        "vitest.explorer"
+        "vitest.explorer",
+        "naumovs.color-highlight"
       ]
     }
   },
