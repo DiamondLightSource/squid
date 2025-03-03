@@ -22,6 +22,10 @@ function ParsedPointsChart() {
   const { stageSize, rectSize } = useResponsiveStage();
   function handleMessage(parsedData: number[][]) {
     console.log(`parsed data: ${parsedData}`)
+    if (parsedData.length == 0) {
+      // window.alert("resetting the visualization")
+      setData([])
+    }
     if (parsedData) {
       const datapoints: DataPoint[] = parsedData.map(row => {
         const d: DataPoint = {
