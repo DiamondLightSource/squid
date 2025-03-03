@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { Layer, Group, Stage, Star, Text } from 'react-konva';
+import { Layer, Group, Stage } from 'react-konva';
 import { useResponsiveStage } from '../hooks/userResponsiveStage';
 import useWebSocket from '../hooks/useWebSocket';
 import ColorRect from './ColorRect';
-import { getHexColor, intensityClosure } from './OneColorCanvas';
+import { getHexColor } from './OneColorCanvas';
 import TestChart from './TestChart';
 import { TestStars } from './TestStars';
 

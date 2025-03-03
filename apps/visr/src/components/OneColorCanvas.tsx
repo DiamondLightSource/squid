@@ -31,7 +31,7 @@ export function getHexColor(channel: "r" | "g" | "b" | "all", i: number): string
 }
 
 
-export const intensityClosure = (name: Colors) => {
+const intensityClosure = (name: Colors) => {
     let getHex = (intensity: number) => "#ee0000";
     switch (name) {
         case 'r':
