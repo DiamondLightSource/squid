@@ -14,23 +14,10 @@ type DataPoint = {
   total: number
 }
 
-function generateShapes() {
-  return [...Array(10)].map((_, i) => ({
-    id: i.toString(),
-    x: Math.random() * window.innerWidth,
-    y: Math.random() * window.innerHeight,
-    rotation: Math.random() * 180,
-    isDragging: false,
-  }));
-}
-const INITIAL_STATE = generateShapes();
-
-
 
 function ParsedPointsChart() {
   const [data, setData] = useState<DataPoint[]>([]);
 
-  const [stars, setStars] = useState(INITIAL_STATE);
 
   const { stageSize, rectSize } = useResponsiveStage();
   function handleMessage(parsedData: number[][]) {
@@ -47,10 +34,6 @@ function ParsedPointsChart() {
       })
       setData(datapoints);
 
-      // setData((prevData) => {
-      //   const newData = [...prevData, d];
-      //   return newData.slice(-50);
-      // });
     }
   }
 
@@ -85,52 +68,13 @@ function ParsedPointsChart() {
         })}
       </div> */}
 
-      {/* <ResponsiveContainer width='100%' height={400}>
-
-        <Stage width={window.innerWidth} height={window.innerHeight}>
-          <Layer>
-            <Group>
-
-              <Text text="Try to drag a star" />
-              {stars.map((star) => (
-                <Star
-                  key={star.id}
-                  id={star.id}
-                  x={star.x}
-                  y={star.y}
-                  numPoints={5}
-                  innerRadius={20}
-                  outerRadius={40}
-                  fill="#89b717"
-                  opacity={0.8}
-                  draggable
-                  rotation={star.rotation}
-                  shadowColor="black"
-                  shadowBlur={10}
-                  shadowOpacity={0.6}
-                  shadowOffsetX={star.isDragging ? 10 : 5}
-                  shadowOffsetY={star.isDragging ? 10 : 5}
-                  scaleX={star.isDragging ? 1.2 : 1}
-                  scaleY={star.isDragging ? 1.2 : 1}
-                  onDragStart={handleDragStart}
-                  onDragEnd={handleDragEnd}
-                />
-              ))}
-            </Group>
-          </Layer>
-        </Stage>
-      </ResponsiveContainer> */}
       {/* <TestStars />
       <TestChart /> */}
       <Stage width={stageSize.width} height={stageSize.height}>
         <Layer>
           <Group id='r-group'>
             {data.map((intensity, index) => {
-              const getHex = intensityClosure('r');
-              const color = getHex(intensity.r);
               const newColor = getHexColor('r', intensity.r);
-              console.log("color: ", color, "intensity: ", intensity);
-              // return <p key={`data-point-${index}`}> new data point {intensity.r}</p>
               return (
                 <ColorRect
                   key={index}
@@ -145,11 +89,7 @@ function ParsedPointsChart() {
           </Group>
           <Group id='g-group'>
             {data.map((intensity, index) => {
-              const getHex = intensityClosure('g');
-              const color = getHex(intensity.g);
               const newColor = getHexColor('g', intensity.g);
-              console.log("color: ", color, "all itensities: ", intensity, " new color: ", newColor);
-              // return <p key={`data-point-${index}`}> new data point {intensity.r}</p>
               return (
                 <ColorRect
                   key={index}
@@ -164,11 +104,7 @@ function ParsedPointsChart() {
           </Group>
           <Group id='b-group'>
             {data.map((intensity, index) => {
-              const getHex = intensityClosure('b');
-              const color = getHex(intensity.b);
               const newColor = getHexColor('b', intensity.b)
-              console.log("color: ", color, "intensity: ", intensity);
-              // return <p key={`data-point-${index}`}> new data point {intensity.r}</p>
               return (
                 <ColorRect
                   key={index}
@@ -183,14 +119,11 @@ function ParsedPointsChart() {
           </Group>
           <Group id='total-group'>
             {data.map((intensity, index) => {
-              const getHex = intensityClosure('t');
-              const color = getHex(intensity.total);
-              console.log("color: ", color, "intensity: ", intensity);
-              // return <p key={`data-point-${index}`}> new data point {intensity.r}</p>
+              const newColor = getHexColor('all', intensity.total)
               return (
                 <ColorRect
                   key={index}
-                  color={color}
+                  color={newColor}
                   x={620 + (index % 10) * rectSize.spacing} // Example grid layout
                   y={320 + Math.floor(index / 10) * rectSize.spacing}
                   width={rectSize.width}
@@ -208,27 +141,3 @@ function ParsedPointsChart() {
 }
 
 export default ParsedPointsChart;
-
-// <ResponsiveContainer width="100%" height={400}>
-//   <Stage width={stageSize.width} height={stageSize.height}>
-//     <Layer>
-//       <Group id='r-group'>
-//         {data.map((intensity, index) => {
-//           const color = getHex(intensity.r);
-//           console.log("color: ", color, "intensity: ", intensity);
-//           return <p key={`data-point-${index}`}> new data point {intensity.r}</p>
-//           return (
-//             <ColorRect
-//               key={index}
-//               color={color}
-//               x={20 + (index % 10) * rectSize.spacing} // Example grid layout
-//               y={20 + Math.floor(index / 10) * rectSize.spacing}
-//               width={rectSize.width}
-//               height={rectSize.height}
-//             />
-//           );
-//         })}
-//       </Group>
-//     </Layer>
-//   </Stage>
-// </ResponsiveContainer>

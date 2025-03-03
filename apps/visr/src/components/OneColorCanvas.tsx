@@ -10,23 +10,24 @@ type ColorEvent = {
     i: number
 }
 
-export function getHexColor(channel: "r" | "g" | "b", i: number): string {
-  // Ensure `i` is within the valid range
-  const clampedI = Math.max(0, Math.min(i, 1));
+export function getHexColor(channel: "r" | "g" | "b" | "all", i: number): string {
+    // Ensure `i` is within the valid range
+    const clampedI = Math.max(0, Math.min(i, 1));
 
-  // Scale i from 0-1 to 0-255 and round
-  const intensity = Math.round(clampedI * 255);
+    // Scale i from 0-1 to 0-255 and round
+    const intensity = Math.round(clampedI * 255);
 
-  // Default RGB values
-  let r = 0, g = 0, b = 0;
+    // Default RGB values
+    let r = 0, g = 0, b = 0;
 
-  // Assign intensity to the chosen channel
-  if (channel === "r") r = intensity;
-  else if (channel === "g") g = intensity;
-  else if (channel === "b") b = intensity;
+    // Assign intensity to the chosen channel
+    if (channel === "r") r = intensity;
+    else if (channel === "g") g = intensity;
+    else if (channel === "b") b = intensity;
+    else if (channel === "all") r = g = b = intensity; // Scale all channels
 
-  // Convert RGB to hex format
-  return `#${r.toString(16).padStart(2, "0")}${g.toString(16).padStart(2, "0")}${b.toString(16).padStart(2, "0")}`;
+    // Convert RGB to hex format
+    return `#${r.toString(16).padStart(2, "0")}${g.toString(16).padStart(2, "0")}${b.toString(16).padStart(2, "0")}`;
 }
 
 
@@ -34,7 +35,7 @@ export const intensityClosure = (name: Colors) => {
     let getHex = (intensity: number) => "#ee0000";
     switch (name) {
         case 'r':
-            getHex = (intensity: number) => `#${Math.floor(intensity*256)}0000`;
+            getHex = (intensity: number) => `#${Math.floor(intensity * 256)}0000`;
             break;
         case 'g':
             getHex = (intensity: number) => `#00${intensity.toString(16).padStart(2, '0')}00`;
