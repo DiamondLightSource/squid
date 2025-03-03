@@ -4,9 +4,10 @@ name: Create and publish a Docker image
 # inspired from here
 
 on:
+  pull_request:
   push:
     branches:
-      - 42-deploy-xraylib-ui-on-argus # for debugging purposes
+      - main
   release:
     types: [published]
 
@@ -64,7 +65,6 @@ jobs:
           context: .
           file: ./apps/${{ matrix.target }}/Dockerfile
           target: builder
-          
 
       # This step generates an artifact attestation for the image, which is an unforgeable statement about where and how it was built. It increases supply chain security for people who consume the image. For more information, see "[AUTOTITLE](/actions/security-guides/using-artifact-attestations-to-establish-provenance-for-builds)."
       - name: Generate artifact attestation
@@ -75,38 +75,38 @@ jobs:
           push-to-registry: true
 
   helm_publish:
-      name: publish gcr
-      runs-on: ubuntu-latest
-      if: startsWith(github.ref, 'refs/tags/')
-      environment: prod
-      needs: build_container
-      steps:
-        - name: checkout repo
-          uses: actions/checkout@v4
-          with:
-            fetch-depth: 0
+    name: publish gcr
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    environment: prod
+    needs: build_container
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-        - name: install helm
-          uses: Azure/setup-helm@v3
-          with:
-            token: ${{ secrets.GITHUB_TOKEN }}
-          id: install
+      - name: install helm
+        uses: Azure/setup-helm@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+        id: install
 
-        - name: login to gcr using helm
-          run: |
-            echo ${{ secrets.GITHUB_TOKEN }} | helm registry login ${{ env.GCR_IMAGE }} --username ${{ github.repository_owner }} --password-stdin
+      - name: login to gcr using helm
+        run: |
+          echo ${{ secrets.GITHUB_TOKEN }} | helm registry login ${{ env.GCR_IMAGE }} --username ${{ github.repository_owner }} --password-stdin
 
-        - name: Extract metadata (tags, labels) for Docker
-          id: meta
-          uses: docker/metadata-action@v5
-          with:
-            images: ${{ env.REGISTRY }}/${{ github.repository }}-${{matrix.target}}
-            tags: |
-              type=ref,event=tag
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ github.repository }}-${{matrix.target}}
+          tags: |
+            type=ref,event=tag
 
-        - name: package chart and push it
-          run: |
-            sed -i "$ a appVersion: ${GITHUB_REF##*/}" helm/blueapi/Chart.yaml
-            helm dependencies update helm/blueapi
-            helm package helm/blueapi --version ${GITHUB_REF##*/} -d /tmp/
-            helm push /tmp/blueapi-${GITHUB_REF##*/}.tgz oci://ghcr.io/diamondlightsource/charts
+      - name: package chart and push it
+        run: |
+          sed -i "$ a appVersion: ${GITHUB_REF##*/}" helm/blueapi/Chart.yaml
+          helm dependencies update helm/blueapi
+          helm package helm/blueapi --version ${GITHUB_REF##*/} -d /tmp/
+          helm push /tmp/blueapi-${GITHUB_REF##*/}.tgz oci://ghcr.io/diamondlightsource/charts
