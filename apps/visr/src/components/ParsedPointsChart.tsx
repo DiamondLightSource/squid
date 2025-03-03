@@ -16,7 +16,7 @@ type DataPoint = {
 function ParsedPointsChart() {
   const [data, setData] = useState<DataPoint[]>([]);
 
-  // const { stageSize, rectSize } = useResponsiveStage();
+  const { stageSize, rectSize } = useResponsiveStage();
   function handleMessage(parsedData: number[][]) {
     console.log(`parsed data: ${parsedData}`)
     if (parsedData) {
@@ -76,8 +76,7 @@ export default ParsedPointsChart;
 // <ResponsiveContainer width="100%" height={400}>
 //   <Stage width={stageSize.width} height={stageSize.height}>
 //     <Layer>
-//       <Group>
-
+//       <Group id='r-group'>
 //         {data.map((intensity, index) => {
 //           const color = getHex(intensity.r);
 //           console.log("color: ", color, "intensity: ", intensity);
