@@ -47,7 +47,7 @@ function ParsedPointsChart() {
 
   return (
     <div className="websocketed">
-      <h3>recorded hdf Data streamed - only r for now</h3>
+      <h3>recorded hdf Data streamed</h3>
       {connectionError && <p style={{ color: "red" }}>{connectionError}</p>}
       {/* <div id="data-render">
         {data.map((intensity, index) => {
