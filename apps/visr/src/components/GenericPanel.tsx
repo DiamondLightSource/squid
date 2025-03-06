@@ -18,7 +18,7 @@ function GenericPanel() {
         <Container maxWidth="lg" sx={{ marginTop: 4 }}>
             <Grid container spacing={2}>
                 {/* Sidebar */}
-                <Grid item xs={4}>
+                <Grid item xs={3}>
                     <Paper sx={{ padding: 2 }}>
                         {filesLoading ? (
                             <CircularProgress />
@@ -31,7 +31,7 @@ function GenericPanel() {
                 </Grid>
 
                 {/* Main Detail View */}
-                <Grid item xs={8}>
+                <Grid item xs={2}>
                     <Paper sx={{ padding: 2 }}>
                         {detailLoading ? (
                             <CircularProgress />
@@ -42,10 +42,10 @@ function GenericPanel() {
                         )}
                     </Paper>
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={7}>
                     <Paper sx={{ padding: 2 }}>
                         <div id="data-render">
-                            {/* <ParsedPointsChart url={`ws://127.0.0.1:8002/ws/democlient/demo/${selectedFile}`} /> */}
+                            <ParsedPointsChart url={`ws://127.0.0.1:8002/ws/democlient/demo/${selectedFile}`} />
                         </div>
                     </Paper>
                 </Grid>

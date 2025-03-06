@@ -56,7 +56,6 @@ function App() {
             <p>generic backend</p>
             <GenericPanel />
 
-
           </> : <p>error rendering - unknown backend</p>
       }
     </>
