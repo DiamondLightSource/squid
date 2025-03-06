@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Layer, Group, Stage } from 'react-konva';
-import { useResponsiveStage } from '../hooks/userResponsiveStage';
+import { Group, Layer, Stage } from 'react-konva';
+import { useResponsiveStage } from '../hooks/useResponsiveStage';
 import useWebSocket from '../hooks/useWebSocket';
 import ColorRect from './ColorRect';
 import { getHexColor } from './OneColorCanvas';
@@ -15,11 +15,16 @@ type DataPoint = {
 }
 
 
-function ParsedPointsChart() {
+type ParsedPointsChartProps = {
+  url?: string
+}
+
+const wsUrl = "ws://127.0.0.1:8002/ws/data";
+
+function ParsedPointsChart({ url = wsUrl  }: ParsedPointsChartProps) {
   const [data, setData] = useState<DataPoint[]>([]);
-
-
   const { stageSize, rectSize } = useResponsiveStage();
+
   function handleMessage(parsedData: number[][]) {
     console.log(`parsed data: ${parsedData}`)
     if (parsedData.length == 0) {
@@ -41,8 +46,7 @@ function ParsedPointsChart() {
     }
   }
 
-  const wsUrl = "ws://127.0.0.1:8002/ws/data";
-  const { connectionError } = useWebSocket(wsUrl, handleMessage);
+  const { connectionError } = useWebSocket(url, handleMessage);
 
 
   return (

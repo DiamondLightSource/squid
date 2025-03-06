@@ -10,6 +10,7 @@ import { StateViewer } from './components/StateViewer';
 import { ButtonGroup, Button, Stack } from '@chakra-ui/react';
 import { DatasetShapeViewer } from './components/DatasetShapeViewer';
 import ParsedPointsChart from './components/ParsedPointsChart';
+import GenericPanel from './components/GenericPanel';
 
 function App() {
   const [response, setResponse] = useState<string>('');
@@ -26,7 +27,7 @@ function App() {
 
     fetchHelloWorld();
   }, []);
-  const [backend, setBackend] = useState<'colors' | 'hdf'>('hdf');
+  const [backend, setBackend] = useState<'colors' | 'hdf' | 'generic'>('colors');
 
   return (
     <>
@@ -38,6 +39,7 @@ function App() {
       <ButtonGroup>
         <Button onClick={() => setBackend('colors')}> use colors backend</Button>
         <Button onClick={() => setBackend('hdf')}>use hdf backend</Button>
+        <Button onClick={() => setBackend('generic')}>use generic backend</Button>
       </ButtonGroup>
       {
         backend === 'colors' ?
@@ -52,6 +54,14 @@ function App() {
               <StateViewer />
             </Stack>
             <ParsedPointsChart />
+          </> : backend === 'generic' ? <>
+            <p>generic backend</p>
+            {/* component polling for ongoing file list */}
+            {/* from existing files choose one to see its grouping tree */}
+            {/* component to who the streaming right */}
+            <GenericPanel />
+
+
           </> : <p>error rendering - unknown backend</p>
       }
     </>

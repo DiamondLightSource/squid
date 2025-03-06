@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Layer, Stage } from 'react-konva';
 import ColorRect from './ColorRect';
-import { useResponsiveStage } from '../hooks/userResponsiveStage';
+import { useResponsiveStage } from '../hooks/useResponsiveStage';
 
 type Colors = 'r' | 'g' | 'b' | 't';
 
