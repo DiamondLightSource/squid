@@ -19,6 +19,7 @@
     "@chakra-ui/icons": "^2.2.4",
     "@chakra-ui/react": "^2.10.6",
     "@mui/material": "^6.4.7",
+    "@mui/x-tree-view": "^7.23.0",
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
     "@repo/ui": "workspace:*",

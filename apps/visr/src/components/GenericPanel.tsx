@@ -12,7 +12,7 @@ const wsUrl = "ws://127.0.0.1:8002/ws/democlient/demo";
 function GenericPanel() {
     const { files, loading: filesLoading, error: filesError } = useFiles();
     const [selectedFile, setSelectedFile] = useState<string | null>(null);
-    const { detail: groups, loading: detailLoading, error: detailError } = useFileDetail(selectedFile);
+    const { detail, loading: detailLoading, error: detailError } = useFileDetail(selectedFile);
 
     return (
         <Container maxWidth="lg" sx={{ marginTop: 4 }}>
@@ -38,14 +38,14 @@ function GenericPanel() {
                         ) : detailError ? (
                             <Typography color="error">{detailError}</Typography>
                         ) : (
-                            <FileDetail fileName={selectedFile} content={groups} />
+                            <FileDetail fileName={selectedFile} content={detail} />
                         )}
                     </Paper>
                 </Grid>
                 <Grid item xs={12}>
                     <Paper sx={{ padding: 2 }}>
                         <div id="data-render">
-                            <ParsedPointsChart url={`ws://127.0.0.1:8002/ws/democlient/demo/${selectedFile}`} />
+                            {/* <ParsedPointsChart url={`ws://127.0.0.1:8002/ws/democlient/demo/${selectedFile}`} /> */}
                         </div>
                     </Paper>
                 </Grid>

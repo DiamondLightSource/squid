@@ -27,18 +27,16 @@ function App() {
 
     fetchHelloWorld();
   }, []);
-  const [backend, setBackend] = useState<'colors' | 'hdf' | 'generic'>('colors');
+  const def = 'generic';
+  const [backend, setBackend] = useState<'colors' | 'hdf' | 'generic'>(def);
 
   return (
     <>
-      <h1>testing the fastapi ws and matlplotlib endpoints</h1>
+      <h1>testing the fastapi ws for hdf readout</h1>
 
-      <div><h3> hello response:</h3>
-        <p>{response}</p>
-      </div>
       <ButtonGroup>
         <Button onClick={() => setBackend('colors')}> use colors backend</Button>
-        <Button onClick={() => setBackend('hdf')}>use hdf backend</Button>
+        <Button onClick={() => setBackend('hdf')}>use hdf hardcoded backend</Button>
         <Button onClick={() => setBackend('generic')}>use generic backend</Button>
       </ButtonGroup>
       {
@@ -56,9 +54,6 @@ function App() {
             <ParsedPointsChart />
           </> : backend === 'generic' ? <>
             <p>generic backend</p>
-            {/* component polling for ongoing file list */}
-            {/* from existing files choose one to see its grouping tree */}
-            {/* component to who the streaming right */}
             <GenericPanel />
 
 
