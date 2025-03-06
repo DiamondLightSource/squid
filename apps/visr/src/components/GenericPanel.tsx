@@ -45,7 +45,7 @@ function GenericPanel() {
                 <Grid item xs={12}>
                     <Paper sx={{ padding: 2 }}>
                         <div id="data-render">
-                            <ParsedPointsChart url={wsUrl} />
+                            <ParsedPointsChart url={`ws://127.0.0.1:8002/ws/democlient/demo/${selectedFile}`} />
                         </div>
                     </Paper>
                 </Grid>
