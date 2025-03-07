@@ -8,7 +8,7 @@ image:
   repository: ghcr.io/diamondlightsource/squid-xraylib
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  tag: "latest"
 
 imagePullSecrets: []
 nameOverride: ""
@@ -42,8 +42,8 @@ service:
   port: 80
 
 ingress:
-  create: false
-#  host: foo.diamond.ac.uk  (assumes port = service.port)
+  create: true
+  host: xraylib.diamond.ac.uk
 
 resources: {}
 # We usually recommend not to specify default resources and to leave this as a conscious
@@ -90,7 +90,3 @@ tracing:
     protocol: http/protobuf
     host: https://daq-services-jaeger # replace with central instance
     port: 4318
-
-
-
-
