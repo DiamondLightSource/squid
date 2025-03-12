@@ -4,6 +4,24 @@ import { ElementPropertiesResponseType, AbsorptionEdgeResponseType, EmissionData
 
 const apiUrl = "http://172.23.169.51:8080/api/tables";
 
+export async function getFluorescenceYields(element: string) {
+  const response = await fetch(
+    `${apiUrl}/xray_levels?filter[element]='${element}'`
+  );
+  console.log(`response: ${response}`)
+  const data = await response.json();
+  return data["fluorescence_yield"];
+}
+
+export async function getAbsorptionEdgeEnergy(element: string) {
+
+  const response = await fetch(
+    `${apiUrl}/xray_levels?filter[element]='${element}'`
+  );
+  console.log(`response: ${response}`)
+  const data = await response.json();
+  return data["absorption_edge"];
+}
 
 export async function getElementProperties(
   element: string
