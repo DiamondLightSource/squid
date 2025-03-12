@@ -40,10 +40,18 @@ securityContext: {}
 service:
   type: ClusterIP
   port: 80
+  targetPort: 3000
+  # loadBalancerIP: 172.
 
 ingress:
   create: true
   host: xraylib.diamond.ac.uk
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+  pathType: Prefix
+  tls:
+    - hosts:
+        - xraylib.diamond.ac.uk
 
 resources: {}
 # We usually recommend not to specify default resources and to leave this as a conscious
