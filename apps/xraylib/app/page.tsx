@@ -12,8 +12,6 @@ export default function Page(): JSX.Element {
     allowedElementSymbols[0]
   );
   const {
-    edgeEnergy,
-    fluorescenceYields,
     properties,
     xrayLevels,
     transitions,
@@ -26,8 +24,6 @@ export default function Page(): JSX.Element {
     <div>
       <h1>XraylibPage</h1>
       <h4>Current element: {selectedElementSymbol}</h4>
-      <h4>Absorption edge energy: {edgeEnergy}</h4>
-      <h4>Fluorescence yields: {fluorescenceYields}</h4>
       <PeriodicTable
         callback={(element) => setSelectedElementSymbol(element.Symbol)}
       // squareSize={25} margin={0.75}

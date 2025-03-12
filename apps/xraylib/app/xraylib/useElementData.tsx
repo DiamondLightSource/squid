@@ -2,9 +2,7 @@
 
 import { ElementPropertiesResponseType, AbsorptionEdgeResponseType, EmissionDataResponseType } from "../schemas/xraylibSchemas";
 import {
-  actionGetAbsorptionEdgeEnergy,
   actionGetElementProperties,
-  actionGetFluorescenceYields,
   actionGetTransitionsEmissionsForElement,
   actionGetXrayLevelsForElement,
 } from "./xraylib-action";
@@ -12,8 +10,6 @@ import {
 import { useState, useEffect } from "react";
 
 type ElementData = {
-  edgeEnergy: number;
-  fluorescenceYields: number;
   properties: ElementPropertiesResponseType;
   xrayLevels: AbsorptionEdgeResponseType;
   transitions: EmissionDataResponseType;
@@ -26,8 +22,6 @@ type UseElementDataResult = {
 };
 
 const initState: ElementData = {
-  edgeEnergy: 0,
-  fluorescenceYields: 0,
   properties: [],
   xrayLevels: [],
   transitions: [],
@@ -50,16 +44,10 @@ export function useElementData(
       try {
         // Use Promise.all to fetch all data concurrently
         const [
-          edgeEnergyResponse,
-          fluorescenceYieldsResponse,
           propertiesResponse,
           xrayLevelsResponse,
           transitionsResponse,
         ] = await Promise.all([
-          actionGetAbsorptionEdgeEnergy({
-            elementSymbol: selectedElementSymbol,
-          }),
-          actionGetFluorescenceYields({ elementSymbol: selectedElementSymbol }),
           actionGetElementProperties({ elementSymbol: selectedElementSymbol }),
           actionGetXrayLevelsForElement({
             elementSymbol: selectedElementSymbol,
@@ -70,19 +58,12 @@ export function useElementData(
         ]);
 
         // Extract and validate data fields
-        const edgeEnergy = edgeEnergyResponse?.data?.energy ?? 0;
-        const fluorescenceYields =
-          fluorescenceYieldsResponse?.data?.yieldValue ?? 0;
-        // const propertyX = propertyXResponse?.data?.value ?? 0; // Replace `value` with the actual field
-        // const propertyY = propertyYResponse?.data?.value ?? 0; // Replace `value` with the actual field
         const properties = propertiesResponse?.data?.data ?? [];
         const xrayLevels = xrayLevelsResponse?.data?.data ?? [];
         const transitions = transitionsResponse?.data?.data ?? [];
 
         // Update the state with fetched data
         setData({
-          edgeEnergy,
-          fluorescenceYields,
           properties,
           xrayLevels,
           transitions,
