@@ -44,11 +44,14 @@ service:
   # loadBalancerIP: 172.
 
 ingress:
-  create: true
-  host: xraylib.diamond.ac.uk
+  enabled: true
+  hosts:
+    - host: xraylib.diamond.ac.uk
+      paths:
+        - path: /
+          pathType: Prefix
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
-  pathType: Prefix
   tls:
     - hosts:
         - xraylib.diamond.ac.uk
