@@ -41,6 +41,8 @@ spec:
           env:
             - name: NODE_ENV
               value: "production"
+            - name: HOST
+              value: "0.0.0.0" # Bind to all interfaces inside the pod
           livenessProbe:
             {{- toYaml .Values.livenessProbe | nindent 12 }}
           readinessProbe:
