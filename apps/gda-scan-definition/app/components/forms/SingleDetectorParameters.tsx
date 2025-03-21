@@ -31,10 +31,11 @@ export function SingleDetectorParameters({ index, config, handleUpdateConfigurat
     sx={{
       marginBottom: "1rem",
       border: "1px solid #ccc",
-      padding: "1rem",
+      padding: "0.5rem",
       display: "flex",
       flexDirection: "column",
       gap: "1rem",
+      minWidth: 'fit-content'
     }}
   >
     <AccordionSummary>
@@ -52,7 +53,7 @@ export function SingleDetectorParameters({ index, config, handleUpdateConfigurat
       </InputLabel>
 
     </AccordionSummary>
-    <AccordionDetails>
+    <AccordionDetails sx={{ minWidth: 'fit-content' }}>
 
       <InputLabel>
         Description:

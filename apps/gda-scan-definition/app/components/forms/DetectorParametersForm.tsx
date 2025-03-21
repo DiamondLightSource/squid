@@ -82,58 +82,15 @@ function DetectorParametersForm({
     }
   }, [overrideDefaultValue]);
 
-  return (
-    <Grid container sx={{
-      color: 'black',
-      flexDirection: "column", gap: "0.125rem"
+  // <Grid container sx={{
+  //   color: 'black',
+  //   flexDirection: "column"
+  //   //  gap: "0.125rem"
 
-    }}>
-      <Grid item xs={8}>
-
-        <div style={{ width: '100%', backgroundColor: 'red', height: '100%' }}>
-
-          <p> test</p>
-        </div>
-        <form
-          onSubmit={(e) => handleSubmit(e)}
-        >
-          {/* <Typography variant="h5">Detector Parameters</Typography>
-          <InputLabel>
-            Validate:
-            <CheckBox
-              checked={formData.shouldValidate}
-              onChange={(e) =>
-                setFormData({ ...formData, shouldValidate: !formData.shouldValidate })
-              }
-            />
-          </InputLabel> */}
-          <Button type="submit">Submit</Button>
-          <Typography variant="h6">Detector Configurations</Typography>
-          <Button type="button" onClick={handleAddConfiguration}>
-            Add Configuration
-          </Button>
-          <div style={{ width: '100%', backgroundColor: 'red', height: '100%' }}>
-
-            <p> test</p>
-          </div>
-          {/* <Grid container>
-
-            {formData.detectorConfiguration.map((config, index) => (
-              <Grid item xs={4}>
-                <SingleDetectorParameters
-                  index={index}
-                  config={config}
-                  handleUpdateConfiguration={handleUpdateConfiguration}
-                  handleRemoveConfiguration={handleRemoveConfiguration}
-                />
-              </Grid>
-            ))}
-          </Grid> */}
-
-
-        </form>
-      </Grid>
-      {/* <Grid item xs={8}>
+  // }}>
+  // <Grid item xs={8}>
+  // </Grid>
+  {/* <Grid item xs={8}>
         <DiffEditor
           original={builder.build(initialData)}
           width="70vw"
@@ -142,7 +99,42 @@ function DetectorParametersForm({
           modified={builder.build(formData)}
         />
       </Grid> */}
-    </Grid>
+
+  return (
+    <form onSubmit={(e) => handleSubmit(e)} >
+      <Typography variant="h4" sx={{ color: 'black' }}>Detector Parameters</Typography>
+      <InputLabel>
+        Validate:
+        <CheckBox
+          checked={formData.shouldValidate}
+          onChange={(e) =>
+            setFormData({ ...formData, shouldValidate: !formData.shouldValidate })
+          }
+        />
+      </InputLabel>
+      <Button type="submit">Submit</Button>
+      <Typography variant="h5" sx={{ color: 'black' }}>Detector Configurations</Typography>
+      <Button type="button" onClick={handleAddConfiguration}>
+        Add Configuration
+      </Button>
+
+      <Grid container>
+
+        {formData.detectorConfiguration.map((config, index) => (
+          <Grid item xs={12}>
+            <SingleDetectorParameters
+              index={index}
+              config={config}
+              handleUpdateConfiguration={handleUpdateConfiguration}
+              handleRemoveConfiguration={handleRemoveConfiguration}
+            />
+          </Grid>
+        ))}
+      </Grid>
+
+
+    </form>
+
   );
 }
 

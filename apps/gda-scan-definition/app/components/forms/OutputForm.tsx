@@ -62,7 +62,7 @@ export const OutputParametersForm = () => {
       onSubmit={handleSubmit}
       style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
     >
-      <Typography variant="h6">Output Parameters</Typography>
+      <Typography variant="h4">Output Parameters</Typography>
       <label>
         Validate:
         <input

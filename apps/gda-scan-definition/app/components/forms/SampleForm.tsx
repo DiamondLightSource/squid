@@ -1,5 +1,5 @@
 "use client";
-import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Checkbox, Grid, Input, InputLabel, Typography } from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, Box, Button, ButtonGroup, Checkbox, Grid, Input, InputLabel, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { z } from "zod";
 import {
@@ -7,6 +7,7 @@ import {
   sampleParametersSchema,
 } from "../../schemas/qexafs";
 import { updateSampleParameters } from "../../actions/qexafs-actions";
+import StageForm from "./SampleEnvForm";
 
 export const initialMotorPosition: MotorPosition = {
   scannableName: "",
@@ -229,7 +230,7 @@ export default function SampleParametersForm({ overrideDefaultValue, submitCallb
       }}
       style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}
     >
-      <Typography variant="h5" color='black'>Sample parameters</Typography>
+      <Typography variant="h4" color='black'>Sample parameters</Typography>
 
       <InputLabel>
         Name:
@@ -240,7 +241,6 @@ export default function SampleParametersForm({ overrideDefaultValue, submitCallb
           required
         />
       </InputLabel>
-      <Typography variant="h6">Sample Parameters</Typography>
       <InputLabel>
         Validate:
         <Checkbox
@@ -288,49 +288,47 @@ export default function SampleParametersForm({ overrideDefaultValue, submitCallb
           required
         />
       </InputLabel>
+      <Typography variant="h5" sx={{ color: 'black' }}>Stages</Typography>
+      <Grid container>
 
-      <h3>XY Theta Stage</h3>
-      <InputLabel>
-        X:
-        <Input
-          type="number"
-          value={formData.xythetastage.x}
-          onChange={(e) =>
-            handleUpdateField(["xythetastage", "x"], parseFloat(e.target.value))
-          }
-        />
-      </InputLabel>
-      <InputLabel>
-        Y:
-        <Input
-          type="number"
-          value={formData.xythetastage.y}
-          onChange={(e) =>
-            handleUpdateField(["xythetastage", "y"], parseFloat(e.target.value))
-          }
-        />
-      </InputLabel>
-      <InputLabel>
-        Theta:
-        <Input
-          type="number"
-          value={formData.xythetastage.theta}
-          onChange={(e) =>
-            handleUpdateField(
-              ["xythetastage", "theta"],
-              parseFloat(e.target.value)
-            )
-          }
-        />
-      </InputLabel>
+        <Grid item xs={4}>
+          <StageForm title="XY Theta Stage" formData={formData.xythetastage} onUpdate={handleUpdateField} />
+        </Grid>
+        <Grid item xs={4}>
+          <StageForm title="LN2 Cryo Stage" formData={formData.ln2cryostage} onUpdate={handleUpdateField} />
+        </Grid>
+        <Grid item xs={4}>
+          <StageForm title="SX Cryo Stage" formData={formData.sxcryostage} onUpdate={handleUpdateField} />
+        </Grid>
+        <Grid item xs={4}>
+          <StageForm title="Pulse Tube Cryostat" formData={formData.pulsetubecryostat} onUpdate={handleUpdateField} />
+        </Grid>
+        <Grid item xs={4}>
+          <StageForm title="Furnace" formData={formData.furnace} onUpdate={handleUpdateField} />
+        </Grid>
+        <Grid item xs={4}>
+          <StageForm title="Lakeshore" formData={formData.lakeshore} onUpdate={handleUpdateField} />
+        </Grid>
+        <Grid item xs={4}>
+          <StageForm title="Samplewheel" formData={formData.samplewheel} onUpdate={handleUpdateField} />
+        </Grid>
+        <Grid item xs={4}>
+          <StageForm title="Userstage" formData={formData.userstage} onUpdate={handleUpdateField} />
+        </Grid>
 
-      {/* Repeat similar structures for other stage schemas like ln2cryostage, furnace, etc. */}
+      </Grid>
 
-      <Typography variant="h3">Motor Positions</Typography>
+      <Typography variant="h5" sx={{ color: 'black' }}>Motor Positions</Typography>
+      <ButtonGroup sx={{ display: 'flex', flexDirection: 'row' }}>
+
+        <Button type="button" onClick={addMotorPosition}>
+          Add Motor Position
+        </Button >
+      </ButtonGroup>
       <Grid container>
         {formData.sampleParameterMotorPosition.map((motor, index) => (
           <Grid item
-            xs={4}
+            xs={12}
             key={index}
             sx={{
               border: "1px solid #ccc",
@@ -344,10 +342,6 @@ export default function SampleParametersForm({ overrideDefaultValue, submitCallb
           </Grid>
         ))}
       </Grid>
-      <Button type="button" onClick={addMotorPosition}>
-        Add Motor Position
-      </Button >
-      <Button type="submit">Submit</Button >
     </form>
   );
 };

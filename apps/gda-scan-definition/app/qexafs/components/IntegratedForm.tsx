@@ -37,7 +37,7 @@ const IntegratedForm = () => {
     const partial = true;
     return (
         <div>
-            <Typography variant="h1" color="black" >QEXAFS Configuration</Typography>
+            <Typography variant="h3" color="black" >QEXAFS Configuration</Typography>
             <Box style={{ marginTop: "20px" }}>
                 <Button onClick={handleReadConfig} disabled={isLoading}>
                     Read Config
@@ -52,13 +52,9 @@ const IntegratedForm = () => {
             {partial ?
 
                 <div>
-                    <Typography variant="h5" sx={{ color: 'black' }}>
-
-                        Form for qexafs
-                    </Typography>
                     {
                         formData ? (
-                            <Grid container sx={{ margin: '2rem' }} spacing={2}>
+                            <Grid container sx={{ margin: '1.5rem' }} spacing={2}>
                                 {/* JSON Forms integration */}
                                 <Grid item xs={2}>
 
@@ -70,7 +66,7 @@ const IntegratedForm = () => {
                                         renderers={materialRenderers}
                                     />
                                 </Grid>
-                                <Grid item xs={6}>
+                                <Grid item xs={3}>
 
                                     <DetectorParametersForm overrideDefaultValue={formData.detectorParameters} submitCallback={(d: DetectorsSchema) => setFormData((prev) => {
                                         if (prev == undefined) {
@@ -79,7 +75,7 @@ const IntegratedForm = () => {
                                         return { ...prev, detectorParameters: d }
                                     })} />
                                 </Grid>
-                                <Grid item xs={4}>
+                                <Grid item xs={5}>
 
                                     <SampleParametersForm overrideDefaultValue={formData.sampleParameters} submitCallback={(s: SampleParametersType) => setFormData((prev) => {
                                         if (prev == undefined) {

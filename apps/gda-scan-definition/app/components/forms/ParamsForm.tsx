@@ -60,7 +60,7 @@ export function ParamsForm() {
       onSubmit={handleSubmit}
       style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
     >
-      <Typography variant="h6">QEXAFS Parameters</Typography>
+      <Typography variant="h4">QEXAFS Parameters</Typography>
       <label>
         Element:
         <select
