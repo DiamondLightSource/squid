@@ -76,7 +76,6 @@ const IntegratedForm = () => {
                                     })} />
                                 </Grid>
                                 <Grid item xs={5}>
-
                                     <SampleParametersForm overrideDefaultValue={formData.sampleParameters} submitCallback={(s: SampleParametersType) => setFormData((prev) => {
                                         if (prev == undefined) {
                                             return prev;
