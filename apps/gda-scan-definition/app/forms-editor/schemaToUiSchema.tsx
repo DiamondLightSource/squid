@@ -29,7 +29,7 @@ export function convertSchemaToUiSchema(schema: JsonSchema): UiSchema {
 
     Object.keys(schema.properties || {}).forEach((property) => {
       const propertySchema = schema.properties[property];
-      console.log(`noew another property: ${property}`)
+      // console.log(`now another property: ${property}`)
       console.dir(propertySchema);
 
       // Check if the property is a nested object (with its own properties)
@@ -79,27 +79,27 @@ export function convertSchemaToUiSchema(schema: JsonSchema): UiSchema {
 }
 
 // Example usage
-const schema = {
-  type: 'object',
-  properties: {
-    name: {
-      type: 'string',
-      minLength: 1,
-    },
-    done: {
-      type: 'boolean',
-    },
-    due_date: {
-      type: 'string',
-      format: 'date',
-    },
-    recurrence: {
-      type: 'string',
-      enum: ['Never', 'Daily', 'Weekly', 'Monthly'],
-    },
-  },
-  required: ['name', 'due_date'],
-};
+// const schema = {
+//   type: 'object',
+//   properties: {
+//     name: {
+//       type: 'string',
+//       minLength: 1,
+//     },
+//     done: {
+//       type: 'boolean',
+//     },
+//     due_date: {
+//       type: 'string',
+//       format: 'date',
+//     },
+//     recurrence: {
+//       type: 'string',
+//       enum: ['Never', 'Daily', 'Weekly', 'Monthly'],
+//     },
+//   },
+//   required: ['name', 'due_date'],
+// };
 
 // const uischema = convertSchemaToUiSchema(schema);
 // console.log(JSON.stringify(uischema, null, 2));

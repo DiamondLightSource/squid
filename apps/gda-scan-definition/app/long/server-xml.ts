@@ -1,8 +1,10 @@
+"use server";
 import fs from 'fs';
 import { XMLBuilder, XMLParser } from "fast-xml-parser";
-import { LongRowSchemaType, LongSchema, LongSchemaType } from '../schemas/long';
+import { LongRowSchema, LongRowSchemaType, LongSchema, LongSchemaType } from '../schemas/long';
 import { basePath } from '../actions/basePath';
 import { PREPEND_FOR_XML } from '../qexafs/server-xml';
+import { fixXmlToWrapInList } from "../qexafs/fixXmlToWrapInList";
 
 // XML Builder options
 const options = {
@@ -20,9 +22,8 @@ const parserOptions = {
     ignoreAttributes: false, // Keep attributes if present
     //   alwaysCreateTextNode: true, // Ensures text nodes are explicitly stored
     isArray: (name: string, jpath) => {
-        return false;
         // Define elements that should be arrays when duplicated
-        const arrayFields = ["sampleParameterMotorPosition", "detectorConfiguration"]; // Example duplicated elements
+        const arrayFields = ["ParametersForScan", "ParametersForScanBean"]; // Example duplicated elements
         return arrayFields.includes(name); // Only convert these to arrays
     },
 };
@@ -30,7 +31,7 @@ const parserOptions = {
 const parser = new XMLParser(parserOptions);
 
 // Function to convert a row to XML format
-export function convertRowToXml(row: LongRowSchemaType): string {
+function convertRowToXml(row: LongRowSchemaType): string {
     const xmlObject = {
         ParametersForScan: {
             numberOfRepetitions: row.Repetitions,
@@ -102,15 +103,27 @@ function convertRowsToXml(rows: LongRowSchemaType[]): string {
 }
 
 
-export function readXmlLongConfig(): LongSchemaType {
-
+export async function readXmlLongConfig(): Promise<LongSchemaType> {
+    console.log("trying to read xml long config");
 
     const content = fs.readFileSync(longConfigFilePath);
-    const parsedResult = parser.parse(content.toString()):
-    const p = parsedResult.ParameterCollection;
-
+    console.log("content: ");
+    console.dir(content);
+    const fixed = fixXmlToWrapInList(content.toString(), "ParametersForScan", "ParametersScanList");
+    const parsedResult = parser.parse(fixed);
+    console.log(`parsed result: ${parsedResult}`);
+    console.dir(parsedResult);
+    let p = parsedResult.ParameterCollection;
+    const r = parsedResult.ParameterCollection.ParametersScanList.ParametersForScan;
+    delete p.ParametersScanList;
+    p.ParametersForScanBean = r;
+    console.dir(p);
     try {
         const params: LongSchemaType = LongSchema.parse(p);
+        const things = params.ParametersForScan.map(i => {
+            return LongRowSchema.parse(i);
+        })
+        params.items = things;
         return params
     } catch (e) {
         console.error("Error", e);
@@ -120,9 +133,9 @@ export function readXmlLongConfig(): LongSchemaType {
 
 }
 
-export function updateXmlLongConfig(data: LongSchemaType): void {
+export async function updateXmlLongConfig(data: LongSchemaType): Promise<void> {
     const fullObject = {
-        "ParameterCollection": data
+        "ParameterCollection": convertRowsToXml(data)
     }
     const xml = builder.build(fullObject);
     fs.writeFileSync(longConfigFilePath, `${PREPEND_FOR_XML}\n${xml}`);

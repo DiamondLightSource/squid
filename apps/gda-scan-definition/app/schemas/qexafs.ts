@@ -221,14 +221,14 @@ export const partialQexafsSchema = z.object({
 
 export type PartialQexafsSchemaType = z.infer<typeof partialQexafsSchema>;
 
-export const partialQexafsJson: JsonSchema  = zodToJsonSchema(partialQexafsSchema) as unknown as JsonSchema;
+export const partialQexafsJson: JsonSchema = zodToJsonSchema(partialQexafsSchema) as unknown as JsonSchema;
 
 
 export type FullQexafsSchemaType = z.infer<typeof fullQexafsSchema>;
 export const fullQexafsJson: JsonSchema = zodToJsonSchema(fullQexafsSchema) as unknown as JsonSchema;
-console.log("full qexafs json",fullQexafsJson);
+// console.log("full qexafs json", fullQexafsJson);
 export const fullQexafsUiSchema: UiSchema = convertSchemaToUiSchema(fullQexafsJson);
-console.log('fullQexafsUiSchema', fullQexafsUiSchema);
+// console.log('fullQexafsUiSchema', fullQexafsUiSchema);
 
 
 
@@ -335,7 +335,7 @@ export const initFullQexafsSchema: FullQexafsSchemaType = {
     sampleParameterMotorPosition: [],
   },
 
-  };
+};
 
 export type SampleParametersType = z.infer<typeof sampleParametersSchema>;
 export const sampleParametersJson: JsonSchema = zodToJsonSchema(sampleParametersSchema) as unknown as JsonSchema;

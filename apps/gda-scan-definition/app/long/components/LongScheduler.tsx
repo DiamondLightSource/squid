@@ -16,59 +16,65 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LongSchema, LongSchemaType } from "../../schemas/long";
+import { LongRowSchemaType, LongSchema, LongSchemaType } from "../../schemas/long";
+import { startConfigRead, startConfigUpdate, useLongDispatch, useLongState } from "./LongContext";
 
+
+const CLEAN_ROW: LongRowSchemaType = {
+    Scan: "",
+    Detector: "",
+    Sample: "",
+    Sample_getSampleWheelParameters_getFilter: "",
+    Sample_getSampleParameterMotorPosition_sam2x_getDoMove: false,
+    Sample_getSampleParameterMotorPosition_sam2x_getDemandPosition: 0,
+    Sample_getSampleParameterMotorPosition_sam2y_getDoMove: false,
+    Sample_getSampleParameterMotorPosition_sam2y_getDemandPosition: 0,
+    Sample_getSampleParameterMotorPosition_fluoDist_getDoMove: false,
+    Sample_getSampleParameterMotorPosition_fluoDist_getDemandPosition: 0,
+    Output: "",
+    Repetitions: 1,
+};
 
 export default function LongScheduler() {
-    const [data, setData] = useState<LongSchemaType>([
-        {
-            Scan: "/scratch/users/data/2024/0-0/xml/Experiment_2_b18/QEXAFS_Parameters.xml",
-            Detector: "/scratch/users/data/2024/0-0/xml/Experiment_2_b18/Detector_Parameters.xml",
-            Sample: "/scratch/users/data/2024/0-0/xml/Experiment_2_b18/Sample_Parameters2.xml",
-            Sample_getSampleWheelParameters_getFilter: "Laser",
-            Sample_getSampleParameterMotorPosition_sam2x_getDoMove: true,
-            Sample_getSampleParameterMotorPosition_sam2x_getDemandPosition: 16.0003,
-            Sample_getSampleParameterMotorPosition_sam2y_getDoMove: true,
-            Sample_getSampleParameterMotorPosition_sam2y_getDemandPosition: 90,
-            Sample_getSampleParameterMotorPosition_fluoDist_getDoMove: true,
-            Sample_getSampleParameterMotorPosition_fluoDist_getDemandPosition: -100,
-            Output: "/scratch/users/data/2024/0-0/xml/Experiment_2_b18/Output_Parameters.xml",
-            Repetitions: 1,
-        },
-    ]);
+    const { config, isLoading, error } = useLongState();
+    const dispatch = useLongDispatch();
 
     const { control, handleSubmit, setValue, getValues } = useForm({
         resolver: zodResolver(LongSchema),
-        defaultValues: { experiments: data },
+        defaultValues: { experiments: config },
     });
 
     // Function to handle adding a new row
-    const addRow = () => {
-        const newRow = {
-            Scan: "",
-            Detector: "",
-            Sample: "",
-            Sample_getSampleWheelParameters_getFilter: "",
-            Sample_getSampleParameterMotorPosition_sam2x_getDoMove: false,
-            Sample_getSampleParameterMotorPosition_sam2x_getDemandPosition: 0,
-            Sample_getSampleParameterMotorPosition_sam2y_getDoMove: false,
-            Sample_getSampleParameterMotorPosition_sam2y_getDemandPosition: 0,
-            Sample_getSampleParameterMotorPosition_fluoDist_getDoMove: false,
-            Sample_getSampleParameterMotorPosition_fluoDist_getDemandPosition: 0,
-            Output: "",
-            Repetitions: 1,
-        };
-        setData([...data, newRow]);
+    const addRow = async () => {
+        if (!config) {
+            alert("no existing definition to update!");
+            return;
+        }
+        const newRow = window.structuredClone(CLEAN_ROW);
+        const updatedConfig: LongSchemaType = [...config, newRow];
+        await startConfigUpdate(dispatch, updatedConfig)
+    };
+
+    const handleReadConfig = async () => {
+        await startConfigRead(dispatch);
     };
 
     // Function to delete a row
-    const deleteRow = (index: number) => {
-        const newData = data.filter((_, i) => i !== index);
-        setData(newData);
+    const deleteRow = async (index: number) => {
+
+        if (!config) {
+            alert("no existing definition to update!");
+            return;
+        }
+        const filteredConfig: LongSchemaType = config.filter((_, i) => i !== index);
+        await startConfigUpdate(dispatch, filteredConfig)
     };
 
     return (
         <form onSubmit={handleSubmit((validData) => console.log("✅ Valid Data:", validData))}>
+            <Button onClick={handleReadConfig} disabled={isLoading}>
+                Read Config
+            </Button>
             <TableContainer component={Paper}>
                 <Table>
                     <TableHead>
@@ -89,7 +95,7 @@ export default function LongScheduler() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {data.map((row, index) => (
+                        {!config ? <p>no config!</p> : config.map((row, index) => (
                             <TableRow key={index}>
                                 {Object.keys(row).map((key) => (
                                     <TableCell key={key}>

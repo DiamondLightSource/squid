@@ -51,6 +51,7 @@ const fileNames = [
     "Output_Parameters.xml",
     "QEXAFS_Parameters.xml",
     "Sample_Parameters.xml",
+    "long.xml",
 ]; // Array of file names to copy
 
 // const basePath = "./targetFolder"; // Base folder where files will be copied to

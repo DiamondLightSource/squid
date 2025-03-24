@@ -1,8 +1,7 @@
 
 import { z } from "zod";
 
-// Define schema for a single row
-const LongRowSchema = z.object({
+export const LongRowSchema = z.object({
   Scan: z.string(), // File path for QEXAFSParameters
   Detector: z.string(), // File path for DetectorParameters
   Sample: z.string(), // File path for SampleParameters
