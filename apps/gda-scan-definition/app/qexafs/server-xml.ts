@@ -11,7 +11,7 @@ import { rootDirectory } from "./server-safety";
  * @param listName 
  * @returns 
  */
-function fixXmlToWrapInList(xml: string, tagName:string, listName:string): string {
+export function fixXmlToWrapInList(xml: string, tagName: string, listName: string): string {
     // Find the first occurrence of <myTagItem>
     const openingTag = `<${tagName}>`;
     const closingTag = `</${tagName}>`;
@@ -70,9 +70,7 @@ const samplePath = `${basePath}/Sample_Parameters.xml`
 const outputPath = `${basePath}/Output_Parameters.xml`
 
 
-
-
-const PREPEND_FOR_XML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+export const PREPEND_FOR_XML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
 
 export function updateQexafsParameters(data: QexafsParametersType): void {
     const fullObject = {
@@ -125,11 +123,11 @@ export function readQexafsParameters(): QexafsParametersType {
 
 export function readDetectorParameters(): DetectorsSchema {
     const content = fs.readFileSync(detectorsPath);
-    const fixed = fixXmlToWrapInList(content.toString(), "detectorConfiguration", "detectorConfigurationList" )
+    const fixed = fixXmlToWrapInList(content.toString(), "detectorConfiguration", "detectorConfigurationList")
     const parsedResult = parser.parse(fixed);
     console.dir(parsedResult);
     let p = parsedResult.DetectorParameters;
-    const r =  parsedResult.DetectorParameters.detectorConfigurationList.detectorConfiguration;
+    const r = parsedResult.DetectorParameters.detectorConfigurationList.detectorConfiguration;
     console.dir(r);
     delete p.detectorConfigurationList;
     p.detectorConfiguration = r;
@@ -145,12 +143,12 @@ export function readDetectorParameters(): DetectorsSchema {
 
 export function readSampleParameters(): SampleParametersType {
     const content = fs.readFileSync(samplePath);
-    const fixed = fixXmlToWrapInList(content.toString(), "sampleParameterMotorPosition", "sampleParameterMotorPositionList" )
+    const fixed = fixXmlToWrapInList(content.toString(), "sampleParameterMotorPosition", "sampleParameterMotorPositionList")
     const parsedResult = parser.parse(fixed);
 
     console.log("Parsed result", parsedResult);
     let p = parsedResult.B18SampleParameters;
-    const r =  parsedResult.B18SampleParameters.sampleParameterMotorPositionList.sampleParameterMotorPosition;
+    const r = parsedResult.B18SampleParameters.sampleParameterMotorPositionList.sampleParameterMotorPosition;
     delete p.sampleParameterMotorPositionList
     p.sampleParameterMotorPosition = r;
     try {

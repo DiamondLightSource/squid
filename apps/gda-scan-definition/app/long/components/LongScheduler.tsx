@@ -14,32 +14,13 @@ import {
     IconButton,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { z } from "zod";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LongSchema } from "../../schemas/long";
+import { LongSchema, LongSchemaType } from "../../schemas/long";
 
-// Define Zod schema for a single row
-const ExperimentRowSchema = z.object({
-    Scan: z.string().min(1, "Required"),
-    Detector: z.string().min(1, "Required"),
-    Sample: z.string().min(1, "Required"),
-    Sample_getSampleWheelParameters_getFilter: z.string(),
-    Sample_getSampleParameterMotorPosition_sam2x_getDoMove: z.boolean(),
-    Sample_getSampleParameterMotorPosition_sam2x_getDemandPosition: z.number(),
-    Sample_getSampleParameterMotorPosition_sam2y_getDoMove: z.boolean(),
-    Sample_getSampleParameterMotorPosition_sam2y_getDemandPosition: z.number(),
-    Sample_getSampleParameterMotorPosition_fluoDist_getDoMove: z.boolean(),
-    Sample_getSampleParameterMotorPosition_fluoDist_getDemandPosition: z.number(),
-    Output: z.string().min(1, "Required"),
-    Repetitions: z.number().int().min(1, "Must be at least 1"),
-});
-
-// Define schema for an array of rows
-const ExperimentDataSchema = z.array(ExperimentRowSchema);
 
 export default function LongScheduler() {
-    const [data, setData] = useState([
+    const [data, setData] = useState<LongSchemaType>([
         {
             Scan: "/scratch/users/data/2024/0-0/xml/Experiment_2_b18/QEXAFS_Parameters.xml",
             Detector: "/scratch/users/data/2024/0-0/xml/Experiment_2_b18/Detector_Parameters.xml",

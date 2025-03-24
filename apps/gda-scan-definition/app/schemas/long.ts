@@ -17,6 +17,8 @@ const LongRowSchema = z.object({
   Repetitions: z.number().int(), // Integer value
 });
 
+export type LongRowSchemaType = z.infer<typeof LongRowSchema>;
+
 // Define schema for an array of rows
 export const LongSchema = z.array(LongRowSchema);
 export type LongSchemaType = z.infer<typeof LongSchema>;
