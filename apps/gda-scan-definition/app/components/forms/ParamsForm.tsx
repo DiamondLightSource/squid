@@ -58,7 +58,7 @@ export function ParamsForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
+      style={{ display: "flex", flexDirection: "column", gap: "2rem" }}
     >
       <Typography variant="h4">QEXAFS Parameters</Typography>
       <label>
