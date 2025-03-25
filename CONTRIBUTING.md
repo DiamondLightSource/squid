@@ -6,3 +6,5 @@ https://github.com/microsoft/vscode/blob/main/CONTRIBUTING.md
 For issue requests to judge if it's out of scope we're using this
 
 https://github.com/Microsoft/vscode/wiki/Issue-Grooming#out-of-scope-feature-requests
+
+For text we use: https://m3.material.io/foundations/content-design/style-guide/ux-writing-best-practices
