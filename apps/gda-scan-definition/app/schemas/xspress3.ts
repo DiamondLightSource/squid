@@ -6,8 +6,6 @@ export const Xspress3DetectorElementRegion = z.object({
     roiEnd: z.number(), 
 });
 
-
-
 export const Xspress3DetectorElement = z.object({
     name: z.string(),
     number:  z.number(), 
@@ -34,4 +32,4 @@ export const Xspress3ConfigSchema = z.object({
     DetectorElements: z.array(Xspress3DetectorElement)
 });
 
-export type Xspress3ConfigSchema = z.infer<typeof Xspress3ConfigSchema>;
+export type Xspress3ConfigSchemaType = z.infer<typeof Xspress3ConfigSchema>;
