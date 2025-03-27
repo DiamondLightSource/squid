@@ -2,7 +2,7 @@
 
 import { ElementPropertiesResponseType, AbsorptionEdgeResponseType, EmissionDataResponseType } from "../schemas/xraylibSchemas";
 
-const apiUrl = "http://172.23.169.51:8080/api/tables";
+const apiUrl = "http://172.23.169.67:8080/api/tables";
 
 export async function getElementProperties(
   element: string
