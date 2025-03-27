@@ -43,6 +43,8 @@ spec:
               value: "production"
             - name: HOST
               value: "0.0.0.0" # Bind to all interfaces inside the pod
+            - name: ROAPI_API_URL
+              value: "http://172.23.169.67:8080/api/tables"
           livenessProbe:
             {{- toYaml .Values.livenessProbe | nindent 12 }}
           readinessProbe:

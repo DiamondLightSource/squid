@@ -2,7 +2,7 @@
 
 import { ElementPropertiesResponseType, AbsorptionEdgeResponseType, EmissionDataResponseType } from "../schemas/xraylibSchemas";
 
-const apiUrl = "http://172.23.169.67:8080/api/tables";
+const apiUrl = process.env.ROAPI_API_URL ?? "http://172.23.169.67:8080/api/tables";
 
 export async function getElementProperties(
   element: string
