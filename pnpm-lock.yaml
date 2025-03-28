@@ -966,6 +966,76 @@ importers:
         specifier: ^5.3.3
         version: 5.5.4
 
+  apps/ws-stream:
+    dependencies:
+      '@chakra-ui/icons':
+        specifier: ^2.1.1
+        version: 2.2.4(@chakra-ui/react@2.10.6(@emotion/react@11.13.5(@types/react@18.3.18)(react@18.3.1))(@emotion/styled@11.13.5(@emotion/react@11.13.5(@types/react@18.3.18)(react@18.3.1))(@types/react@18.3.18)(react@18.3.1))(@types/react@18.3.18)(framer-motion@11.12.0(@emotion/is-prop-valid@1.3.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
+      '@chakra-ui/react':
+        specifier: ^2.8.2
+        version: 2.10.6(@emotion/react@11.13.5(@types/react@18.3.18)(react@18.3.1))(@emotion/styled@11.13.5(@emotion/react@11.13.5(@types/react@18.3.18)(react@18.3.1))(@types/react@18.3.18)(react@18.3.1))(@types/react@18.3.18)(framer-motion@11.12.0(@emotion/is-prop-valid@1.3.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../../packages/typescript-config
+      '@repo/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
+      '@repo/vite-config':
+        specifier: workspace:*
+        version: link:../../packages/vite-config
+      '@testing-library/react':
+        specifier: ^15.0.2
+        version: 15.0.7(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      arkit:
+        specifier: ^1.6.4
+        version: 1.6.4
+      react:
+        specifier: ^18.2.0
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.2.0
+        version: 18.3.1(react@18.3.1)
+    devDependencies:
+      '@types/react':
+        specifier: ^18.2.43
+        version: 18.3.18
+      '@types/react-dom':
+        specifier: ^18.2.17
+        version: 18.3.5(@types/react@18.3.18)
+      '@typescript-eslint/eslint-plugin':
+        specifier: ^6.14.0
+        version: 6.21.0(@typescript-eslint/parser@6.21.0(eslint@8.57.1)(typescript@5.8.2))(eslint@8.57.1)(typescript@5.8.2)
+      '@typescript-eslint/parser':
+        specifier: ^6.14.0
+        version: 6.21.0(eslint@8.57.1)(typescript@5.8.2)
+      '@vitejs/plugin-react-swc':
+        specifier: ^3.5.0
+        version: 3.8.0(@swc/helpers@0.5.15)(vite@5.4.14(@types/node@20.14.12)(sass@1.81.0))
+      '@vitest/coverage-v8':
+        specifier: ^1.5.0
+        version: 1.6.1(vitest@1.6.1(@types/node@20.14.12)(@vitest/ui@1.6.1)(sass@1.81.0))
+      '@vitest/ui':
+        specifier: ^1.5.0
+        version: 1.6.1(vitest@1.6.1)
+      eslint:
+        specifier: ^8.55.0
+        version: 8.57.1
+      eslint-plugin-react-hooks:
+        specifier: ^4.6.0
+        version: 4.6.2(eslint@8.57.1)
+      eslint-plugin-react-refresh:
+        specifier: ^0.4.5
+        version: 0.4.19(eslint@8.57.1)
+      typescript:
+        specifier: ^5.2.2
+        version: 5.8.2
+      vite:
+        specifier: ^5.4.12
+        version: 5.4.14(@types/node@20.14.12)(sass@1.81.0)
+      vitest:
+        specifier: ^1.6.1
+        version: 1.6.1(@types/node@20.14.12)(@vitest/ui@1.6.1)(sass@1.81.0)
+
   apps/xraylib:
     dependencies:
       '@diamondlightsource/periodic-table':
