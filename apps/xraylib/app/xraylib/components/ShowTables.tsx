@@ -75,7 +75,7 @@ export function ShowTables({
                 <strong>IUPAC Symbol</strong>
               </TableCell>
               <TableCell>
-                <strong>Absorption Edge</strong>
+                <strong>Absorption Edge eV</strong>
               </TableCell>
               <TableCell>
                 <strong>Fluorescence Yield</strong>
