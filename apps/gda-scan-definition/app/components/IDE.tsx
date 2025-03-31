@@ -19,9 +19,7 @@ const IDE: React.FC = () => {
         >
           {/* Horizontal bar for potential buttons */}
           <Grid item>
-            <ButtonGroup>
-              <Button>Button example</Button>
-            </ButtonGroup>
+            <Button>Button example</Button>
           </Grid>
 
           {/* Main layout grid: File Explorer, Tabs, and Editor */}
