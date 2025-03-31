@@ -11,6 +11,8 @@ import { ButtonGroup, Button, Stack } from '@chakra-ui/react';
 import { DatasetShapeViewer } from './components/DatasetShapeViewer';
 import ParsedPointsChart from './components/ParsedPointsChart';
 import GenericPanel from './components/GenericPanel';
+import { PossibleBackendsType } from './types';
+import { Box } from '@mui/material';
 
 function App() {
   const [response, setResponse] = useState<string>('');
@@ -27,8 +29,9 @@ function App() {
 
     fetchHelloWorld();
   }, []);
-  const def = 'generic';
-  const [backend, setBackend] = useState<'colors' | 'hdf' | 'generic'>(def);
+  const def: PossibleBackendsType = 'epics';
+
+  const [backend, setBackend] = useState<PossibleBackendsType>(def);
 
   return (
     <>
@@ -38,6 +41,7 @@ function App() {
         <Button onClick={() => setBackend('colors')}> use colors backend</Button>
         <Button onClick={() => setBackend('hdf')}>use hdf hardcoded backend</Button>
         <Button onClick={() => setBackend('generic')}>use generic backend</Button>
+        <Button onClick={() => setBackend('epics')}>use epics backend</Button>
       </ButtonGroup>
       {
         backend === 'colors' ?
@@ -55,8 +59,12 @@ function App() {
           </> : backend === 'generic' ? <>
             <p>generic backend</p>
             <GenericPanel />
-
-          </> : <p>error rendering - unknown backend</p>
+          </> : backend === 'epics' ?
+            <Box height='80vh' width='80vw' border='2px red solid'>
+              epics backend
+              {/* todo here a nice auto generated component */}
+            </Box>
+            : <p>error rendering - unknown backend</p>
       }
     </>
   );
