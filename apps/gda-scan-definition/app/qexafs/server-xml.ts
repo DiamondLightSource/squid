@@ -91,15 +91,14 @@ export function readQexafsParameters(): QexafsParametersType {
 
 export function readDetectorParameters(): DetectorsSchema {
     const content = fs.readFileSync(detectorsPath);
-    const fixed = fixXmlToWrapInList(content.toString(), "detectorConfiguration", "detectorConfigurationList")
+    // XML here violates the json rule of unique keys. 
+    // naive readout would cause just 1 object and overwriting error
+    // wrapping in a list tag fixes the xml
+    const fixed = fixXmlToWrapInList(content.toString(), "detectorConfiguration", "detectorConfigurationsList")
     const parsedResult = parser.parse(fixed);
-    console.dir(parsedResult);
     let p = parsedResult.DetectorParameters;
-    const r = parsedResult.DetectorParameters.detectorConfigurationList.detectorConfiguration;
-    console.dir(r);
-    delete p.detectorConfigurationList;
-    p.detectorConfiguration = r;
-    console.log("Parsed result", parsedResult);
+    // unpack to restore the flat array 
+    p.detectorConfigurationsList = p.detectorConfigurationsList.detectorConfiguration;
     try {
         const params: DetectorsSchema = detectorParametersSchema.parse(p);
         return params
@@ -114,7 +113,6 @@ export function readSampleParameters(): SampleParametersType {
     const fixed = fixXmlToWrapInList(content.toString(), "sampleParameterMotorPosition", "sampleParameterMotorPositionList")
     const parsedResult = parser.parse(fixed);
 
-    console.log("Parsed result", parsedResult);
     let p = parsedResult.B18SampleParameters;
     const r = parsedResult.B18SampleParameters.sampleParameterMotorPositionList.sampleParameterMotorPosition;
     delete p.sampleParameterMotorPositionList

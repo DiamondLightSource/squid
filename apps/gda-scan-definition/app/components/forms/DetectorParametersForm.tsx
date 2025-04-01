@@ -25,7 +25,7 @@ const defaultDetectorConfig: DetectorConfiguration = {
 
 const defaultFormData: DetectorsSchema = {
   shouldValidate: false,
-  detectorConfiguration: [defaultDetectorConfig],
+  detectorConfigurationsList: [defaultDetectorConfig],
 };
 
 export type DetectorParametersFormProps = {
@@ -54,25 +54,25 @@ function DetectorParametersForm({
   const handleAddConfiguration = () => {
     setFormData({
       ...formData,
-      detectorConfiguration: [
-        ...formData.detectorConfiguration,
+      detectorConfigurationsList: [
+        ...formData.detectorConfigurationsList,
         defaultDetectorConfig,
       ],
     });
   };
 
   const handleRemoveConfiguration = (index: number) => {
-    const updatedConfigurations = formData.detectorConfiguration.filter(
+    const updatedConfigurations = formData.detectorConfigurationsList.filter(
       (_, i) => i !== index
     );
-    setFormData({ ...formData, detectorConfiguration: updatedConfigurations });
+    setFormData({ ...formData, detectorConfigurationsList: updatedConfigurations });
   };
 
   const handleUpdateConfiguration = (index: number, key: any, value: any) => {
-    const updatedConfigurations = formData.detectorConfiguration.map(
+    const updatedConfigurations = formData.detectorConfigurationsList.map(
       (config, i) => (i === index ? { ...config, [key]: value } : config)
     );
-    setFormData({ ...formData, detectorConfiguration: updatedConfigurations });
+    setFormData({ ...formData, detectorConfigurationsList: updatedConfigurations });
   };
 
   // Sync formData with overrideDefaultValue when the prop changes
@@ -120,7 +120,7 @@ function DetectorParametersForm({
 
       <Grid container>
 
-        {formData.detectorConfiguration.map((config, index) => (
+        {formData.detectorConfigurationsList.map((config, index) => (
           <Grid item xs={12}>
             <SingleDetectorParameters
               index={index}

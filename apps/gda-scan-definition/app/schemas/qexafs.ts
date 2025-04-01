@@ -70,7 +70,7 @@ export const detectorConfigurationSchema = z.object({
 // todo missing the definition for the full detector parameters schema
 export const detectorParametersSchema = z.object({
   shouldValidate: z.boolean(),
-  detectorConfiguration: z.array(detectorConfigurationSchema),
+  detectorConfigurationsList: z.array(detectorConfigurationSchema),
 });
 
 export const detectorConfigurationJson: JsonSchema = zodToJsonSchema(detectorConfigurationSchema) as unknown as JsonSchema;
@@ -245,7 +245,7 @@ export const initFullQexafsSchema: FullQexafsSchemaType = {
   },
   detectorParameters: {
     shouldValidate: true,
-    detectorConfiguration: [],
+    detectorConfigurationsList: [],
   },
   outputParameters: {
     shouldValidate: true,

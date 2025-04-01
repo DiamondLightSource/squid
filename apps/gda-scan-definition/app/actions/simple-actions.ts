@@ -29,7 +29,7 @@ function readDetectorFile(): DetectorsSchema {
 
   if (!fs.existsSync) {
     console.log(`Detector file not found at path: ${path}`);
-    return { shouldValidate: false, detectorConfiguration: [] };
+    return { shouldValidate: false, detectorConfigurationsList: [] };
   }
 
   const buffer: Buffer = fs.readFileSync(path);
@@ -41,7 +41,7 @@ function readDetectorFile(): DetectorsSchema {
     Array.isArray(parsedResult) == true ? parsedResult[0] : parsedResult;
   if (typeof parsed !== "object" || !parsed["DetectorParameters"]) {
     console.error("DetectorParameters not found in the file");
-    return { shouldValidate: false, detectorConfiguration: [] };
+    return { shouldValidate: false, detectorConfigurationsList: [] };
   }
   // console.debug(`Parsed detector file: ${JSON.stringify(parsed)}`);
   // parse into the zod schema, assert it belongs to the right type
