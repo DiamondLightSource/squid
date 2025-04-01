@@ -14,7 +14,7 @@ function modifySchemaTypes(schema: any): any {
     if (schema && schema.properties) {
         Object.keys(schema.properties).forEach((key) => {
             const property = schema.properties[key];
-            console.dir(property);
+            // console.dir(property);
 
             // Check if the property is an object and has a type property
             if (typeof property === 'object') {
@@ -61,12 +61,12 @@ const PlanForm = ({ planName }: { planName: string }) => {
     const schema = useMemo(() => {
         const derivedSchema = plan?.schema;
         const finalSchema = modifySchemaTypes(derivedSchema);
-        console.dir(finalSchema);
+        // console.dir(finalSchema);
         return finalSchema ?? {}
     }, [plan]);
 
-    console.log(`jsonschema: ${schema}`)
-    console.dir(schema);
+    // console.log(`jsonschema: ${schema}`)
+    // console.dir(schema);
 
     const [data, setData] = useState();
     const handleSubmit = ({ formData }: { formData: any }) => {

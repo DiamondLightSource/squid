@@ -202,7 +202,7 @@ export const sampleParametersSchema = z.object({
   lakeshore: lakeShoreSchema,
   samplewheel: sampleWheelSchema,
   userstage: userStageSchema,
-  sampleParameterMotorPosition: z.array(motorPositionSchema),
+  sampleParameterMotorPositionsList: z.array(motorPositionSchema),
 });
 
 
@@ -332,7 +332,7 @@ export const initFullQexafsSchema: FullQexafsSchemaType = {
       axis7: 0,
       axis8: 0,
     },
-    sampleParameterMotorPosition: [],
+    sampleParameterMotorPositionsList: [],
   },
 
 };

@@ -85,7 +85,7 @@ const initialFormData: SampleParametersSchema = {
     axis7: 0,
     axis8: 0,
   },
-  sampleParameterMotorPosition: [initialMotorPosition],
+  sampleParameterMotorPositionsList: [initialMotorPosition],
 };
 
 type MotorPosition = z.infer<typeof motorPositionSchema>;
@@ -326,7 +326,7 @@ export default function SampleParametersForm({ overrideDefaultValue, submitCallb
         </Button >
       </ButtonGroup>
       <Grid container>
-        {formData.sampleParameterMotorPosition.map((motor, index) => (
+        {formData.sampleParameterMotorPositionsList.map((motor, index) => (
           <Grid item
             xs={12}
             key={index}

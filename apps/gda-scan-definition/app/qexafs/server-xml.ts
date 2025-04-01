@@ -110,17 +110,13 @@ export function readDetectorParameters(): DetectorsSchema {
 
 export function readSampleParameters(): SampleParametersType {
     const content = fs.readFileSync(samplePath);
-    const fixed = fixXmlToWrapInList(content.toString(), "sampleParameterMotorPosition", "sampleParameterMotorPositionList")
+    const fixed = fixXmlToWrapInList(content.toString(), "sampleParameterMotorPosition", "sampleParameterMotorPositionsList")
     const parsedResult = parser.parse(fixed);
 
     let p = parsedResult.B18SampleParameters;
-    const r = parsedResult.B18SampleParameters.sampleParameterMotorPositionList.sampleParameterMotorPosition;
-    delete p.sampleParameterMotorPositionList
-    p.sampleParameterMotorPosition = r;
+    p.sampleParameterMotorPositionsList = p.sampleParameterMotorPositionsList.sampleParameterMotorPosition
     try {
         const sampleParameters: SampleParametersType = sampleParametersSchema.parse(p);
-        const motors = sampleParameters.sampleParameterMotorPosition.map(i => motorPositionSchema.parse(i));
-        sampleParameters.sampleParameterMotorPosition = motors;
         return sampleParameters
     } catch (e) {
         console.log("Error", e);

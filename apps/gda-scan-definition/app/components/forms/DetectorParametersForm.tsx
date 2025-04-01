@@ -121,7 +121,7 @@ function DetectorParametersForm({
       <Grid container>
 
         {formData.detectorConfigurationsList.map((config, index) => (
-          <Grid item xs={12}>
+          <Grid item xs={12} key={`detector-${index}`}>
             <SingleDetectorParameters
               index={index}
               config={config}

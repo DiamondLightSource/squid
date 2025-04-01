@@ -19,5 +19,7 @@ export const LongRowSchema = z.object({
 export type LongRowSchemaType = z.infer<typeof LongRowSchema>;
 
 // Define schema for an array of rows
-export const LongSchema = z.array(LongRowSchema);
+export const LongSchema = z.object({
+  ParameterScansList: z.array(LongRowSchema)
+});
 export type LongSchemaType = z.infer<typeof LongSchema>;

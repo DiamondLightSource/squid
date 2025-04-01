@@ -105,32 +105,24 @@ function convertRowsToXml(rows: LongRowSchemaType[]): string {
 
 export async function readXmlLongConfig(): Promise<LongSchemaType> {
     console.log("trying to read xml long config");
-
     const content = fs.readFileSync(longConfigFilePath);
-    console.log("content: ");
-    console.dir(content);
-    const fixed = fixXmlToWrapInList(content.toString(), "ParametersForScan", "ParametersScanList");
+    const fixed = fixXmlToWrapInList(content.toString(), "ParametersForScan", "ParametersScansList");
     const parsedResult = parser.parse(fixed);
-    console.log(`parsed result: ${parsedResult}`);
-    console.dir(parsedResult);
     let p = parsedResult.ParameterCollection;
-    const r = parsedResult.ParameterCollection.ParametersScanList.ParametersForScan;
-    delete p.ParametersScanList;
-    p.ParametersForScanBean = r;
-    console.dir(p);
+    p.ParametersScansList = p.ParametersScansList.ParametersForScan;
     try {
+        console.log(`p before parsing`);
+        console.dir(p);
         const params: LongSchemaType = LongSchema.parse(p);
-        const things = params.ParametersForScan.map(i => {
-            return LongRowSchema.parse(i);
-        })
-        params.items = things;
+        // const things = params.ParameterScansList.map(i => {
+        //     return LongRowSchema.parse(i);
+        // })
+        // params.items = things;
         return params
     } catch (e) {
         console.error("Error", e);
     }
     throw new Error("Failed to parse output parameters at path " + longConfigFilePath);
-
-
 }
 
 export async function updateXmlLongConfig(data: LongSchemaType): Promise<void> {

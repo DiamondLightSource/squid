@@ -108,7 +108,7 @@ export const startConfigRead = async (dispatch: React.Dispatch<LongAction>) => {
     console.log("trying to read remote data")
     try {
         const response = await readXmlLongConfig();
-        console.dir(response);
+        // console.dir(response);
         if (response?.data?.success && response?.data?.data) {
             dispatch({ type: "CONFIG_READ_SUCCESS", payload: response.data?.data });
         } else {

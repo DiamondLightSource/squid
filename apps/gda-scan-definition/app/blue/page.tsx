@@ -4,7 +4,6 @@ import { blueapiClient } from "../clients/blueapi/client.gen";
 import { getPlans } from "../clients/blueapi";
 import { GetPlansPlansGetResponse, PlanResponse } from "../clients/blueapi";
 
-
 export default function Blue() {
 
     const [plans, setPlans] = useState([]);

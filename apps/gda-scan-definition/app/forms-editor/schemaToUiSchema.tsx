@@ -21,7 +21,7 @@ export function convertSchemaToUiSchema(schema: JsonSchema): UiSchema {
     elements: [],
   };
 
-  console.dir(schema)
+  // console.dir(schema)
 
   // Recursive helper to handle nested properties
   function processProperties(schema: JsonSchema, parentPath = '#/properties'): any {
@@ -30,7 +30,7 @@ export function convertSchemaToUiSchema(schema: JsonSchema): UiSchema {
     Object.keys(schema.properties || {}).forEach((property) => {
       const propertySchema = schema.properties[property];
       // console.log(`now another property: ${property}`)
-      console.dir(propertySchema);
+      // console.dir(propertySchema);
 
       // Check if the property is a nested object (with its own properties)
       if (propertySchema.type === 'object' && propertySchema.properties) {
