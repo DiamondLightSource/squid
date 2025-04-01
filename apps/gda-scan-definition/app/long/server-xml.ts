@@ -17,7 +17,6 @@ const longConfigFilePath = `${basePath}/long.xml`;
 // Create an XML builder instance
 const builder = new XMLBuilder(options);
 
-
 const parserOptions = {
     ignoreAttributes: false, // Keep attributes if present
     //   alwaysCreateTextNode: true, // Ensures text nodes are explicitly stored
@@ -113,6 +112,14 @@ export async function readXmlLongConfig(): Promise<LongSchemaType> {
     try {
         console.log(`p before parsing`);
         console.dir(p);
+        console.dir(p.ParametersScansList[0].ParametersForScanBean)
+        p.ParameterScansList.map((i: any) => {
+            const ar  = i.ParametersForScanBean.get("ParameterValue");
+            if (ar) {
+                console.dir(ar);
+                console.dir(ar[0]);
+            }
+        });
         const params: LongSchemaType = LongSchema.parse(p);
         // const things = params.ParameterScansList.map(i => {
         //     return LongRowSchema.parse(i);

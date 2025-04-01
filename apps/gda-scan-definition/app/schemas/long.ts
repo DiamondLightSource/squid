@@ -1,19 +1,19 @@
 
 import { z } from "zod";
 
+// todo add this  for beanType allowed options
+const FishEnum = z.enum(["Salmon", "Tuna", "Trout"]);
+
+const ParametersForScanBean = z.object({
+    beanFileName: z.string() , // '/scratch/users/data/2024/0-0/xml/Experiment_2_b18/QEXAFS_Parameters.xml',
+    beanType: z.string(), // 'uk.ac.gda.beans.exafs.QEXAFSParameters'
+    // ParameterValue: z.optional()
+});
+
+
 export const LongRowSchema = z.object({
-  Scan: z.string(), // File path for QEXAFSParameters
-  Detector: z.string(), // File path for DetectorParameters
-  Sample: z.string(), // File path for SampleParameters
-  Sample_getSampleWheelParameters_getFilter: z.string(), // String value (e.g., "Laser")
-  Sample_getSampleParameterMotorPosition_sam2x_getDoMove: z.boolean(), // Boolean
-  Sample_getSampleParameterMotorPosition_sam2x_getDemandPosition: z.number(), // Float or int
-  Sample_getSampleParameterMotorPosition_sam2y_getDoMove: z.boolean(), // Boolean
-  Sample_getSampleParameterMotorPosition_sam2y_getDemandPosition: z.number(), // Float or int
-  Sample_getSampleParameterMotorPosition_fluoDist_getDoMove: z.boolean(), // Boolean
-  Sample_getSampleParameterMotorPosition_fluoDist_getDemandPosition: z.number(), // Float or int
-  Output: z.string(), // File path for OutputParameters
-  Repetitions: z.number().int(), // Integer value
+  numberOfRepetitions: z.number().min(1),
+  params: z.array(ParametersForScanBean),
 });
 
 export type LongRowSchemaType = z.infer<typeof LongRowSchema>;
