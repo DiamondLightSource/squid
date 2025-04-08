@@ -39,9 +39,9 @@ const getSubscriptions = {
 const requestUpdates = {
     "type": "subscribe",
     "pvs": [
-        "BL01C-MO-PPMAC-01:Y",
-        "BL01C-MO-PPMAC-01:Z",
-        "BL01C-MO-PPMAC-01:X"
+        "BL01C-MO-PPMAC-01:Y:RBV",
+        "BL01C-MO-PPMAC-01:Z:RBV",
+        "BL01C-MO-PPMAC-01:X:RBV"
     ]
 }
 
@@ -63,10 +63,36 @@ const echo = { "type": "echo", "body": "Hello, echo", "other": "Whatever else" }
 const WS_ADDRESS = "https://pvws.diamond.ac.uk/pvws/pv";
 const BLUEAPI_ADDRESS = "https://b01-1-blueapi.diamond.ac.uk";
 
+export const PhysicalPvWithMmSchema = z.object({
+    "value": z.number(),
+
+
+});
+
+export type PhysicalPvWithMm = z.infer<typeof PhysicalPvWithMmSchema>;
+
+export const StageStateSchema = z.object({
+    x: PhysicalPvWithMmSchema,
+    y: PhysicalPvWithMmSchema,
+    z: PhysicalPvWithMmSchema,
+});
+
+
+export type StageState = z.infer<typeof StageStateSchema>;
+
+
+const startingState: StageState = {
+    x: { value: 0 },
+    y: { value: 0 },
+    z: { value: 0 }
+};
+
+
 export default function EpicsBackend() {
     const [socketUrl] = useState(WS_ADDRESS);
     const [messageHistory, setMessageHistory] = useState<string[]>([]);
     const [message, setMessage] = useState("");
+    const [state, setState] = useState<StageState>(startingState);
 
     const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl, {
         shouldReconnect: () => true,
@@ -77,11 +103,25 @@ export default function EpicsBackend() {
         if (lastMessage !== null) {
             if (lastMessage !== null && lastMessage.length !== 0) {
                 console.debug(lastMessage.data)
-                const m: PvWsUpdate = PvWsUpdateSchema.parse(lastMessage.data);
+                const myJson = JSON.parse(lastMessage.data)
+                const m: PvWsUpdate = PvWsUpdateSchema.parse(myJson);
                 console.debug(m);
-                if (m.type == 'update') {
-                    window.alert(m);
-                    const milimeters = m.nanos / 10 ^ 6;
+                if (m.type == 'update' && state) {
+                    const milimeters = m.nanos / 10 ** 6;
+                    const lastChar = m.pv.at(-5);
+                    switch (lastChar) {
+                        case 'X':
+                            setState((state) => { return { ...state, x: { value: milimeters } } });
+                            break;
+                        case 'Y':
+                            setState((state) => { return { ...state, y: { value: milimeters } } })
+                            break;
+                        case 'Z':
+                            setState((state) => { return { ...state, z: { value: milimeters } } })
+                            break;
+                        default:
+                            window.alert("unknown")
+                    }
                 }
             }
 
@@ -92,8 +132,6 @@ export default function EpicsBackend() {
     // Send a formatted WebSocket message
     const handleSendMessage = useCallback(() => {
         try {
-            // sendMessage(JSON.stringify(echo));
-            // sendMessage(JSON.stringify(getSubscriptions));
             sendMessage(JSON.stringify(requestUpdates));
         } catch (error) {
             console.error("Invalid message format:", error);
@@ -116,14 +154,17 @@ export default function EpicsBackend() {
         <Typography variant="subtitle1">Status: {connectionStatus}</Typography>
 
         <Box>
-            <Typography variant="h4">
+            <Typography variant="h5">
                 listening to stage dimensions:
             </Typography>
             <Button onClick={handleSendMessage}> start listening</Button>
             <List>
-                {requestUpdates.pvs.map((p, i) => {
+                {/* {requestUpdates.pvs.map((p, i) => {
                     return <ListItem key={`watched-pv-${i}`}>{p}</ListItem>
-                })}
+                })} */}
+                <ListItem key={`watched-pv-x}`}>{requestUpdates.pvs[0]} in mm: {state.x.value}</ListItem>
+                <ListItem key={`watched-pv-y}`}>{requestUpdates.pvs[1]} in mm: {state.y.value}</ListItem>
+                <ListItem key={`watched-pv-z}`}>{requestUpdates.pvs[2]} in mm: {state.z.value}</ListItem>
             </List>
         </Box>
         {/* <BeamlineStatsTabPanel /> */}
