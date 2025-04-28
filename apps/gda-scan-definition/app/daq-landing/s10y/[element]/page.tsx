@@ -51,7 +51,13 @@ export default async function PerElementScan({ params }: { params: Promise<{ ele
                         <Grid item xs={12}>
                             <Box sx={{ border: "1px solid lightgray", height: 400 }}>
                                 {/* <NoKonvaGraph /> */}
-                                <GraphV3 regionsOfInterest={[testRegion]} />
+                                <GraphV3 regionsOfInterest={[testRegion]} points={[
+                                    { x: 10, y: 30 },
+                                    { x: 50, y: 30 },
+                                    { x: 70, y: 40 },
+                                    { x: 900, y: 70 },
+                                    { x: 110, y: 190 },
+                                ]} />
                                 {/* <Canvas stageHeight={300} stageWidth={300}> */}
                                 {/* <ScanDefinitionGraph /> */}
                                 {/* </Canvas> */}
