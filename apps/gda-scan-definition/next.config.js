@@ -2,13 +2,20 @@
 module.exports = {
   transpilePackages: ["@repo/ui"],
   webpack: (config, { isServer }) => {
+
+    config.externals = [...config.externals, { canvas: 'canvas' }]; // required to make Konva & react-konva work
     config.experiments = {
       asyncWebAssembly: true,
       layers: true
-    }
+    };
     return config;
   },
   experimental: {
+    turbo: {
+      resolveAlias: {
+        canvas: './empty.js',
+      },
+    },
     swcPlugins: [
       // [
       //   "@preact-signals/safe-react/swc",

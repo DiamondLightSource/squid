@@ -18,6 +18,9 @@ export default function B18Nav() {
         <Link href="/run-scans">Run scans</Link>
       </ListItem>
 
+      <ListItem>
+        <Link href="/daq-landing/s10y">s10y</Link>
+      </ListItem>
       <BasicMenu />
     </>
   );
