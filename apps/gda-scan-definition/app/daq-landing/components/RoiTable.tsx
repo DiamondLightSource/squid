@@ -1,7 +1,12 @@
 import { Box, Typography, Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
 import { RegionOfInterest } from "./RegionOfInterest";
 
-export function RegionOfInterestTable({ regions }: { regions: RegionOfInterest[] }) {
+type RegionOfIterestTableProps = {
+    regions: RegionOfInterest[];
+    editRoiCallback: (r: RegionOfInterest) => void;
+};
+
+export function RegionOfInterestTable({ regions, editRoiCallback }: RegionOfIterestTableProps) {
     return (
         <Box sx={{ mt: 4 }}>
             <Typography variant="h6" sx={{ mb: 2 }}>
@@ -21,7 +26,7 @@ export function RegionOfInterestTable({ regions }: { regions: RegionOfInterest[]
 
                 <TableBody>
                     {regions.map((roi, idx) => (
-                        <TableRow key={idx}>
+                        <TableRow key={idx} onClick={() => editRoiCallback(roi)}>
                             <TableCell>{roi.startingEnergyElectronVolts}</TableCell>
                             <TableCell>{roi.endEnergyElectronVolts}</TableCell>
                             <TableCell>{roi.exposureMilisecondsPerPoint}</TableCell>

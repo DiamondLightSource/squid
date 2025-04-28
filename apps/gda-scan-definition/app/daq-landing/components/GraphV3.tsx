@@ -15,6 +15,7 @@ export type GraphV3Props = {
     regionsOfInterest: RegionOfInterest[];
     points: Point[];
     addRoiCallback: (r: RegionOfInterest) => void;
+    editRoiCallback: (r:RegionOfInterest) => void;
 };
 
 // todo ask what are good meaningful values for this

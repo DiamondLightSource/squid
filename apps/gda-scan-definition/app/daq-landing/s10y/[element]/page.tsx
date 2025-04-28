@@ -6,6 +6,7 @@ import GraphV3 from "../../components/GraphV3";
 import { RegionOfInterest } from "../../components/RegionOfInterest";
 import Stages from "../../components/Stages";
 import { RegionOfInterestTable } from "../../components/RoiTable";
+import NewROIDialog from "../../components/NewRoiDialog";
 // import ScanDefinitionGraph from "../../components/ScanDefinitionGraph";
 // import dynamic from "next/dynamic";
 
@@ -33,6 +34,37 @@ export default function PerElementScan({ params }: { params: Promise<{ element: 
         load();
     }, [params]);
 
+
+    const [dialogOpen, setDialogOpen] = useState(false);
+    const [editTarget, setEditTarget] = useState<RegionOfInterest | null>(null);
+
+    const handleAddClick = () => {
+        setEditTarget(null); // no data -> adding new
+        setDialogOpen(true);
+    };
+
+    const handleEditClick = (roi: RegionOfInterest) => {
+        setEditTarget(roi); // load selected ROI into dialog
+        setDialogOpen(true);
+    };
+
+    const handleSave = (newRoi: RegionOfInterest) => {
+        if (editTarget) {
+            console.log("Save edited ROI:", newRoi);
+            const foundIndex = rois.findIndex(r => r == editTarget);
+            if (foundIndex) {
+                setRois(rs => {
+                    rs[foundIndex] = newRoi;
+                    return rs;
+                })
+            }
+            // Replace the edited ROI in your list
+        } else {
+            console.log("Add new ROI:", newRoi);
+            // Add new ROI to list
+        }
+        setDialogOpen(false);
+    };
     return (
         <Box p={2}>
             <Typography variant="h3" gutterBottom>
@@ -42,6 +74,13 @@ export default function PerElementScan({ params }: { params: Promise<{ element: 
                 <Link href="../s10y">Go back</Link>
                 <Button onClick={() => window.alert("trying to run a plan")}>RUN PLAN</Button>
             </ButtonGroup>
+
+            <NewROIDialog
+                open={dialogOpen}
+                onClose={() => setDialogOpen(false)}
+                onSubmit={handleSave}
+                initialData={editTarget}
+            />
             {/* Top thin panel */}
             <Stages value={1} />
 
@@ -83,7 +122,9 @@ export default function PerElementScan({ params }: { params: Promise<{ element: 
                                     { x: 1342, y: 82 },
                                     { x: 1442, y: 82 },
                                     { x: 1541, y: 83 },
-                                ]} addRoiCallback={r => setRois(rois => [...rois, r])} />
+                                ]} addRoiCallback={r => setRois(rois => [...rois, r])}
+                                    editRoiCallback={handleEditClick}
+                                />
                             </Box>
                         </Grid>
                     </Grid>
@@ -96,7 +137,9 @@ export default function PerElementScan({ params }: { params: Promise<{ element: 
                         <Typography variant="h4">
                             Plan Parameters Form
                         </Typography>
-                        <RegionOfInterestTable regions={rois} />
+                        <RegionOfInterestTable regions={rois}
+                            editRoiCallback={handleEditClick}
+                        />
                     </Box>
                 </Grid>
             </Grid>
