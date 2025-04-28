@@ -21,7 +21,7 @@ function Stages({ value }: StagesProps) {
                 Experiment Setup Progress
             </Typography>
 
-            <Stepper activeStep={value} orientation="vertical">
+            <Stepper activeStep={value} orientation="horizontal">
                 {stages.map((label, index) => (
                     <Step key={index}>
                         <StepLabel
