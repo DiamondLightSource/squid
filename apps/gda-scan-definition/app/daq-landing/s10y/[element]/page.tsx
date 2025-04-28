@@ -24,10 +24,10 @@ export default async function PerElementScan({ params }: { params: Promise<{ ele
             <Typography variant="h3" gutterBottom>
                 Scan this element {element}
             </Typography>
-            <Link href="..">Go back</Link>
+            <Link href="../s10y">Go back</Link>
 
             {/* Top thin panel */}
-            <Stages />
+            <Stages value={1} />
 
             <Grid container spacing={2} sx={{ mt: 2 }}>
                 {/* Left-hand block - 2/3 width */}

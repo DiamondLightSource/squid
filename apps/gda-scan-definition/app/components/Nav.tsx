@@ -19,7 +19,7 @@ export default function B18Nav() {
       </ListItem>
 
       <ListItem>
-        <Link href="/daq-landing/s10y">s10y</Link>
+        <Link href="/daq-landing">DAQ</Link>
       </ListItem>
       <BasicMenu />
     </>

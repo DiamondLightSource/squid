@@ -4,6 +4,7 @@ import { ElementType } from '@diamondlightsource/periodic-table/elements';
 import { PeriodicTable } from '@diamondlightsource/periodic-table/table';
 import { useRouter } from 'next/navigation';
 import React from 'react'
+import Stages from './Stages';
 
 function TableArea() {
     const router = useRouter();
@@ -16,6 +17,7 @@ function TableArea() {
     };
     return (
         <div>
+            <Stages value={0} />
             <PeriodicTable callback={handleElementClick} />
             TableArea</div>
     )
