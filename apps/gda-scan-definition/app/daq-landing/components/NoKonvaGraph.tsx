@@ -3,7 +3,7 @@
 import React from 'react'
 
 
-export type RegionOfInterest = {
+type OldRegionOfInterest = {
     startingEnergy: number,
     endEnergy: number,
     exposureMiliseconds: number
@@ -11,7 +11,7 @@ export type RegionOfInterest = {
 }
 
 export type NoKonvaGraphProps = {
-    regionsOfInterest: RegionOfInterest[]
+    regionsOfInterest: OldRegionOfInterest[]
 
 }
 

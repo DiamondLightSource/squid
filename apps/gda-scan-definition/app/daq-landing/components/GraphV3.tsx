@@ -1,15 +1,10 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { Box, Button, Typography } from "@mui/material";
 import { RegionOfInterestSvg } from "./RegionOfInterestSvg";
-
-export type RegionOfInterest = {
-    startingEnergy: number;
-    endEnergy: number;
-    exposureMiliseconds: number;
-    formulaForExposureTime: string;
-};
+import { RegionOfInterest } from "./RegionOfInterest";
+import NewROIDialog from "./NewRoiDialog";
 
 type Point = {
     x: number;
@@ -19,33 +14,46 @@ type Point = {
 export type GraphV3Props = {
     regionsOfInterest: RegionOfInterest[];
     points: Point[];
+    addRoiCallback: (r: RegionOfInterest) => void;
 };
 
+// todo ask what are good meaningful values for this
 const GRAPH_WIDTH = 900;
 const GRAPH_HEIGHT = 300;
 const ENERGY_MIN = 0;
 const ENERGY_MAX = 10000; // Example energy range
 
-function GraphV3({ regionsOfInterest, points }: GraphV3Props) {
+function GraphV3({ regionsOfInterest, points, addRoiCallback }: GraphV3Props) {
     const scaleX = (energy: number) => 40 +
         ((energy - ENERGY_MIN) / (ENERGY_MAX - ENERGY_MIN)) * GRAPH_WIDTH;
 
     const scaleY = (value: number) =>
         GRAPH_HEIGHT - (value / 100) * GRAPH_HEIGHT;
+    const [dialogOpen, setDialogOpen] = useState(false);
 
-    const handleAddNewROI = () => {
+    const handleAddNewROI = (r: RegionOfInterest) => {
         // TODO: Add your actual logic
         alert("Add new Region of Interest!");
+        console.dir(r);
+        addRoiCallback(r);
     };
 
     return (
         <Box sx={{ border: "1px solid lightgray", p: 2 }}>
             <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
                 <Typography variant="h6">Scan Definition Graph</Typography>
-                <Button variant="outlined" size="small" onClick={handleAddNewROI}>
+                <Button variant="outlined" size="small" onClick={() => setDialogOpen(true)}>
                     Add New ROI
                 </Button>
+                <Button variant="outlined" size="small" onClick={() => setDialogOpen(true)}>
+                    Add New QEXAFS ROI (appends a default field)
+                </Button>
             </Box>
+            <NewROIDialog
+                open={dialogOpen}
+                onClose={() => setDialogOpen(false)}
+                onSubmit={handleAddNewROI}
+            />
 
             <svg width={GRAPH_WIDTH} height={GRAPH_HEIGHT} style={{ backgroundColor: "#f9f9f9" }}>
                 {/* Axes */}

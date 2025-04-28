@@ -15,14 +15,14 @@ const s10y: VillageDefinition = {
     name: "spectroscopy",
     short: "s10y",
     beamlines: ['i18', 'i20', 'b18', 'k14'],
-    techniques: [{ name: 'xas' }, { name: 'qexafs' }]
+    techniques: [{ name: 'xas' }, { name: 'qexafs' }, { name: "incomplete" }]
 };
 
 const i5g: VillageDefinition = {
     name: "imaging",
-    short:"i5g",
+    short: "i5g",
     beamlines: ['i10', 'i14'],
-    techniques: [{ name: "scattering" }, { name: "absorption" }]
+    techniques: [{ name: "scattering" }, { name: "absorption" }, { name: "incomplete" }]
 };
 
 export const villages: VillageDefinition[] = [s10y, i5g];

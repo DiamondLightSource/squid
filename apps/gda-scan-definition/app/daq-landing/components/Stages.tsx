@@ -2,6 +2,7 @@
 
 import React from "react";
 import { Box, Typography, Stepper, Step, StepLabel } from "@mui/material";
+import Link from "next/link";
 
 const stages = [
     "Choose Element",
@@ -32,7 +33,9 @@ function Stages({ value }: StagesProps) {
                                 },
                             }}
                         >
-                            {label}
+                            <Link href={`/daq-landing/s10y`}>
+                                {label}
+                            </Link>
                         </StepLabel>
                     </Step>
                 ))}

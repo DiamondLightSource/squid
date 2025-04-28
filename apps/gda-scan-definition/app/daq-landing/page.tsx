@@ -6,7 +6,7 @@ export default function DaqLanding() {
     return (
         <Box sx={{ padding: 4 }}>
             <Typography variant="h2" sx={{ color: 'black', mb: 4 }}>
-                Spectroscopy Villages
+                science Villages
             </Typography>
 
             <Grid container spacing={3}>

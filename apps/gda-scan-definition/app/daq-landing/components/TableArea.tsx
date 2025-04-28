@@ -7,6 +7,8 @@ import React from 'react'
 import Stages from './Stages';
 
 function TableArea() {
+    // should use formula for range  = min(absorption - some constant C1), max(absoorpiton + constant C2), 
+    // C2 diff for qexafs and xanes
     const router = useRouter();
     const handleElementClick = (element: ElementType) => {
         console.log(element);
@@ -19,7 +21,7 @@ function TableArea() {
         <div>
             <Stages value={0} />
             <PeriodicTable callback={handleElementClick} />
-            TableArea</div>
+        </div>
     )
 }
 

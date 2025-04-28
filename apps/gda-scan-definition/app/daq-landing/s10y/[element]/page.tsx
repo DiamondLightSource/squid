@@ -1,9 +1,11 @@
 "use client";
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Button, ButtonGroup, Grid, Menu, Typography } from "@mui/material";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import GraphV3 from "../../components/GraphV3";
+import { RegionOfInterest } from "../../components/RegionOfInterest";
 import Stages from "../../components/Stages";
-import NoKonvaGraph from "../../components/NoKonvaGraph";
-import GraphV3, { RegionOfInterest } from "../../components/GraphV3";
+import { RegionOfInterestTable } from "../../components/RoiTable";
 // import ScanDefinitionGraph from "../../components/ScanDefinitionGraph";
 // import dynamic from "next/dynamic";
 
@@ -11,21 +13,35 @@ import GraphV3, { RegionOfInterest } from "../../components/GraphV3";
 
 
 const testRegion: RegionOfInterest = {
-    startingEnergy: 10,
-    endEnergy: 400,
-    exposureMiliseconds: 40,
-    formulaForExposureTime: ""
+    startingEnergyElectronVolts: 10,
+    endEnergyElectronVolts: 400,
+    exposureMilisecondsPerPoint: 40,
+    formulaForExposureTime: "",
+    numberOfPointsOfExposure: 0
 };
 
-export default async function PerElementScan({ params }: { params: Promise<{ element: string }> }) {
-    const { element } = await params;
+export default function PerElementScan({ params }: { params: Promise<{ element: string }> }) {
+
+    const [rois, setRois] = useState<RegionOfInterest[]>([testRegion]);
+    const [element, setElement] = useState<string | null>(null);
+
+    useEffect(() => {
+        async function load() {
+            const { element } = await params;
+            setElement(element);
+        }
+        load();
+    }, [params]);
+
     return (
         <Box p={2}>
             <Typography variant="h3" gutterBottom>
                 Scan this element {element}
             </Typography>
-            <Link href="../s10y">Go back</Link>
-
+            <ButtonGroup>
+                <Link href="../s10y">Go back</Link>
+                <Button onClick={() => window.alert("trying to run a plan")}>RUN PLAN</Button>
+            </ButtonGroup>
             {/* Top thin panel */}
             <Stages value={1} />
 
@@ -51,16 +67,23 @@ export default async function PerElementScan({ params }: { params: Promise<{ ele
                         <Grid item xs={12}>
                             <Box sx={{ border: "1px solid lightgray", height: 400 }}>
                                 {/* <NoKonvaGraph /> */}
-                                <GraphV3 regionsOfInterest={[testRegion]} points={[
-                                    { x: 10, y: 30 },
-                                    { x: 50, y: 30 },
-                                    { x: 70, y: 40 },
-                                    { x: 900, y: 70 },
-                                    { x: 110, y: 190 },
-                                ]} />
-                                {/* <Canvas stageHeight={300} stageWidth={300}> */}
-                                {/* <ScanDefinitionGraph /> */}
-                                {/* </Canvas> */}
+                                <GraphV3 regionsOfInterest={rois} points={[
+                                    // pre edge phase - keep y at 20
+                                    { x: 109, y: 20 },
+                                    { x: 509, y: 21 },
+                                    { x: 809, y: 22 },
+                                    // edge phase - sharp rise - small x and go y up
+
+                                    // post edge phase
+                                    { x: 1009, y: 76 },
+                                    { x: 1109, y: 78 },
+                                    { x: 1138, y: 80 },
+                                    { x: 1140, y: 80 },
+                                    { x: 1241, y: 81 },
+                                    { x: 1342, y: 82 },
+                                    { x: 1442, y: 82 },
+                                    { x: 1541, y: 83 },
+                                ]} addRoiCallback={r => setRois(rois => [...rois, r])} />
                             </Box>
                         </Grid>
                     </Grid>
@@ -70,7 +93,10 @@ export default async function PerElementScan({ params }: { params: Promise<{ ele
                 <Grid item xs={12} md={4}>
                     <Box sx={{ border: "1px solid lightgray", height: "100%" }}>
                         {/* Plan parameters form */}
-                        Plan Parameters Form
+                        <Typography variant="h4">
+                            Plan Parameters Form
+                        </Typography>
+                        <RegionOfInterestTable regions={rois} />
                     </Box>
                 </Grid>
             </Grid>
