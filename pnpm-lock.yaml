@@ -509,9 +509,6 @@ importers:
       axios:
         specifier: ^1.7.9
         version: 1.7.9
-      canvas:
-        specifier: 3.0.0-rc3
-        version: 3.0.0-rc3
       csv:
         specifier: ^6.3.11
         version: 6.3.11
@@ -7395,10 +7392,6 @@ packages:
   canvas-fit@1.5.0:
     resolution: {integrity: sha512-onIcjRpz69/Hx5bB5HGbYKUF2uC6QT6Gp+pfpGm3A7mPfcluSLV5v4Zu+oflDUwLdUw0rLIBhUbi0v8hM4FJQQ==}
 
-  canvas@3.0.0-rc3:
-    resolution: {integrity: sha512-LJVkMp4AH7/IRoLvhLS6R09uBt9O3O0mhCYL34AQV/+OC39jmTv22pJTF5Mgfa3V2JnzGl21MVrhEKmtmPtfQA==}
-    engines: {node: ^18.12.0 || >= 20.9.0}
-
   chai@4.5.0:
     resolution: {integrity: sha512-RITGBfijLkBddZvnn8jdqoTypxvqbOLYQkGGxXzeFjVHvudaPw0HNFD9x928/eUwYWd2dPCugVqspGALTZZQKw==}
     engines: {node: '>=4'}
@@ -7985,10 +7978,6 @@ packages:
   decode-uri-component@0.2.2:
     resolution: {integrity: sha512-FqUYQ+8o158GyGTrMFJms9qh3CqTKvAqgqsTnkLI8sKu0028orqBhxNMFkFen0zGyg6epACD32pjVk58ngIErQ==}
     engines: {node: '>=0.10'}
-
-  decompress-response@4.2.1:
-    resolution: {integrity: sha512-jOSne2qbyE+/r8G1VU+G/82LBs2Fs4LAsTiLSHOCOMZQl2OKZ6i8i4IyHemTe+/yIXOtTcRQMzPcgyhoFlqPkw==}
-    engines: {node: '>=8'}
 
   decompress-response@6.0.0:
     resolution: {integrity: sha512-aW35yZM6Bb/4oJlZncMH2LCoZtJXTRxES17vE3hoRiowU2kWHaJKFkSBDnDR+cm9J+9QhXmREyIfv0pji9ejCQ==}
@@ -10405,10 +10394,6 @@ packages:
     resolution: {integrity: sha512-vqiC06CuhBTUdZH+RYl8sFrL096vA45Ok5ISO6sE/Mr1jRbGH4Csnhi8f3wKVl7x8mO4Au7Ir9D3Oyv1VYMFJw==}
     engines: {node: '>=12'}
 
-  mimic-response@2.1.0:
-    resolution: {integrity: sha512-wXqjST+SLt7R009ySCglWBCFpjUygmCIfD790/kVbiGmUgfYGuB14PiTd5DwVxSV4NcYHjzMkoj5LjQZwTQLEA==}
-    engines: {node: '>=8'}
-
   mimic-response@3.1.0:
     resolution: {integrity: sha512-z0yWI+4FDrrweS8Zmt4Ej5HdJmky15+L2e6Wgn3+iK5fWzb6T3fhNFq2+MeTRb064c6Wr4N/wv0DzQTjNzHNGQ==}
     engines: {node: '>=10'}
@@ -12034,9 +12019,6 @@ packages:
 
   simple-concat@1.0.1:
     resolution: {integrity: sha512-cSFtAPtRhljv69IK0hTVZQ+OfE9nePi/rtJmw5UjHeVyVroEqJXP1sFztKUy1qU+xvz3u/sfYJLa947b7nAN2Q==}
-
-  simple-get@3.1.1:
-    resolution: {integrity: sha512-CQ5LTKGfCpvE1K0n2us+kuMPbk/q0EKl82s4aheV9oXjFEz6W/Y7oQFVJuU6QG77hRT4Ghb5RURteF5vnWjupA==}
 
   simple-get@4.0.1:
     resolution: {integrity: sha512-brv7p5WgH0jmQJr1ZDDfKDOSeWWg+OVypG99A/5vYGPqJ6pxiaHLy8nxtFjBA7oMa01ebA9gfh1uMCFqOuXxvA==}
@@ -20958,12 +20940,6 @@ snapshots:
     dependencies:
       element-size: 1.1.1
 
-  canvas@3.0.0-rc3:
-    dependencies:
-      node-addon-api: 7.1.1
-      prebuild-install: 7.1.2
-      simple-get: 3.1.1
-
   chai@4.5.0:
     dependencies:
       assertion-error: 1.1.0
@@ -21560,10 +21536,6 @@ snapshots:
   decimal.js-light@2.5.1: {}
 
   decode-uri-component@0.2.2: {}
-
-  decompress-response@4.2.1:
-    dependencies:
-      mimic-response: 2.1.0
 
   decompress-response@6.0.0:
     dependencies:
@@ -24775,8 +24747,6 @@ snapshots:
 
   mimic-fn@4.0.0: {}
 
-  mimic-response@2.1.0: {}
-
   mimic-response@3.1.0: {}
 
   min-indent@1.0.1: {}
@@ -26864,12 +26834,6 @@ snapshots:
   signum@1.0.0: {}
 
   simple-concat@1.0.1: {}
-
-  simple-get@3.1.1:
-    dependencies:
-      decompress-response: 4.2.1
-      once: 1.4.0
-      simple-concat: 1.0.1
 
   simple-get@4.0.1:
     dependencies:

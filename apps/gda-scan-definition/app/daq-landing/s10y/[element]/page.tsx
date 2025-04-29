@@ -7,6 +7,7 @@ import { RegionOfInterest } from "../../components/RegionOfInterest";
 import Stages from "../../components/Stages";
 import { RegionOfInterestTable } from "../../components/RoiTable";
 import NewROIDialog from "../../components/NewRoiDialog";
+import RoiTable from "../../components/AnotherTable";
 // import ScanDefinitionGraph from "../../components/ScanDefinitionGraph";
 // import dynamic from "next/dynamic";
 
@@ -140,6 +141,7 @@ export default function PerElementScan({ params }: { params: Promise<{ element: 
                         <RegionOfInterestTable regions={rois}
                             editRoiCallback={handleEditClick}
                         />
+                        <RoiTable />
                     </Box>
                 </Grid>
             </Grid>

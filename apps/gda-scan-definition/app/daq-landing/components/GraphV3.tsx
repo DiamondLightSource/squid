@@ -34,7 +34,6 @@ function GraphV3({ regionsOfInterest, points, addRoiCallback }: GraphV3Props) {
 
     const handleAddNewROI = (r: RegionOfInterest) => {
         // TODO: Add your actual logic
-        alert("Add new Region of Interest!");
         console.dir(r);
         addRoiCallback(r);
     };
