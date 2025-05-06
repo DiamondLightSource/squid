@@ -8,6 +8,7 @@ const stages = [
     "Choose Element",
     "Calibrate Detectors",
     "Calibrate Scan Parameters",
+    "Configure Sample Environments",
     "Collect Your Data",
 ];
 
@@ -27,13 +28,15 @@ function Stages({ value }: StagesProps) {
                     <Step key={index}>
                         <StepLabel
                             sx={{
+
                                 "& .MuiStepLabel-label": {
+                                    fontSize: 24,
                                     fontWeight: index === value ? "bold" : "normal",
                                     color: index === value ? "primary.main" : "inherit",
                                 },
                             }}
                         >
-                            <Link href={`/daq-landing/s10y`}>
+                            <Link  href={`../`}>
                                 {label}
                             </Link>
                         </StepLabel>

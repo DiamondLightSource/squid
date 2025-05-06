@@ -6,7 +6,11 @@ import { useRouter } from 'next/navigation';
 import React from 'react'
 import Stages from './Stages';
 
-function TableArea() {
+export type TableAreaProps = {
+    beamline: string
+}
+
+function TableArea({ beamline }: TableAreaProps) {
     // should use formula for range  = min(absorption - some constant C1), max(absoorpiton + constant C2), 
     // C2 diff for qexafs and xanes
     const router = useRouter();
@@ -14,7 +18,7 @@ function TableArea() {
         console.log(element);
         const symbol = element.Symbol;
         if (symbol) {
-            router.push(`/daq-landing/s10y/${symbol}`);
+            router.push(`/daq-landing/s10y/beamlines/{${beamline}/elements/${symbol}`);
         }
     };
     return (

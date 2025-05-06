@@ -9,14 +9,14 @@ function VillageCard({ data }: { data: VillageDefinition }) {
     return (
         <Box sx={{ border: "1px solid lightgray", p: 2, mb: 2 }} maxWidth={window.innerWidth / 3}>
             <Typography variant="h5">{data.name}</Typography>
-            <Link href={`/daq-landing/${data.short}`}>see details</Link>
+            {/* <Link href={`/daq-landing/${data.short}`}>see details</Link> */}
 
             <Typography variant="subtitle1" sx={{ mt: 1 }}>
                 Beamlines:
             </Typography>
             <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
                 {data.beamlines.map((beamline) => (
-                    <NextLink key={beamline} href={`/beamlines/${beamline}`} passHref legacyBehavior>
+                    <NextLink key={beamline} href={`daq-landing/s10y/beamlines/${beamline}`} passHref legacyBehavior>
                         <MuiLink underline="hover">{beamline}</MuiLink>
                     </NextLink>
                 ))}

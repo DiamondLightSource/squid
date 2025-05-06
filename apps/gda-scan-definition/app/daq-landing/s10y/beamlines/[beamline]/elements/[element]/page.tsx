@@ -2,12 +2,13 @@
 import { Box, Button, ButtonGroup, Grid, Menu, Typography } from "@mui/material";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import GraphV3 from "../../components/GraphV3";
-import { RegionOfInterest } from "../../components/RegionOfInterest";
-import Stages from "../../components/Stages";
-import { RegionOfInterestTable } from "../../components/RoiTable";
-import NewROIDialog from "../../components/NewRoiDialog";
-import RoiTable from "../../components/AnotherTable";
+import GraphV3 from "../../../../../components/GraphV3";
+import { RegionOfInterest } from "../../../../../components/RegionOfInterest";
+import Stages from "../../../../../components/Stages";
+import { RegionOfInterestTable } from "../../../../../components/RoiTable";
+import NewROIDialog from "../../../../../components/NewRoiDialog";
+import RoiTable from "../../../../../components/AnotherTable";
+import { Roi } from "../../../../../../schemas/roiSchemas";
 // import ScanDefinitionGraph from "../../components/ScanDefinitionGraph";
 // import dynamic from "next/dynamic";
 
@@ -22,7 +23,7 @@ const testRegion: RegionOfInterest = {
     numberOfPointsOfExposure: 0
 };
 
-export default function PerElementScan({ params }: { params: Promise<{ element: string }> }) {
+export default function PerElementScan({ params }: { params: Promise<{ element: string, beamline: string }> }) {
 
     const [rois, setRois] = useState<RegionOfInterest[]>([testRegion]);
     const [element, setElement] = useState<string | null>(null);
@@ -134,14 +135,20 @@ export default function PerElementScan({ params }: { params: Promise<{ element: 
                 {/* Right-hand block */}
                 <Grid item xs={12} md={4}>
                     <Box sx={{ border: "1px solid lightgray", height: "100%" }}>
-                        {/* Plan parameters form */}
                         <Typography variant="h4">
-                            Plan Parameters Form
+                            Detector ROIs
                         </Typography>
                         <RegionOfInterestTable regions={rois}
                             editRoiCallback={handleEditClick}
                         />
-                        <RoiTable />
+                        {/* <RoiTable rois={rois} addRoiCallback={(r: Roi) => {
+                            setRois(rois => [...rois, r]);
+                        }}
+
+                            deleteRoiCallback={(r: RegionOfInterest) => {
+                                setRois(rs => rs.filter(item => item !== r))
+                            }}
+                        /> */}
                     </Box>
                 </Grid>
             </Grid>

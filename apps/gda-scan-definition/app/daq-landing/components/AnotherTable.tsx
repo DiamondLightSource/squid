@@ -26,14 +26,24 @@ const defaultRoi: Roi = {
     },
 };
 
-export default function RoiTable() {
-    const [rois, setRois] = useState<Roi[]>([defaultRoi]);
+export type RoiTableProps = {
+    rois: Roi[],
+    addRoiCallback: (r: Roi) => void,
+    deleteRoiCallback: (r: Roi) => void
+}
+
+export default function RoiTable({ rois, addRoiCallback, deleteRoiCallback }: RoiTableProps) {
+    // const [rois, setRois] = useState<Roi[]>([defaultRoi]);
     const { sendRois, isLoading, error, success } = useSendRois("/api/submit-rois"); // Replace with your endpoint
 
-    const addNewRoi = () => setRois([...rois, defaultRoi]);
+    // const addNewRoi = () => setRois([...rois, defaultRoi]);
+    const addNewRoi = () => {
+        addRoiCallback(defaultRoi);
+    }
 
     const deleteRoi = (index: number) => {
-        setRois(rois.filter((_, i) => i !== index));
+        // setRois(rois.filter((_, i) => i !== index));
+        deleteRoiCallback(rois[index])
     };
 
     const handleSend = async () => {
