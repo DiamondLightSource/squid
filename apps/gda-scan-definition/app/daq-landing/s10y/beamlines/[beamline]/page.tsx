@@ -11,7 +11,7 @@ export default function BeamlinePage({ params }: Record<string, string>) {
     return <div>beamline page {beamline}
         <Typography variant="h2" sx={{ color: 'black' }}>Choose element</Typography>
         <TableArea beamline={beamline} />
-        <RoiTable />
+        {/* <RoiTable /> */}
         <Slider></Slider>
         todo read out from the xraylib the energy ranges for each low energy to high energy
     </div>
