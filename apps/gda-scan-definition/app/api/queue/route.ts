@@ -6,12 +6,12 @@ import { v4 as uuidv4 } from "uuid";
 const sessionQueues = new Map<string, any[]>();
 
 // Helper: Get or create a session
-function getSession(req: NextRequest) {
-  let sessionId = cookies().get("sessionId")?.value;
-  
+async function getSession(req: NextRequest) {
+  let sessionId = (await cookies()).get("sessionId")?.value;
+
   if (!sessionId) {
     sessionId = uuidv4();
-    cookies().set("sessionId", sessionId, { httpOnly: true, path: "/" });
+    (await cookies()).set("sessionId", sessionId, { httpOnly: true, path: "/" });
   }
 
   if (!sessionQueues.has(sessionId)) {
