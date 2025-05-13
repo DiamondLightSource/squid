@@ -63,6 +63,7 @@ function App() {
           </> : backend === 'epics' ?
             <Box height='80vh' width='80vw' border='2px red solid'>
               epics backend
+              {/* todo here a nice auto generated component */}
               <EpicsBackend />
             </Box>
             : <p>error rendering - unknown backend</p>

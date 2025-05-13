@@ -87,6 +87,26 @@ const startingState: StageState = {
     z: { value: 0 }
 };
 
+// synchrotron signal correct pv response example
+// {
+//   "pv": "SR-DI-DCCT-01:SIGNAL",
+//   "readonly": true,
+//   "type": "update",
+//   "seconds": 1747142090,
+//   "nanos": 409140467,
+//   "vtype": "VDouble",
+//   "units": "mA",
+//   "description": null,
+//   "precision": 4,
+//   "min": 0,
+//   "max": 300,
+//   "warn_low": "NaN",
+//   "warn_high": "NaN",
+//   "alarm_low": "NaN",
+//   "alarm_high": "NaN",
+//   "severity": "NONE",
+//   "value": 300.0443410161232
+// }
 
 export default function EpicsBackend() {
     const [socketUrl] = useState(WS_ADDRESS);
