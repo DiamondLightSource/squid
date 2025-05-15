@@ -1,28 +1,17 @@
 ## Getting Started
 
-First, run the development server:
+Assumptions and goals
+This developer tool is for debugging bluesky plasn in the early phases, providing DAQ-focused, not scientist focused UI.
+It is to serve the immediate needs for bluesky sprints for the SWIFT team.
 
-```bash
-yarn dev
-```
+We assume that the plans are with devices already injected and it's rare that we specify devices manually in the JS world.
 
-Open [http://localhost:3001](http://localhost:3001) with your browser to see the result.
+## Beyond MVP cool features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Alternatively, devices fetched from `/devices` could be drag-and-droppable into the args area
 
-To create [API routes](https://nextjs.org/docs/app/building-your-application/routing/router-handlers) add an `api/` directory to the `app/` directory with a `route.ts` file. For individual endpoints, create a subfolder in the `api` directory, like `api/hello/route.ts` would map to [http://localhost:3001/api/hello](http://localhost:3001/api/hello).
+We also assume that we manually specify params per plan but that commonly used plans will have a separate validated form.
 
-## Learn More
+json edition suggestions are also possible
+https://stackoverflow.com/questions/55560539/autosuggest-for-json-files-with-custom-schema-for-monaco-editor
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn/foundations/about-nextjs) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_source=github.com&utm_medium=referral&utm_campaign=turborepo-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
