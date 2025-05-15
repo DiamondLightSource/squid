@@ -14,7 +14,6 @@ export default function ZodOpenapiBluegui() {
     const [devices, setDevices] = useState([]);
     const [plans, setPlans] = useState([]);
 
-    console.log(client);
 
     useEffect(() => {
 

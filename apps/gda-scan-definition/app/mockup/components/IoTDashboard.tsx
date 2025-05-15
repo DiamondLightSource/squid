@@ -47,7 +47,7 @@ function getTaskDisplay(task: TaskDetails | null) {
 }
 
 // const beamlineName = process.env.BEAMLINE;
-const beamlineName = "i22";
+// const beamlineName = "i22";
 
 const IoTDashboard: React.FC = () => {
     const [search, setSearch] = useState("");
@@ -83,7 +83,8 @@ const IoTDashboard: React.FC = () => {
     return (
         <Container maxWidth='xl'>
             <Typography variant="h4" gutterBottom>
-                {beamlineName} data collection
+                {/* {beamlineName} data collection */}
+                i22 data collection
             </Typography>
 
             {/* Worker & Environment Info */}
@@ -188,7 +189,7 @@ const IoTDashboard: React.FC = () => {
                     <Grid container spacing={2} mt={2}>
                         <Grid item xs={6}>
                             <FormControl fullWidth>
-                                <InputLabel sx={{margin: '1rem'}}>Select Plan</InputLabel>
+                                <InputLabel sx={{ margin: '1rem' }}>Select Plan</InputLabel>
                                 <Select
                                     value={selectedPlan}
                                     onChange={(e) => setSelectedPlan(e.target.value)}
