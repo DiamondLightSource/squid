@@ -308,6 +308,52 @@ importers:
         specifier: ^1.6.1
         version: 1.6.1(@types/node@22.15.17)(@vitest/ui@1.6.1)(sass@1.88.0)(terser@5.39.0)
 
+  apps/bluedev:
+    dependencies:
+      '@diamondlightsource/periodic-table':
+        specifier: workspace:*
+        version: link:../../packages/periodic-table
+      '@repo/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
+      next:
+        specifier: 15.3.2
+        version: 15.3.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(sass@1.88.0)
+      react:
+        specifier: 19.1.0
+        version: 19.1.0
+      react-dom:
+        specifier: 19.1.0
+        version: 19.1.0(react@19.1.0)
+    devDependencies:
+      '@next/eslint-plugin-next':
+        specifier: 15.3.2
+        version: 15.3.2
+      '@repo/eslint-config':
+        specifier: workspace:*
+        version: link:../../packages/eslint-config
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../../packages/typescript-config
+      '@types/eslint':
+        specifier: ^8.56.5
+        version: 8.56.12
+      '@types/node':
+        specifier: ^22.13.14
+        version: 22.15.17
+      '@types/react':
+        specifier: 19.1.4
+        version: 19.1.4
+      '@types/react-dom':
+        specifier: 19.1.5
+        version: 19.1.5(@types/react@19.1.4)
+      eslint:
+        specifier: ^8.57.0
+        version: 8.57.1
+      typescript:
+        specifier: ^5.3.3
+        version: 5.8.3
+
   apps/bluegui:
     dependencies:
       '@jsonforms/material-renderers':
