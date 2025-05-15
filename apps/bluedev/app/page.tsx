@@ -1,3 +1,4 @@
+import MainLayout from "./components/MainLayout";
 import styles from "./page.module.css";
 
 export default function Page(): JSX.Element {
@@ -9,6 +10,7 @@ export default function Page(): JSX.Element {
       {/* one button to retry the previous one */}
       {/* here requests history  - with a timestamp and arguments */}
       {/* here a queue to send plans as soon as environment is refreshed ok */}
+      <MainLayout />
 
     </main>
   );

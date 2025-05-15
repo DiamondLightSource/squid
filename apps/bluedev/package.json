@@ -9,11 +9,13 @@
     "lint": "eslint . --max-warnings 0"
   },
   "dependencies": {
+    "@diamondlightsource/periodic-table": "workspace:*",
+    "@mui/material": "^7.1.0",
     "@repo/ui": "workspace:*",
+    "axios": "^1.7.9",
     "next": "15.3.2",
     "react": "19.1.0",
-    "react-dom": "19.1.0",
-    "@diamondlightsource/periodic-table": "workspace:*"
+    "react-dom": "19.1.0"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "15.3.2",
