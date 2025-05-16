@@ -1,12 +1,12 @@
 "use client";
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
-import axios from "axios";
+import api from "../utils/api";
 
 interface Props {
     queue: string[];
@@ -27,6 +27,7 @@ interface TaskStatus {
 export default function QueueSection({ queue, setQueue, serverBusy, setServerBusy }: Props) {
     const [taskStatuses, setTaskStatuses] = useState<Record<string, TaskStatus>>({});
     const [polling, setPolling] = useState(false);
+    const [pollTimes, setPollTimes] = useState<number[]>([]); // Store poll times
 
     // 🕐 Poll for task status updates
     useEffect(() => {
@@ -38,7 +39,7 @@ export default function QueueSection({ queue, setQueue, serverBusy, setServerBus
                 const updatedStatuses = { ...taskStatuses };
 
                 for (const taskId of taskIds) {
-                    const res = await axios.get(`/tasks/${taskId}`);
+                    const res = await api.get(`/tasks/${taskId}`);
                     const status = res.data as TaskStatus;
                     updatedStatuses[taskId] = status;
 
@@ -66,7 +67,7 @@ export default function QueueSection({ queue, setQueue, serverBusy, setServerBus
 
         try {
             // 1️⃣ Create a new task
-            const taskResponse = await axios.post("/api/tasks", JSON.parse(nextRequest), {
+            const taskResponse = await api.post("/tasks", JSON.parse(nextRequest), {
                 headers: { "Content-Type": "application/json" },
             });
 
@@ -74,7 +75,7 @@ export default function QueueSection({ queue, setQueue, serverBusy, setServerBus
             console.log("Task Created:", taskId);
 
             // 2️⃣ Send the task to the worker
-            await axios.put("/api/worker/task", { task_id: taskId }, {
+            await api.put("/worker/task", { task_id: taskId }, {
                 headers: { "Content-Type": "application/json" },
             });
 
@@ -107,6 +108,50 @@ export default function QueueSection({ queue, setQueue, serverBusy, setServerBus
         }
     }, [queue, serverBusy, setQueue, setServerBusy, polling]);
 
+    // 🔄 Refresh ENV and Run Plan
+    const handleRefreshAndRun = useCallback(async () => {
+        if (queue.length === 0 || serverBusy) return;
+        setServerBusy(true);
+
+        try {
+            // 1️⃣ DELETE the current environment
+            await api.delete("/environment");
+            console.log("Environment deleted, waiting for re-initialization...");
+
+            // 2️⃣ Poll for environment readiness
+            const startTime = Date.now();
+            let environmentReady = false;
+
+            while (!environmentReady) {
+                const res = await api.get("/environment");
+                const { initialized } = res.data;
+                environmentReady = initialized;
+
+                // Store poll duration
+                setPollTimes((prev) => {
+                    const newTimes = [...prev, Date.now() - startTime];
+                    return newTimes.slice(-5); // Keep last 5 poll times
+                });
+
+                if (!environmentReady) await new Promise((r) => setTimeout(r, 1000)); // Poll every second
+            }
+
+            // 3️⃣ Now that the environment is ready, send the next task
+            handleSendNext();
+
+        } catch (error) {
+            console.error("Error refreshing environment:", error);
+            alert("Failed to refresh environment. Check server status.");
+        } finally {
+            setServerBusy(false);
+        }
+    }, [queue, serverBusy, handleSendNext, setServerBusy]);
+
+    // 📊 Calculate moving average
+    const averagePollTime = pollTimes.length > 0
+        ? (pollTimes.reduce((a, b) => a + b, 0) / pollTimes.length).toFixed(2)
+        : "N/A";
+
     return (
         <Box>
             <Typography variant="h6">Queue</Typography>
@@ -128,6 +173,21 @@ export default function QueueSection({ queue, setQueue, serverBusy, setServerBus
             >
                 Send Next
             </Button>
+
+            <Button
+                variant="outlined"
+                color="secondary"
+                onClick={handleRefreshAndRun}
+                disabled={serverBusy || queue.length === 0}
+                sx={{ marginBottom: 2 }}
+            >
+                Refresh ENV and Run Plan
+            </Button>
+
+            {/* Polling Average */}
+            <Typography variant="body2" sx={{ marginBottom: 2 }}>
+                Average ENV Refresh Time: {averagePollTime} ms
+            </Typography>
 
             {/* Task Statuses */}
             <Typography variant="h6">Active Tasks</Typography>
