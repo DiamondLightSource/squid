@@ -36,7 +36,7 @@ export default function JsonForm({ setQueue, setHistory, serverBusy }: Props) {
                 sx={{ marginBottom: 2 }}
             />
             <Button variant="contained" onClick={handleSubmit} disabled={serverBusy}>
-                Send task
+                Add to queue
             </Button>
         </Box>
     );

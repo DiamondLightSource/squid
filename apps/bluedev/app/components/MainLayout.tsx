@@ -6,6 +6,7 @@ import QueueSection from "./QueueSection";
 import EnvironmentPanel from "./EnvironmentPanel";
 import JsonForm from "./JsonForm";
 import HistorySection from "./HistorySection";
+import PythonEnvironment from "./PythonEnvironment";
 
 export default function MainLayout() {
     const [queue, setQueue] = useState<string[]>([]);
@@ -33,6 +34,9 @@ export default function MainLayout() {
                 {/* History Section */}
                 <Grid item xs={6}>
                     <HistorySection history={history} queue={queue} setQueue={setQueue} />
+                </Grid>
+                <Grid item xs={12}>
+                    <PythonEnvironment />
                 </Grid>
             </Grid>
         </Box>

@@ -7,6 +7,8 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import api from "../utils/api";
+import { TaskStatus } from "./TaskStatus";
+import { TaskStatusComponent } from "./TaskStatusComponent";
 
 interface Props {
     queue: string[];
@@ -15,19 +17,11 @@ interface Props {
     setServerBusy: (busy: boolean) => void;
 }
 
-interface TaskStatus {
-    task_id: string;
-    task: string;
-    request_id: string;
-    is_complete: boolean;
-    is_pending: boolean;
-    errors: string[];
-}
-
 export default function QueueSection({ queue, setQueue, serverBusy, setServerBusy }: Props) {
     const [taskStatuses, setTaskStatuses] = useState<Record<string, TaskStatus>>({});
     const [polling, setPolling] = useState(false);
     const [pollTimes, setPollTimes] = useState<number[]>([]); // Store poll times
+    const runAllRef = useRef(false);
 
     // 🕐 Poll for task status updates
     useEffect(() => {
@@ -108,49 +102,73 @@ export default function QueueSection({ queue, setQueue, serverBusy, setServerBus
         }
     }, [queue, serverBusy, setQueue, setServerBusy, polling]);
 
-    // 🔄 Refresh ENV and Run Plan
-    const handleRefreshAndRun = useCallback(async () => {
+    // 🔄 Run All Tasks
+    const handleRunAll = useCallback(async () => {
         if (queue.length === 0 || serverBusy) return;
+
+        runAllRef.current = true;
         setServerBusy(true);
 
         try {
-            // 1️⃣ DELETE the current environment
-            await api.delete("/environment");
-            console.log("Environment deleted, waiting for re-initialization...");
+            while (queue.length > 0 && runAllRef.current) {
+                const nextRequest = queue[0];
 
-            // 2️⃣ Poll for environment readiness
-            const startTime = Date.now();
-            let environmentReady = false;
-
-            while (!environmentReady) {
-                const res = await api.get("/environment");
-                const { initialized } = res.data;
-                environmentReady = initialized;
-
-                // Store poll duration
-                setPollTimes((prev) => {
-                    const newTimes = [...prev, Date.now() - startTime];
-                    return newTimes.slice(-5); // Keep last 5 poll times
+                // Create the task
+                const taskResponse = await api.post("/tasks", JSON.parse(nextRequest), {
+                    headers: { "Content-Type": "application/json" },
                 });
 
-                if (!environmentReady) await new Promise((r) => setTimeout(r, 1000)); // Poll every second
+                const taskId = taskResponse.data.task_id;
+                console.log("Task Created:", taskId);
+
+                // Assign the task to the worker
+                await api.put("/worker/task", { task_id: taskId }, {
+                    headers: { "Content-Type": "application/json" },
+                });
+
+                console.log("Task Assigned:", taskId);
+
+                // Add the task to the status tracking
+                setTaskStatuses((prev) => ({
+                    ...prev,
+                    [taskId]: {
+                        task_id: taskId,
+                        task: nextRequest,
+                        request_id: "",
+                        is_complete: false,
+                        is_pending: true,
+                        errors: [],
+                    },
+                }));
+
+                // Wait for task completion
+                let isComplete = false;
+                while (!isComplete) {
+                    const res = await api.get(`/tasks/${taskId}`);
+                    const status = res.data as TaskStatus;
+                    isComplete = status.is_complete;
+
+                    // Update task status
+                    setTaskStatuses((prev) => ({
+                        ...prev,
+                        [taskId]: status,
+                    }));
+
+                    // Prevent tight polling loop
+                    if (!isComplete) await new Promise((r) => setTimeout(r, 1000));
+                }
+
+                // Remove the task from the queue
+                setQueue((prev) => prev.slice(1));
             }
-
-            // 3️⃣ Now that the environment is ready, send the next task
-            handleSendNext();
-
         } catch (error) {
-            console.error("Error refreshing environment:", error);
-            alert("Failed to refresh environment. Check server status.");
+            console.error("Error running all tasks:", error);
+            alert("Failed to run all tasks. Check server status.");
         } finally {
             setServerBusy(false);
+            runAllRef.current = false;
         }
-    }, [queue, serverBusy, handleSendNext, setServerBusy]);
-
-    // 📊 Calculate moving average
-    const averagePollTime = pollTimes.length > 0
-        ? (pollTimes.reduce((a, b) => a + b, 0) / pollTimes.length).toFixed(2)
-        : "N/A";
+    }, [queue, serverBusy, setQueue, setServerBusy]);
 
     return (
         <Box>
@@ -177,34 +195,23 @@ export default function QueueSection({ queue, setQueue, serverBusy, setServerBus
             <Button
                 variant="outlined"
                 color="secondary"
-                onClick={handleRefreshAndRun}
+                onClick={handleRunAll}
                 disabled={serverBusy || queue.length === 0}
                 sx={{ marginBottom: 2 }}
             >
-                Refresh ENV and Run Plan
+                Run All
             </Button>
-
-            {/* Polling Average */}
-            <Typography variant="body2" sx={{ marginBottom: 2 }}>
-                Average ENV Refresh Time: {averagePollTime} ms
-            </Typography>
 
             {/* Task Statuses */}
             <Typography variant="h6">Active Tasks</Typography>
             <List dense>
                 {Object.values(taskStatuses).map((status) => (
-                    <ListItem key={status.task_id} sx={{ backgroundColor: status.is_complete ? "#d4edda" : "#f8d7da", marginBottom: 1 }}>
-                        <ListItemText
-                            primary={`${status.task_id} - ${status.is_complete ? "Complete" : status.is_pending ? "Pending" : "In Progress"}`}
-                            secondary={
-                                status.errors.length > 0
-                                    ? `Errors: ${status.errors.join(", ")}`
-                                    : status.task.substring(0, 120)
-                            }
-                        />
-                    </ListItem>
+                    <TaskStatusComponent status={status} />
                 ))}
             </List>
         </Box>
     );
 }
+
+
+
