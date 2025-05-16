@@ -16,8 +16,8 @@ export default function JsonForm({ setQueue, setHistory, serverBusy }: Props) {
     const handleSubmit = () => {
         try {
             JSON.parse(jsonString);
-            setQueue((q) => [...q, jsonString]);
-            setHistory((h) => [...h, { timestamp: new Date().toLocaleTimeString(), json: jsonString }]);
+            setQueue((q: any) => [...q, jsonString]);
+            setHistory((h: any) => [...h, { timestamp: new Date().toLocaleTimeString(), json: jsonString }]);
             setJsonString("");
         } catch (err) {
             alert("Invalid JSON");
@@ -36,7 +36,7 @@ export default function JsonForm({ setQueue, setHistory, serverBusy }: Props) {
                 sx={{ marginBottom: 2 }}
             />
             <Button variant="contained" onClick={handleSubmit} disabled={serverBusy}>
-                Submit JSON
+                Send task
             </Button>
         </Box>
     );

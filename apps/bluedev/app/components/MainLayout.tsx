@@ -32,7 +32,7 @@ export default function MainLayout() {
 
                 {/* History Section */}
                 <Grid item xs={6}>
-                    <HistorySection history={history} />
+                    <HistorySection history={history} queue={queue} setQueue={setQueue} />
                 </Grid>
             </Grid>
         </Box>
