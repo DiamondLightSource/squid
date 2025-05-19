@@ -5,13 +5,17 @@ import { useRoiContext } from "./RoiContext";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import RoiContextMenu from "./RoiContextMenu";
 
-export default function RoiGraph() {
+export default function RoiGraph2d() {
     const { regions, axes, updateRoi } = useRoiContext();
     const graphRef = useRef<HTMLDivElement>(null);
     const [activeRoi, setActiveRoi] = useState<number | null>(null);
     const [initialPos, setInitialPos] = useState<{ x: number, y: number } | null>(null);
     const [dragStartRoi, setDragStartRoi] = useState<any>(null);
+    const [resizeMode, setResizeMode] = useState<"move" | "resize" | null>(null);
+    const [resizeDirection, setResizeDirection] = useState<string | null>(null);
     const [contextMenu, setContextMenu] = useState<{ x: number, y: number, roiIndex: number } | null>(null);
+
+    const EDGE_PADDING = 10; // Distance to trigger resizing
 
     // Convert data to graph-friendly format
     const graphData = Array.from({ length: 1000 }, (_, i) => ({
@@ -30,32 +34,84 @@ export default function RoiGraph() {
         return { x, y };
     };
 
-    // Handle start of drag
+    // Determine cursor based on mouse position
+    const getCursorStyle = (e: React.MouseEvent, roi: any) => {
+        const { x, y } = pxToCoord(e.clientX, e.clientY);
+
+        const nearLeft = Math.abs(x - roi.xStart) < EDGE_PADDING;
+        const nearRight = Math.abs(x - roi.xEnd) < EDGE_PADDING;
+        const nearTop = Math.abs(y - roi.yEnd) < EDGE_PADDING;
+        const nearBottom = Math.abs(y - roi.yStart) < EDGE_PADDING;
+
+        // Corners
+        if (nearLeft && nearTop) return "nwse-resize";
+        if (nearRight && nearTop) return "nesw-resize";
+        if (nearLeft && nearBottom) return "nesw-resize";
+        if (nearRight && nearBottom) return "nwse-resize";
+
+        // Edges
+        if (nearLeft || nearRight) return "ew-resize";
+        if (nearTop || nearBottom) return "ns-resize";
+
+        // Default to move
+        return "move";
+    };
+
+    // Handle mouse down for move or resize
     const handleMouseDown = (e: React.MouseEvent, index: number) => {
         e.preventDefault();
         const { x, y } = pxToCoord(e.clientX, e.clientY);
+        const roi = regions[index];
+
+        const cursor = getCursorStyle(e, roi);
+        setResizeMode(cursor.includes("resize") ? "resize" : "move");
+        setResizeDirection(cursor);
         setActiveRoi(index);
         setInitialPos({ x, y });
-        setDragStartRoi({ ...regions[index] });
+        setDragStartRoi({ ...roi });
     };
 
-    // Handle mouse move during drag
+    // Handle mouse move
     const handleMouseMove = (e: MouseEvent) => {
-        if (activeRoi === null || !initialPos || !dragStartRoi) return;
+        if (activeRoi === null || !initialPos || !dragStartRoi || !resizeMode) return;
 
         const { x, y } = pxToCoord(e.clientX, e.clientY);
         const dx = x - initialPos.x;
         const dy = y - initialPos.y;
+        const roi = dragStartRoi;
 
-        const updatedRoi = {
-            ...dragStartRoi,
-            xStart: dragStartRoi.xStart + dx,
-            xEnd: dragStartRoi.xEnd + dx,
-            yStart: dragStartRoi.yStart + dy,
-            yEnd: dragStartRoi.yEnd + dy,
-        };
+        let updatedRoi = { ...roi };
 
-        // Update the position visually (optimistic)
+        if (resizeMode === "move") {
+            // Move the whole ROI
+            updatedRoi.xStart = roi.xStart + dx;
+            updatedRoi.xEnd = roi.xEnd + dx;
+            updatedRoi.yStart = roi.yStart + dy;
+            updatedRoi.yEnd = roi.yEnd + dy;
+        } else if (resizeMode === "resize") {
+            // Resize the ROI
+            if (resizeDirection === "ew-resize") {
+                if (x < roi.xStart) updatedRoi.xStart = x;
+                else updatedRoi.xEnd = x;
+            }
+            if (resizeDirection === "ns-resize") {
+                if (y < roi.yStart) updatedRoi.yStart = y;
+                else updatedRoi.yEnd = y;
+            }
+            if (resizeDirection === "nwse-resize") {
+                updatedRoi.xStart = Math.min(roi.xStart, x);
+                updatedRoi.xEnd = Math.max(roi.xEnd, x);
+                updatedRoi.yStart = Math.min(roi.yStart, y);
+                updatedRoi.yEnd = Math.max(roi.yEnd, y);
+            }
+            if (resizeDirection === "nesw-resize") {
+                updatedRoi.xStart = Math.min(roi.xStart, x);
+                updatedRoi.xEnd = Math.max(roi.xEnd, x);
+                updatedRoi.yStart = Math.max(roi.yEnd, y);
+                updatedRoi.yEnd = Math.min(roi.yStart, y);
+            }
+        }
+
         updateRoi(activeRoi, updatedRoi);
     };
 
@@ -64,6 +120,8 @@ export default function RoiGraph() {
         setActiveRoi(null);
         setInitialPos(null);
         setDragStartRoi(null);
+        setResizeMode(null);
+        setResizeDirection(null);
     };
 
     // Attach global mouse move and mouse up listeners
@@ -74,7 +132,7 @@ export default function RoiGraph() {
             window.removeEventListener("mousemove", handleMouseMove);
             window.removeEventListener("mouseup", handleMouseUp);
         };
-    }, [activeRoi, initialPos, dragStartRoi]);
+    }, [activeRoi, initialPos, dragStartRoi, resizeMode, resizeDirection]);
 
     // Handle right click to open context menu
     const handleRightClick = (event: React.MouseEvent, index: number) => {
@@ -100,12 +158,12 @@ export default function RoiGraph() {
                 </LineChart>
             </ResponsiveContainer>
 
-            {/* Draw the ROI rectangles */}
             {regions.map((roi, index) => (
                 <div
                     key={index}
                     onContextMenu={(e) => handleRightClick(e, index)}
                     onMouseDown={(e) => handleMouseDown(e, index)}
+                    onMouseMove={(e) => (e.currentTarget.style.cursor = getCursorStyle(e, roi))}
                     style={{
                         position: "absolute",
                         left: `${((roi.xStart - axes.xMin) / (axes.xMax - axes.xMin)) * 100}%`,
@@ -114,20 +172,13 @@ export default function RoiGraph() {
                         height: `${((roi.yEnd - roi.yStart) / (axes.yMax - axes.yMin)) * 100}%`,
                         backgroundColor: "rgba(0, 123, 255, 0.3)",
                         border: "1px solid blue",
-                        cursor: "move",
                         zIndex: 10,
                     }}
                 />
             ))}
 
-            {/* Show Context Menu if active */}
             {contextMenu && (
-                <RoiContextMenu
-                    x={contextMenu.x}
-                    y={contextMenu.y}
-                    roiIndex={contextMenu.roiIndex}
-                    onClose={closeContextMenu}
-                />
+                <RoiContextMenu x={contextMenu.x} y={contextMenu.y} roiIndex={contextMenu.roiIndex} onClose={closeContextMenu} />
             )}
         </div>
     );
