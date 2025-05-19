@@ -23,12 +23,13 @@ export default function MainLayout() {
 
                 {/* JSON Form */}
                 <Grid item xs={12}>
-                    <JsonForm setQueue={setQueue} setHistory={setHistory} serverBusy={serverBusy} />
+                    <JsonForm setQueue={setQueue} serverBusy={serverBusy} />
                 </Grid>
 
                 {/* Queue Section */}
                 <Grid item xs={6}>
-                    <QueueSection queue={queue} setQueue={setQueue} serverBusy={serverBusy} setServerBusy={setServerBusy} />
+                    <QueueSection queue={queue} setQueue={setQueue} serverBusy={serverBusy} setServerBusy={setServerBusy}
+                        setHistory={setHistory} />
                 </Grid>
 
                 {/* History Section */}

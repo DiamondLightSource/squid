@@ -6,18 +6,17 @@ import TextField from "@mui/material/TextField";
 
 interface Props {
     setQueue: (queue: string[]) => void;
-    setHistory: (history: { timestamp: string, json: string }[]) => void;
     serverBusy: boolean;
 }
 
-export default function JsonForm({ setQueue, setHistory, serverBusy }: Props) {
+export default function JsonForm({ setQueue, serverBusy }: Props) {
     const [jsonString, setJsonString] = useState("");
 
     const handleSubmit = () => {
         try {
             JSON.parse(jsonString);
             setQueue((q: any) => [...q, jsonString]);
-            setHistory((h: any) => [...h, { timestamp: new Date().toLocaleTimeString(), json: jsonString }]);
+            // todo add to history only after
             setJsonString("");
         } catch (err) {
             alert("Invalid JSON");

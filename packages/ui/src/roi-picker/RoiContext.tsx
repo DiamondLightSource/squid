@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
 import { Roi, Axes, RoiContextType } from "./types";
 import { checkDomainOfScale } from "recharts/types/util/ChartUtils";
+import makeContiguousAlongX from "./makeContiguousAlongX";
 
 const RoiContext = createContext<{
     axes: Axes;
@@ -12,6 +13,7 @@ const RoiContext = createContext<{
     addRoi: (roi: Roi) => void;
     deleteRoi: (index: number) => void;
     updateRoi: (index: number, updatedRoi: Roi) => void;
+    makeContiguousAlongX: (distance: number) => void;
 } | null>(null)
 
 
@@ -20,6 +22,8 @@ export function useRoiContext() {
     if (!context) throw new Error("useRoiContext must be used within RoiProvider");
     return context;
 }
+
+
 
 export function RoiProvider({
     children,
@@ -48,8 +52,14 @@ export function RoiProvider({
         setRegions((prev) => prev.map((roi, i) => (i === index ? updatedRoi : roi)));
     };
 
+
+    const contX = (distance: number) => {
+        const newRegions = makeContiguousAlongX(distance, true, regions);
+        setRegions(newRegions);
+    };
+
     return (
-        <RoiContext.Provider value={{ axes, regions, data, setData, addRoi, deleteRoi, updateRoi }}>
+        <RoiContext.Provider value={{ axes, regions, data, setData, addRoi, deleteRoi, updateRoi, makeContiguousAlongX: contX }}>
             {children}
         </RoiContext.Provider>
     );

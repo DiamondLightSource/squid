@@ -13,11 +13,13 @@ import { TaskStatusComponent } from "./TaskStatusComponent";
 interface Props {
     queue: string[];
     setQueue: (queue: string[]) => void;
+    setHistory: (history: { timestamp: string, json: string }[]) => void;
     serverBusy: boolean;
     setServerBusy: (busy: boolean) => void;
+
 }
 
-export default function QueueSection({ queue, setQueue, serverBusy, setServerBusy }: Props) {
+export default function QueueSection({ queue, setQueue, serverBusy, setServerBusy, setHistory }: Props) {
     const [taskStatuses, setTaskStatuses] = useState<Record<string, TaskStatus>>({});
     const [polling, setPolling] = useState(false);
     const [pollTimes, setPollTimes] = useState<number[]>([]); // Store poll times
@@ -68,6 +70,7 @@ export default function QueueSection({ queue, setQueue, serverBusy, setServerBus
             const taskId = taskResponse.data.task_id;
             console.log("Task Created:", taskId);
 
+            setHistory((h: any) => [...h, { timestamp: new Date().toLocaleTimeString(), json: nextRequest }]);
             // 2️⃣ Send the task to the worker
             await api.put("/worker/task", { task_id: taskId }, {
                 headers: { "Content-Type": "application/json" },

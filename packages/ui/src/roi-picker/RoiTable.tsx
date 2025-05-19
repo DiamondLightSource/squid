@@ -34,8 +34,8 @@ export default function RoiTable() {
                     <TableRow>
                         <TableCell>Start (X)</TableCell>
                         <TableCell>End (X)</TableCell>
-                        <TableCell>Start (Y)</TableCell>
-                        <TableCell>End (Y)</TableCell>
+                        {/* <TableCell>Start (Y)</TableCell>
+                        <TableCell>End (Y)</TableCell> */}
                         <TableCell>Values</TableCell>
                         <TableCell>Actions</TableCell>
                     </TableRow>
@@ -44,10 +44,10 @@ export default function RoiTable() {
                 <TableBody>
                     {regions.map((roi, idx) => (
                         <TableRow key={idx}>
-                            <TableCell>{roi.xStart}</TableCell>
-                            <TableCell>{roi.xEnd}</TableCell>
-                            <TableCell>{roi.yStart}</TableCell>
-                            <TableCell>{roi.yEnd}</TableCell>
+                            <TableCell>{roi.xStart.toFixed(3)}</TableCell>
+                            <TableCell>{roi.xEnd.toFixed(3)}</TableCell>
+                            {/* <TableCell>{roi.yStart}</TableCell>
+                            <TableCell>{roi.yEnd}</TableCell> */}
                             <TableCell>
                                 {Object.entries(roi.values).map(([key, val]) => (
                                     <TextField
