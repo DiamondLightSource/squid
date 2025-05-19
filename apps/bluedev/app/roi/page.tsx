@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Box, Button } from "@mui/material";
-import { Roi, RoiGraph, RoiProvider, useRoiContext } from "@repo/ui/roi-picker";
+import { ClientOnly, Roi, RoiGraph, RoiProvider, RoiTable, useRoiContext } from "@repo/ui/roi-picker";
 import OldRoiPicker from '@repo/ui/old-roi-picker';
 
 
@@ -50,6 +50,7 @@ const data = [
         amt: 2100,
     },
 ];
+
 const initialAxes = {
     xMin: 0,
     xMax: 1000,
@@ -59,8 +60,10 @@ const initialAxes = {
     yLabel: "Intensity (counts)",
 };
 
+const initialData = Array.from({ length: 1000 }, (_, i) => [Math.sin(i / 100) * 500 + 500]);
+
 export default function App() {
-    const { addRoi } = useRoiContext();
+    const { addRoi, setData } = useRoiContext();
 
     const handleAddNewRoi = () => {
         const defaultRoi: Roi = {
@@ -73,6 +76,8 @@ export default function App() {
                 gain: 1.0,
             },
         };
+        console.log(`adding a new roi: ${defaultRoi}`)
+        console.dir(defaultRoi);
         addRoi(defaultRoi);
     };
 
@@ -80,13 +85,17 @@ export default function App() {
         <div>
 
             <OldRoiPicker data={data} />
-            <RoiProvider defaultAxes={initialAxes}>
+            <RoiProvider defaultAxes={initialAxes} initialData={initialData}>
                 <Box sx={{ p: 4 }}>
                     <Button variant="contained" onClick={handleAddNewRoi} sx={{ mb: 2 }}>
                         Add New ROI
                     </Button>
 
-                    <RoiGraph />
+                    <ClientOnly>
+
+                        <RoiGraph />
+                        <RoiTable />
+                    </ClientOnly>
                 </Box>
             </RoiProvider>
         </div>

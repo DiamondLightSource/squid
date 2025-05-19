@@ -9,7 +9,7 @@ type RoiDefinition = {
     xEnd: number
 }
 
-function RoiPicker({ data }: { data: any }) {
+function OldRoiPicker({ data }: { data: any }) {
     const [rois, setRois] = useState<RoiDefinition[]>([])
     return (
         <div>
@@ -36,4 +36,4 @@ function RoiPicker({ data }: { data: any }) {
     )
 }
 
-export default RoiPicker
+export default OldRoiPicker
