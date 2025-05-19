@@ -9,7 +9,7 @@
     "./test-components": "./src/test-components.tsx",
     "./confirm-modal": "./src/ConfirmModal.tsx",
     "./old-roi-picker": "./src/OldRoiPicker.tsx",
-    "./roi-picker": "./src/roi-picker/index.ts"
+    "./roi-picker": "./src/roi-picker/index.tsx"
   },
   "scripts": {
     "lint": "eslint \"**/*.ts*\" --max-warnings 0"

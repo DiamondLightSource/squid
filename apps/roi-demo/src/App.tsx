@@ -1,27 +1,27 @@
-import diamondLogo from "/assets/images/diamond.svg";
-import "./App.css";
-import { CountButton } from "./components/CountButton";
+"use client";
 
-function App() {
+import { RoiProvider } from "@repo/ui/roi-picker";
+import { Box } from "@mui/material";
+import MainApp from "./components/MainApp";
+import './App.css';
+
+const initialAxes = {
+  xMin: -200,
+  xMax: 1000,
+  yMin: -200,
+  yMax: 1000,
+  xLabel: "Energy (eV)",
+  yLabel: "Intensity (counts)",
+};
+
+const initialData = Array.from({ length: 1000 }, (_, i) => [Math.sin(i / 100) * 500 + 500]);
+
+export default function App() {
   return (
-    <>
-      <div>
-        <a href="https://intranet.diamond.ac.uk/Home.html" target="_blank">
-          <img src={diamondLogo} className="logo" alt="Diamond Web logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <CountButton />
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <RoiProvider defaultAxes={initialAxes} initialData={initialData}>
+      <Box sx={{ p: 4 }}>
+        <MainApp />
+      </Box>
+    </RoiProvider>
   );
 }
-
-export default App;

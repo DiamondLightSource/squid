@@ -25,6 +25,7 @@ export default function RoiTable() {
         const updatedRoi = { ...regions[index], values: updatedValues };
         updateRoi(index, updatedRoi);
     };
+    console.log(`regions: ${regions}`)
 
     return (
         <Box sx={{ mt: 4 }}>

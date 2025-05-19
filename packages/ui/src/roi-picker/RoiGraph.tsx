@@ -1,17 +1,30 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useRoiContext } from "./RoiContext";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+import RoiContextMenu from "./RoiContextMenu";
 
 export default function RoiGraph() {
     const { regions, axes, data } = useRoiContext();
+    const [contextMenu, setContextMenu] = useState<{ x: number, y: number, roiIndex: number } | null>(null);
 
     // Convert data to graph-friendly format
     const graphData = data.map((row, index) => ({
         x: axes.xMin + ((axes.xMax - axes.xMin) / data.length) * index,
         y: row[0], // Assuming 1D for now, adjust if 2D
     }));
+
+    const handleRightClick = (event: React.MouseEvent, index: number) => {
+        event.preventDefault(); // Prevent the default browser context menu
+        setContextMenu({
+            x: event.clientX,
+            y: event.clientY,
+            roiIndex: index,
+        });
+    };
+
+    const closeContextMenu = () => setContextMenu(null);
 
     return (
         <div style={{ position: "relative" }}>
@@ -29,6 +42,7 @@ export default function RoiGraph() {
             {regions.map((roi, index) => (
                 <div
                     key={index}
+                    onContextMenu={(e) => handleRightClick(e, index)}
                     style={{
                         position: "absolute",
                         left: `${((roi.xStart - axes.xMin) / (axes.xMax - axes.xMin)) * 100}%`,
@@ -41,6 +55,16 @@ export default function RoiGraph() {
                     }}
                 />
             ))}
+
+            {/* Show Context Menu if active */}
+            {contextMenu && (
+                <RoiContextMenu
+                    x={contextMenu.x}
+                    y={contextMenu.y}
+                    roiIndex={contextMenu.roiIndex}
+                    onClose={closeContextMenu}
+                />
+            )}
         </div>
     );
 }

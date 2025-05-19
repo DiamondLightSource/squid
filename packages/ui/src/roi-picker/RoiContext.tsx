@@ -12,22 +12,8 @@ const RoiContext = createContext<{
     addRoi: (roi: Roi) => void;
     deleteRoi: (index: number) => void;
     updateRoi: (index: number, updatedRoi: Roi) => void;
-}>({
-    axes: {
-        xMin: 0,
-        xMax: 1000,
-        yMin: 0,
-        yMax: 1000,
-        xLabel: "X Axis",
-        yLabel: "Y Axis",
-    },
-    regions: [],
-    data: [],
-    setData: () => { },
-    addRoi: () => { },
-    deleteRoi: () => { },
-    updateRoi: () => { },
-});
+} | null>(null)
+
 
 export function useRoiContext() {
     const context = useContext(RoiContext);
