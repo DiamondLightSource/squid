@@ -87,26 +87,46 @@ const startingState: StageState = {
     z: { value: 0 }
 };
 
+const newPvUpdateSchema = z.object({
+    "pv": z.string(),
+    "readonly": z.boolean(),
+    "type": z.string(),
+    "seconds": z.number(),
+    "nanos": z.number(),
+    "vtype": z.string(),
+    "units": z.string(),
+    "description": z.null(),
+    "precision": z.number(),
+    "min": z.number(),
+    "max": z.number(),
+    "warn_low": z.string(),
+    "warn_high": z.string(),
+    "alarm_low": z.string(),
+    "alarm_high": z.string(),
+    "severity": z.string(),
+    "value": z.number(),
+});
+
 // synchrotron signal correct pv response example
-// {
-//   "pv": "SR-DI-DCCT-01:SIGNAL",
-//   "readonly": true,
-//   "type": "update",
-//   "seconds": 1747142090,
-//   "nanos": 409140467,
-//   "vtype": "VDouble",
-//   "units": "mA",
-//   "description": null,
-//   "precision": 4,
-//   "min": 0,
-//   "max": 300,
-//   "warn_low": "NaN",
-//   "warn_high": "NaN",
-//   "alarm_low": "NaN",
-//   "alarm_high": "NaN",
-//   "severity": "NONE",
-//   "value": 300.0443410161232
-// }
+{
+    "pv": "SR-DI-DCCT-01:SIGNAL",
+        "readonly": true,
+            "type": "update",
+                "seconds": 1747142090,
+                    "nanos": 409140467,
+                        "vtype": "VDouble",
+                            "units": "mA",
+                                "description": null,
+                                    "precision": 4,
+                                        "min": 0,
+                                            "max": 300,
+                                                "warn_low": "NaN",
+                                                    "warn_high": "NaN",
+                                                        "alarm_low": "NaN",
+                                                            "alarm_high": "NaN",
+                                                                "severity": "NONE",
+                                                                    "value": 300.0443410161232
+}
 
 export default function EpicsBackend() {
     const [socketUrl] = useState(WS_ADDRESS);
