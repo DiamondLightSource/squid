@@ -58,9 +58,8 @@ export const PvWsUpdateSchema = z.object({
 
 export type PvWsUpdate = z.infer<typeof PvWsUpdateSchema>;
 
-const echo = { "type": "echo", "body": "Hello, echo", "other": "Whatever else" }
+const WS_ADDRESS = import.meta.env.PROD === true ? "https://pvws.diamond.ac.uk/pvws/pv" : "http://localhost:3001";
 
-const WS_ADDRESS = "https://pvws.diamond.ac.uk/pvws/pv";
 const BLUEAPI_ADDRESS = "https://b01-1-blueapi.diamond.ac.uk";
 
 export const PhysicalPvWithMmSchema = z.object({
@@ -105,6 +104,7 @@ const newPvUpdateSchema = z.object({
     "value": z.number(),
 });
 
+
 // synchrotron signal correct pv response example
 // {
 //     "pv": "SR-DI-DCCT-01:SIGNAL",
@@ -129,7 +129,7 @@ const newPvUpdateSchema = z.object({
 export default function EpicsBackend() {
     const [socketUrl] = useState(WS_ADDRESS);
     const [messageHistory, setMessageHistory] = useState<string[]>([]);
-    const [message, setMessage] = useState("");
+    // const [message, setMessage] = useState("");
     const [state, setState] = useState<StageState>(startingState);
 
     const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl, {
@@ -144,33 +144,38 @@ export default function EpicsBackend() {
         } catch (error) {
             console.error("Invalid message format:", error);
         }
-    }, [message, sendMessage]);
+    }, [sendMessage]);
 
 
     // Handle incoming messages
     useEffect(() => {
         if (lastMessage !== null) {
-            if (lastMessage !== null && lastMessage.length !== 0) {
+            if (lastMessage !== null && lastMessage?.data?.length !== 0) {
                 console.debug(lastMessage.data)
                 const myJson = JSON.parse(lastMessage.data)
-                const m: PvWsUpdate = PvWsUpdateSchema.parse(myJson);
-                console.debug(m);
-                if (m.type == 'update' && state) {
-                    const milimeters = m.nanos / 10 ** 6;
-                    const lastChar = m.pv.at(-5);
-                    switch (lastChar) {
-                        case 'X':
-                            setState((state) => { return { ...state, x: { value: milimeters } } });
-                            break;
-                        case 'Y':
-                            setState((state) => { return { ...state, y: { value: milimeters } } })
-                            break;
-                        case 'Z':
-                            setState((state) => { return { ...state, z: { value: milimeters } } })
-                            break;
-                        default:
-                            window.alert("unknown")
+                try {
+                    const m: PvWsUpdate = PvWsUpdateSchema.parse(myJson);
+                    console.debug(m);
+                    if (m.type == 'update' && state) {
+                        const milimeters = m.nanos / 10 ** 6;
+                        const lastChar = m.pv.at(-5);
+                        switch (lastChar) {
+                            case 'X':
+                                setState((state) => { return { ...state, x: { value: milimeters } } });
+                                break;
+                            case 'Y':
+                                setState((state) => { return { ...state, y: { value: milimeters } } })
+                                break;
+                            case 'Z':
+                                setState((state) => { return { ...state, z: { value: milimeters } } })
+                                break;
+                            default:
+                                window.alert("unknown")
+                        }
                     }
+                } catch (error) {
+                    window.alert("error parsing message: " + error);
+
                 }
             }
 
@@ -188,7 +193,7 @@ export default function EpicsBackend() {
     }[readyState];
 
     return <>
-        <Button onClick={handleDemoStart()} >Start the demo plan</Button>
+        <Button onClick={handleDemoStart} >Start the demo plan</Button>
         <Typography variant="subtitle1">Status: {connectionStatus}</Typography>
 
         <Box>
