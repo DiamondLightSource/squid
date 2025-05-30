@@ -65,8 +65,6 @@ const BLUEAPI_ADDRESS = "https://b01-1-blueapi.diamond.ac.uk";
 
 export const PhysicalPvWithMmSchema = z.object({
     "value": z.number(),
-
-
 });
 
 export type PhysicalPvWithMm = z.infer<typeof PhysicalPvWithMmSchema>;
@@ -108,25 +106,25 @@ const newPvUpdateSchema = z.object({
 });
 
 // synchrotron signal correct pv response example
-{
-    "pv": "SR-DI-DCCT-01:SIGNAL",
-        "readonly": true,
-            "type": "update",
-                "seconds": 1747142090,
-                    "nanos": 409140467,
-                        "vtype": "VDouble",
-                            "units": "mA",
-                                "description": null,
-                                    "precision": 4,
-                                        "min": 0,
-                                            "max": 300,
-                                                "warn_low": "NaN",
-                                                    "warn_high": "NaN",
-                                                        "alarm_low": "NaN",
-                                                            "alarm_high": "NaN",
-                                                                "severity": "NONE",
-                                                                    "value": 300.0443410161232
-}
+// {
+//     "pv": "SR-DI-DCCT-01:SIGNAL",
+//         "readonly": true,
+//             "type": "update",
+//                 "seconds": 1747142090,
+//                     "nanos": 409140467,
+//                         "vtype": "VDouble",
+//                             "units": "mA",
+//                                 "description": null,
+//                                     "precision": 4,
+//                                         "min": 0,
+//                                             "max": 300,
+//                                                 "warn_low": "NaN",
+//                                                     "warn_high": "NaN",
+//                                                         "alarm_low": "NaN",
+//                                                             "alarm_high": "NaN",
+//                                                                 "severity": "NONE",
+//                                                                     "value": 300.0443410161232
+// }
 
 export default function EpicsBackend() {
     const [socketUrl] = useState(WS_ADDRESS);
@@ -137,6 +135,17 @@ export default function EpicsBackend() {
     const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl, {
         shouldReconnect: () => true,
     });
+
+
+    // Send a formatted WebSocket message
+    const handleSendMessage = useCallback(() => {
+        try {
+            sendMessage(JSON.stringify(requestUpdates));
+        } catch (error) {
+            console.error("Invalid message format:", error);
+        }
+    }, [message, sendMessage]);
+
 
     // Handle incoming messages
     useEffect(() => {
@@ -168,17 +177,6 @@ export default function EpicsBackend() {
             setMessageHistory((prev) => [...prev, lastMessage.data]);
         }
     }, [lastMessage]);
-
-    // Send a formatted WebSocket message
-    const handleSendMessage = useCallback(() => {
-        try {
-            sendMessage(JSON.stringify(requestUpdates));
-        } catch (error) {
-            console.error("Invalid message format:", error);
-        }
-    }, [message, sendMessage]);
-
-
 
     // Connection status display
     const connectionStatus = {

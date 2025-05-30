@@ -21,6 +21,8 @@
     "@diamondlightsource/cs-web-lib": "^0.6.1",
     "@mui/material": "^6.4.7",
     "@mui/x-tree-view": "^7.23.0",
+    "@react-three/drei": "^10.1.2",
+    "@react-three/fiber": "^9.1.2",
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
     "@repo/ui": "workspace:*",
