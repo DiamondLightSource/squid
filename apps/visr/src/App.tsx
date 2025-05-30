@@ -14,6 +14,7 @@ import GenericPanel from './components/GenericPanel';
 import { PossibleBackendsType } from './types';
 import { Box } from '@mui/material';
 import EpicsBackend from './components/EpicsBackend';
+import { WebSocketDemo } from './components/DemoWebsocket';
 
 function App() {
   const [response, setResponse] = useState<string>('');
@@ -64,7 +65,8 @@ function App() {
             <Box height='80vh' width='80vw' border='2px red solid'>
               epics backend
               {/* todo here a nice auto generated component */}
-              <EpicsBackend />
+              {/* <EpicsBackend /> */}
+              <WebSocketDemo />
             </Box>
             : <p>error rendering - unknown backend</p>
       }

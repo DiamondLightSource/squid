@@ -33,7 +33,10 @@ export function handleRasterClientConnection(): any {
 
         const interval = setInterval(() => {
             sendNext();
-            if (y > 10) clearInterval(interval);
+            if (y > 10) {
+                clearInterval(interval);
+                x = 0, y = 0, z = 0;
+            }
         }, 300); // faster updates
 
         ws.on("close", () => {

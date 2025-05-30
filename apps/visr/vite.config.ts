@@ -39,6 +39,13 @@ export default defineConfig({
         ws: true, // Enable WebSocket proxying
         rewrite: (path) => path.replace(/^\/ws/, ""),
       },
+    "/raster": {
+      target: "ws://localhost:3001/raster", // or update port if needed
+      changeOrigin: true,
+      rewriteWsOrigin: true,
+      ws: true,
+      rewrite: (path) => path.replace(/^\/raster/, ""),
+    },
     },
   },
 });
