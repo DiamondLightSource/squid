@@ -1,6 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import useWebSocket, { ReadyState } from 'react-use-websocket';
 
+export const ECHO_WEBSOCKET = 'wss://echo.websocket.org';
 export const WebSocketDemo = () => {
     //Public API that will echo messages sent to it back to the client
     const [socketUrl, setSocketUrl] = useState('wss://echo.websocket.org');

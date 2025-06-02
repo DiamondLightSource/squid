@@ -2,6 +2,8 @@ import { Button } from "@mui/material";
 import z from "zod";
 import { useState, MouseEventHandler } from "react";
 import useWebSocket from "react-use-websocket";
+import { ECHO_WEBSOCKET } from "./DemoWebsocket";
+import { StageState, startingState } from "./StageState";
 
 function handleDemoStart(): MouseEventHandler<HTMLButtonElement> | undefined {
     return async () => {
@@ -45,58 +47,21 @@ const requestUpdates = {
     ]
 }
 
-const WS_ADDRESS = import.meta.env.PROD === true ? "https://pvws.diamond.ac.uk/pvws/pv" : "ws://localhost:3001/raster";
+const WS_ADDRESS = import.meta.env.PROD === true ? "http://172.23.71.98:8080/pvws/" : "ws://localhost:3001/raster";
 
 const BLUEAPI_ADDRESS = "https://b01-1-blueapi.diamond.ac.uk";
-export type PhysicalPvWithMm = z.infer<typeof newPvUpdateSchema>;
-
-export const StageStateSchema = z.object({
-    x: z.number(),
-    y: z.number(),
-    z: z.number(),
-});
-
-export type StageState = z.infer<typeof StageStateSchema>;
-
-const startingState: StageState = {
-    x: 0,
-    y: 0,
-    z: 0
-};
-
-const newPvUpdateSchema = z.object({
-    "pv": z.string().describe("pv: SR-DI-DCCT-01:SIGNAL"),
-    "readonly": z.boolean().describe("readonly true"),
-    "type": z.string().describe("type update"),
-    "seconds": z.number().describe("seconds 1747142090"),
-    "nanos": z.number().describe("nanos 409140467"),
-    "vtype": z.string().describe("vtype VDouble"),
-    "units": z.string().describe("units mA"),
-    "description": z.null().describe("description null"),
-    "precision": z.number().describe("precision 4"),
-    "min": z.number().describe("min 0"),
-    "max": z.number().describe("max 300"),
-    "warn_low": z.string().describe("warn_low NaN"),
-    "warn_high": z.string().describe("warn_high NaN"),
-    "alarm_low": z.string().describe("alarm_low NaN"),
-    "alarm_high": z.string().describe("alarm_high NaN"),
-    "severity": z.string().describe("severity NONE"),
-    "value": z.number().describe("value 300.044341016123"),
-});
-
-
 
 export default function EpicsBackend() {
-    const [socketUrl] = useState(WS_ADDRESS);
-    const [messageHistory, setMessageHistory] = useState<string[]>([]);
-    const [message, setMessage] = useState("");
-    const [state, setState] = useState<StageState>(startingState);
+    // const [socketUrl] = useState(ECHO_WEBSOCKET);
+    const { sendMessage, lastMessage, readyState } = useWebSocket(ECHO_WEBSOCKET);
+    // const [messageHistory, setMessageHistory] = useState<string[]>([]);
+    // const [message, setMessage] = useState("");
+    // const [state, setState] = useState<StageState>(startingState);
 
     // const newLocal: Options = {
     //     shouldReconnect: () => true,
     // };
     // const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl, newLocal);
-    const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl);
     console.log(`send message: ${sendMessage}, last message: ${lastMessage}, ready state: ${readyState}`);
 
 
@@ -156,7 +121,8 @@ export default function EpicsBackend() {
     // }[readyState];
 
     return <>
-        <Button onClick={handleDemoStart} >Start the demo plan</Button>
+        {/* <Button onClick={handleDemoStart} >Start the demo plan</Button> */}
+        <h3> test title</h3>
         {/* <Typography variant="subtitle1">Status: {connectionStatus}</Typography> */}
         {/* <Box>
             <Typography variant="h5">

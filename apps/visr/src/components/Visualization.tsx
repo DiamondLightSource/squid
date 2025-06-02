@@ -42,7 +42,7 @@ const Scene = ({ state }) => {
   );
 };
 
-const ThreeDVisualization = ({ state }) => {
+export default function ThreeDVisualization({ state }: { state: any }) {
   return (
     <Canvas camera={{ position: [5, 5, 5], fov: 60 }}>
       <Scene state={state} />
@@ -50,4 +50,3 @@ const ThreeDVisualization = ({ state }) => {
   );
 };
 
-export default ThreeDVisualization;

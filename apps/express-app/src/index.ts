@@ -4,7 +4,7 @@ import { WebSocketServer } from "ws";
 import { handleWebSocketConnection } from "./handleWebSocketConnection";
 import { handleRasterClientConnection } from "./with-raster";
 
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 3002;
 
 const app = createServer();
 const server = http.createServer(app);

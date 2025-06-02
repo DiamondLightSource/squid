@@ -15,6 +15,7 @@ import { PossibleBackendsType } from './types';
 import { Box } from '@mui/material';
 import EpicsBackend from './components/EpicsBackend';
 import { WebSocketDemo } from './components/DemoWebsocket';
+import Live3DViewer from './components/Live3DViewer';
 
 function App() {
   const [response, setResponse] = useState<string>('');
@@ -66,7 +67,8 @@ function App() {
               epics backend
               {/* todo here a nice auto generated component */}
               {/* <EpicsBackend /> */}
-              <WebSocketDemo />
+              <Live3DViewer wsUrl="ws://localhost:3002/raster" />
+              {/* <WebSocketDemo /> */}
             </Box>
             : <p>error rendering - unknown backend</p>
       }
