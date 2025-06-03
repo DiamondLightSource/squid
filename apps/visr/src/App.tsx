@@ -19,19 +19,7 @@ import Live3DViewer from './components/Live3DViewer';
 
 function App() {
   const [response, setResponse] = useState<string>('');
-  useEffect(() => {
-    const fetchHelloWorld = async () => {
-      try {
-        const res = await fetch('/api'); // Fetch the API endpoint
-        const data = await res.json();  // Parse the response as JSON
-        setResponse(data.message);      // Set the response state
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
 
-    fetchHelloWorld();
-  }, []);
   const def: PossibleBackendsType = 'epics';
 
   const [backend, setBackend] = useState<PossibleBackendsType>(def);

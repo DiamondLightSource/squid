@@ -38,7 +38,9 @@ const Live3DViewer = ({ wsUrl }) => {
         };
     }, [wsUrl]);
 
-    return <ThreeDVisualization state={stageState} />;
+    return <div>
+        {/* <ThreeDVisualization state={stageState} /> */}
+    </div>
 };
 
 export default Live3DViewer;
