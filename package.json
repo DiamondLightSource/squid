@@ -18,7 +18,7 @@
     "node": ">=14.0.0",
     "npm": ">=7.0.0"
   },
-  "packageManager": "pnpm@9.6.0",
+  "packageManager": "pnpm@10.11.1",
   "dependencies": {
     "eslint": "9.15.0",
     "zod": "^3.23.8"
