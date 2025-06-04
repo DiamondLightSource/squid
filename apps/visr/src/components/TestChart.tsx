@@ -1,4 +1,3 @@
-import React from "react";
 import { Stage, Layer, Group, Rect } from "react-konva";
 
 function TestChart() {

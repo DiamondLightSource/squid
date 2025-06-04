@@ -41,9 +41,9 @@ const Live3DViewer = ({ wsUrl }: { wsUrl: string }) => {
     return <div>
         <div>
             <h3> stage state:</h3>
-            <pre>{JSON.stringify(stageState, null, 2)}</pre>
+            <span>{JSON.stringify(stageState, null, 2)}</span>
         </div>
-        {/* <ThreeDVisualization state={stageState} /> */}
+        <ThreeDVisualization state={stageState} />
     </div>
 };
 

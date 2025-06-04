@@ -1,5 +1,4 @@
-import React from 'react';
-import { createRoot } from 'react-dom/client';
+import { useState } from 'react';
 import { Stage, Layer, Star, Text } from 'react-konva';
 
 function generateShapes() {
@@ -15,7 +14,7 @@ function generateShapes() {
 const INITIAL_STATE = generateShapes();
 
 export const TestStars = () => {
-    const [stars, setStars] = React.useState(INITIAL_STATE);
+    const [stars, setStars] = useState(INITIAL_STATE);
 
     const handleDragStart = (e) => {
         const id = e.target.id();

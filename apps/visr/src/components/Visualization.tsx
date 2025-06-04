@@ -1,7 +1,6 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
-import * as THREE from 'three';
 
 const Scene = ({ state }) => {
   const rectangleRef = useRef();
@@ -45,6 +44,7 @@ const Scene = ({ state }) => {
 export default function ThreeDVisualization({ state }: { state: any }) {
   return (
     <Canvas camera={{ position: [5, 5, 5], fov: 60 }}>
+
       <Scene state={state} />
     </Canvas>
   );

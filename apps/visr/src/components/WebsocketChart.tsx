@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import  { useEffect, useRef, useState } from 'react';
 import { ResponsiveContainer, LineChart, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Line } from 'recharts';
 
 
@@ -10,8 +10,8 @@ type Dataset = {
 type Data = {
   labels: any[],
   datasets: Dataset[]
-
 }
+
 type DataPoint = {
   time: number;
   value: number;
