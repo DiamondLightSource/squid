@@ -37,7 +37,7 @@ export function StateViewer() {
     return (
         <div>
             <h3>State Information</h3>
-            <table border="1" cellPadding="5">
+            <table >
                 <tbody>
                     <tr>
                         <td><strong>File Path</strong></td>
@@ -61,7 +61,9 @@ export function StateViewer() {
                     </tr>
                     <tr>
                         <td><strong>Stats Array</strong></td>
-                        <td>{data?.stats_array?.length > 0 ? JSON.stringify(data.stats_array) : "No data"}</td>
+                        <td>{
+                            data?.stats_array && data.stats_array.length > 0 ? JSON.stringify(data.stats_array) : "No data"
+                        }</td>
                     </tr>
                 </tbody>
             </table>

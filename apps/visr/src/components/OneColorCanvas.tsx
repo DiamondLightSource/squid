@@ -32,7 +32,7 @@ export function getHexColor(channel: "r" | "g" | "b" | "all", i: number): string
 
 
 const intensityClosure = (name: Colors) => {
-    let getHex = (intensity: number) => "#ee0000";
+    let getHex = (_: number) => "#ee0000";
     switch (name) {
         case 'r':
             getHex = (intensity: number) => `#${Math.floor(intensity * 256)}0000`;
@@ -50,7 +50,7 @@ const intensityClosure = (name: Colors) => {
             }
             break;
         default:
-            getHex = (intensity: number) => "#0000ee";
+            getHex = (_: number) => "#0000ee";
             break;
     }
     return getHex;

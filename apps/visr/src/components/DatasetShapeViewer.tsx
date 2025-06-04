@@ -32,7 +32,7 @@ export function DatasetShapeViewer() {
     return (
         <div>
             <h3>Dataset Shape</h3>
-            <table border="1" cellPadding="5">
+            <table>
                 <thead>
                     <tr>
                         <th>Dimension</th>

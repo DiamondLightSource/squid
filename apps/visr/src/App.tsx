@@ -1,24 +1,19 @@
-import './App.css'
-import Plot from './components/Plot'
-import WebsocketChart from './components/WebsocketChart';
-import ColorsChart from './components/ColorsChart';
-
-
-import "./App.css";
-import { useState, useEffect } from "react";
-import { StateViewer } from './components/StateViewer';
-import { ButtonGroup, Button, Stack } from '@chakra-ui/react';
-import { DatasetShapeViewer } from './components/DatasetShapeViewer';
-import ParsedPointsChart from './components/ParsedPointsChart';
-import GenericPanel from './components/GenericPanel';
-import { PossibleBackendsType } from './types';
+import { Button, ButtonGroup, Stack } from '@chakra-ui/react';
 import { Box } from '@mui/material';
-import EpicsBackend from './components/EpicsBackend';
-import { WebSocketDemo } from './components/DemoWebsocket';
+import { useState } from "react";
+import './App.css';
+import ColorsChart from './components/ColorsChart';
+import { DatasetShapeViewer } from './components/DatasetShapeViewer';
+import GenericPanel from './components/GenericPanel';
 import Live3DViewer from './components/Live3DViewer';
+import ParsedPointsChart from './components/ParsedPointsChart';
+import Plot from './components/Plot';
+import { StateViewer } from './components/StateViewer';
+import WebsocketChart from './components/WebsocketChart';
+import { PossibleBackendsType } from './types';
 
 function App() {
-  const [response, setResponse] = useState<string>('');
+  // const [response, setResponse] = useState<string>('');
 
   const def: PossibleBackendsType = 'epics';
 

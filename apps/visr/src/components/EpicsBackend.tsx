@@ -1,55 +1,51 @@
-import { Button } from "@mui/material";
-import z from "zod";
-import { useState, MouseEventHandler } from "react";
 import useWebSocket from "react-use-websocket";
 import { ECHO_WEBSOCKET } from "./DemoWebsocket";
-import { StageState, startingState } from "./StageState";
 
-function handleDemoStart(): MouseEventHandler<HTMLButtonElement> | undefined {
-    return async () => {
+// function handleDemoStart(): MouseEventHandler<HTMLButtonElement> | undefined {
+//     return async () => {
 
-        const planDefinition = {
-            name: "demo_plan",
-            params: {},
-        };
-        const createTaskRequest: RequestInit = {
-            method: 'POST',
-            body: JSON.stringify(planDefinition)
-        };
-        const response = await fetch(`${BLUEAPI_ADDRESS}/tasks`, createTaskRequest);
-        if (!response.body) {
-            window.alert("no response");
-        }
-        // todo maybe parse json
-        const id: string = response.body['task_id'];
-        const load = {
-            task_id: id
-        };
-        const putTaskToWorker: RequestInit = {
-            method: 'PUT',
-            body: JSON.stringify(load)
-        };
-        const putResponse = await fetch(`${BLUEAPI_ADDRESS}/worker/task`, putTaskToWorker);
-        window.alert(putResponse.json);
-    };
-}
+//         const planDefinition = {
+//             name: "demo_plan",
+//             params: {},
+//         };
+//         const createTaskRequest: RequestInit = {
+//             method: 'POST',
+//             body: JSON.stringify(planDefinition)
+//         };
+//         const response = await fetch(`${BLUEAPI_ADDRESS}/tasks`, createTaskRequest);
+//         if (!response.body) {
+//             window.alert("no response");
+//         }
+//         // todo maybe parse json
+//         const id: string = response.body['task_id'];
+//         const load = {
+//             task_id: id
+//         };
+//         const putTaskToWorker: RequestInit = {
+//             method: 'PUT',
+//             body: JSON.stringify(load)
+//         };
+//         const putResponse = await fetch(`${BLUEAPI_ADDRESS}/worker/task`, putTaskToWorker);
+//         window.alert(putResponse.json);
+//     };
+// }
 
-const getSubscriptions = {
-    "type": "list",
-};
+// const getSubscriptions = {
+//     "type": "list",
+// };
 
-const requestUpdates = {
-    "type": "subscribe",
-    "pvs": [
-        "BL01C-MO-PPMAC-01:Y:RBV",
-        "BL01C-MO-PPMAC-01:Z:RBV",
-        "BL01C-MO-PPMAC-01:X:RBV"
-    ]
-}
+// const requestUpdates = {
+//     "type": "subscribe",
+//     "pvs": [
+//         "BL01C-MO-PPMAC-01:Y:RBV",
+//         "BL01C-MO-PPMAC-01:Z:RBV",
+//         "BL01C-MO-PPMAC-01:X:RBV"
+//     ]
+// }
 
-const WS_ADDRESS = import.meta.env.PROD === true ? "http://172.23.71.98:8080/pvws/" : "ws://localhost:3001/raster";
+// const WS_ADDRESS = import.meta.env.PROD === true ? "http://172.23.71.98:8080/pvws/" : "ws://localhost:3001/raster";
 
-const BLUEAPI_ADDRESS = "https://b01-1-blueapi.diamond.ac.uk";
+// const BLUEAPI_ADDRESS = "https://b01-1-blueapi.diamond.ac.uk";
 
 export default function EpicsBackend() {
     // const [socketUrl] = useState(ECHO_WEBSOCKET);

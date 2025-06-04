@@ -4,8 +4,6 @@ import { useResponsiveStage } from '../hooks/useResponsiveStage';
 import useWebSocket from '../hooks/useWebSocket';
 import ColorRect from './ColorRect';
 import { getHexColor } from './OneColorCanvas';
-import TestChart from './TestChart';
-import { TestStars } from './TestStars';
 
 type DataPoint = {
   r: number,

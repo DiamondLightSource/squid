@@ -2,15 +2,15 @@ import  { useEffect, useRef, useState } from 'react';
 import { ResponsiveContainer, LineChart, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Line } from 'recharts';
 
 
-type Dataset = {
-  label: string,
-  data: any[]
-}
+// type Dataset = {
+//   label: string,
+//   data: any[]
+// }
 
-type Data = {
-  labels: any[],
-  datasets: Dataset[]
-}
+// type Data = {
+//   labels: any[],
+//   datasets: Dataset[]
+// }
 
 type DataPoint = {
   time: number;
@@ -18,7 +18,7 @@ type DataPoint = {
 };
 
 
-const initialData: Data = { labels: [], datasets: [{ label: 'Real-Time Data', data: [] }] };
+// const initialData: Data = { labels: [], datasets: [{ label: 'Real-Time Data', data: [] }] };
 
 function WebsocketChart() {
   const [data, setData] = useState<DataPoint[]>([]);

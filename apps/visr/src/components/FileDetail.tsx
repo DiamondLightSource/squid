@@ -1,6 +1,5 @@
 import { Box, Typography, Paper } from "@mui/material";
 import { TreeItem, SimpleTreeView } from "@mui/x-tree-view";
-import { useMemo } from "react";
 
 type FileDetailProps = {
   fileName: string;
@@ -17,7 +16,7 @@ const buildTree = (item: any, index: number) => {
   // If there are nested items, render them recursively
   return (
     <TreeItem key={unique} id={unique} itemId={unique} label={`${nodeLabel} (${nodeType})`}>
-      {item.items && item.items.length > 0 && item.items.map((child, childIndex) => buildTree(child, childIndex))}
+      {item.items && item.items.length > 0 && item.items.map((child: any, childIndex: number) => buildTree(child, childIndex))}
     </TreeItem>
   );
 };

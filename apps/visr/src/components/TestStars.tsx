@@ -1,3 +1,4 @@
+import Konva from 'konva';
 import { useState } from 'react';
 import { Stage, Layer, Star, Text } from 'react-konva';
 
@@ -16,7 +17,7 @@ const INITIAL_STATE = generateShapes();
 export const TestStars = () => {
     const [stars, setStars] = useState(INITIAL_STATE);
 
-    const handleDragStart = (e) => {
+    const handleDragStart = (e: any) => {
         const id = e.target.id();
         setStars(
             stars.map((star) => {
@@ -27,7 +28,8 @@ export const TestStars = () => {
             })
         );
     };
-    const handleDragEnd = (e) => {
+
+    const handleDragEnd = (_: Konva.KonvaEventObject<DragEvent>) => {
         setStars(
             stars.map((star) => {
                 return {

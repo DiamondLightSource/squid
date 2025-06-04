@@ -1,13 +1,14 @@
 import { useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
+import { StageState } from './StageState';
 
-const Scene = ({ state }) => {
-  const rectangleRef = useRef();
+const Scene = ({ state }: { state: StageState }) => {
+  const rectangleRef = useRef<any>(null);
 
   useFrame(() => {
     if (rectangleRef.current) {
-      rectangleRef.current.position.set(state.x.value, state.y.value, state.z.value);
+      rectangleRef.current.position.set(state.x, state.y, state.z);
     }
   });
 

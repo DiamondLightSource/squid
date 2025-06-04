@@ -4,10 +4,10 @@ import { useFiles } from "../hooks/useFiles";
 import { useFileDetail } from "../hooks/useFileDetail";
 import FileDetail from "./FileDetail";
 import FileList from "./FileList";
-import useWebSocket from "../hooks/useWebSocket";
+// import useWebSocket from "../hooks/useWebSocket";
 import ParsedPointsChart from "./ParsedPointsChart";
 
-const wsUrl = "ws://127.0.0.1:8002/ws/democlient/demo";
+// const wsUrl = "ws://127.0.0.1:8002/ws/democlient/demo";
 
 function GenericPanel() {
     const { files, loading: filesLoading, error: filesError } = useFiles();
@@ -38,7 +38,9 @@ function GenericPanel() {
                         ) : detailError ? (
                             <Typography color="error">{detailError}</Typography>
                         ) : (
-                            <FileDetail fileName={selectedFile} content={detail} />
+                            (selectedFile && detail) ?
+                                <FileDetail fileName={selectedFile} content={{ "detail": detail }} />
+                                : <Typography>Select a file to view details.</Typography>
                         )}
                     </Paper>
                 </Grid>
