@@ -7,9 +7,9 @@ const initialStageState = {
     z: { value: 0 }
 };
 
-const Live3DViewer = ({ wsUrl }) => {
+const Live3DViewer = ({ wsUrl }: { wsUrl: string }) => {
     const [stageState, setStageState] = useState(initialStageState);
-    const wsRef = useRef(null);
+    const wsRef = useRef<WebSocket | null>(null);
 
     useEffect(() => {
         const ws = new WebSocket(wsUrl);
@@ -39,6 +39,10 @@ const Live3DViewer = ({ wsUrl }) => {
     }, [wsUrl]);
 
     return <div>
+        <div>
+            <h3> stage state:</h3>
+            <pre>{JSON.stringify(stageState, null, 2)}</pre>
+        </div>
         {/* <ThreeDVisualization state={stageState} /> */}
     </div>
 };
