@@ -51,8 +51,7 @@ type ThreeDVisualizationProps = {
 
 export default function ThreeDVisualization({ state }: ThreeDVisualizationProps) {
   return (
-    <div style={{ border: '2px solid blue', height: '200px' }}>
-      <h3> below the canvas</h3>
+    <div style={{ border: '2px solid blue', height: '40vh' }}>
 
       <Canvas camera={{ position: [150, 150, 15], fov: 20 }}>
         <Scene state={state} />

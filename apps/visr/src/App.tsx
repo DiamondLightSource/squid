@@ -21,7 +21,7 @@ function App() {
 
   return (
     <>
-      <h1>testing the fastapi ws for hdf readout</h1>
+      <h1>ViSR web interface</h1>
 
       <ButtonGroup>
         <Button onClick={() => setBackend('colors')}> use colors backend</Button>
@@ -30,30 +30,37 @@ function App() {
         <Button onClick={() => setBackend('epics')}>use epics backend</Button>
       </ButtonGroup>
       {
-        backend === 'colors' ?
-          <>
-            <Plot />
-            <WebsocketChart />
-            <ColorsChart />
-          </>
-          : backend === 'hdf' ? <>
-            <Stack direction='row'>
-              <DatasetShapeViewer />
-              <StateViewer />
-            </Stack>
-            <ParsedPointsChart />
-          </> : backend === 'generic' ? <>
-            <p>generic backend</p>
-            <GenericPanel />
-          </> : backend === 'epics' ?
-            <Box height='80vh' width='80vw' border='2px red solid'>
-              epics backend
-              {/* todo here a nice auto generated component */}
-              {/* <EpicsBackend /> */}
-              <Live3DViewer wsUrl="ws://localhost:3002/raster" />
-              {/* <WebSocketDemo /> */}
-            </Box>
-            : <p>error rendering - unknown backend</p>
+        backend === 'colors' &&
+        <>
+          <Plot />
+          <WebsocketChart />
+          <ColorsChart />
+        </>
+      }
+      {
+        backend === 'hdf' && <>
+          <Stack direction='row'>
+            <DatasetShapeViewer />
+            <StateViewer />
+          </Stack>
+          <ParsedPointsChart />
+        </>}{
+
+
+        backend === 'generic' && <>
+          <p>generic backend</p>
+          <GenericPanel />
+        </>
+
+      }
+      {backend === 'epics' &&
+        <Box height='80vh' width='80vw' border='2px red solid'>
+          epics backend
+          {/* todo here a nice auto generated component */}
+          {/* <EpicsBackend /> */}
+          <Live3DViewer wsUrl="ws://localhost:3002/raster" />
+          {/* <WebSocketDemo /> */}
+        </Box>
       }
     </>
   );
