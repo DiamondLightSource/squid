@@ -21,7 +21,8 @@ const Live3DViewer = ({ wsUrl }: { wsUrl: string }) => {
                 if (['x', 'y', 'z'].includes(data.pv)) {
                     setStageState(prev => ({
                         ...prev,
-                        [data.pv]: { value: parseFloat(data.value) }
+                        [data.pv]: parseFloat(data.value)
+
                     }));
                 }
             } catch (err) {

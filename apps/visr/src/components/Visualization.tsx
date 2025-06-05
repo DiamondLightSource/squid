@@ -6,11 +6,13 @@ import { StageState } from './StageState';
 const Scene = ({ state }: { state: StageState }) => {
   const rectangleRef = useRef<any>(null);
 
+  console.log("rendering scene");
   useFrame(() => {
     if (rectangleRef.current) {
       rectangleRef.current.position.set(state.x, state.y, state.z);
     }
   });
+  const elevation = 10;
 
   return (
     <>
@@ -21,14 +23,15 @@ const Scene = ({ state }: { state: StageState }) => {
       </mesh>
 
       {/* Moving Rectangle */}
-      <mesh ref={rectangleRef} position={[0, 0, 0]}>
-        <boxGeometry args={[1, 1, 0.1]} />
-        <meshStandardMaterial color="#00ff00" transparent opacity={0.5} />
+      {/* <mesh ref={rectangleRef} position={[0, 0, 0]}> */}
+      <mesh position={[0, elevation + state.y, 0.9 * state.x]} rotation={[0, Math.PI / 2, 0]}>
+        <boxGeometry args={[10, 10, 1]} />
+        {/* <meshStandardMaterial color="#00ff00" transparent opacity={0.5} /> */}
+        <meshStandardMaterial color="#00ff00" />
       </mesh>
-
       {/* Cylindrical Beam */}
-      <mesh position={[0, -5, 0]}>
-        <cylinderGeometry args={[0.1, 0.1, 10, 32]} />
+      <mesh position={[0, elevation * 1.4, 5]} rotation={[0, 0, Math.PI / 2]}>
+        <cylinderGeometry args={[1, 1, 50, 32]} />
         <meshStandardMaterial color="#ff0000" />
       </mesh>
 
@@ -37,17 +40,24 @@ const Scene = ({ state }: { state: StageState }) => {
       <directionalLight position={[5, 5, 5]} intensity={1} />
 
       {/* Camera Controls */}
-      <OrbitControls />
+      <OrbitControls maxPolarAngle={Math.PI / 2 - 0.01} />
     </>
   );
 };
 
-export default function ThreeDVisualization({ state }: { state: any }) {
-  return (
-    <Canvas camera={{ position: [5, 5, 5], fov: 60 }}>
+type ThreeDVisualizationProps = {
+  state: StageState;
+};
 
-      <Scene state={state} />
-    </Canvas>
+export default function ThreeDVisualization({ state }: ThreeDVisualizationProps) {
+  return (
+    <div style={{ border: '2px solid blue', height: '200px' }}>
+      <h3> below the canvas</h3>
+
+      <Canvas camera={{ position: [150, 150, 15], fov: 20 }}>
+        <Scene state={state} />
+      </Canvas>
+    </div>
   );
 };
 

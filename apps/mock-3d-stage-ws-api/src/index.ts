@@ -37,7 +37,7 @@ function handleRasterClientConnection(ws: WebSocket): any {
   const sendNext = () => {
 
     // if (y > 10) return ws.close();
-    if (y > 10) {
+    if (y >= 10) {
       // restart the count
       x = 0; y = 0; z = 0;
       direction = 1;
