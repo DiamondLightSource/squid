@@ -16,7 +16,7 @@ export type ChangeElementModalProps = {
 };
 
 // eslint-disable-next-line no-empty-pattern
-export function ChangeElementModal({}: ChangeElementModalProps) {
+export function ChangeElementModal({ }: ChangeElementModalProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>

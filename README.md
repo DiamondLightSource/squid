@@ -9,10 +9,15 @@ To start a particular application go to its readme in `/apps/[app of interest]`.
 - `b18-csv-generator`: a config generator for a beamline
 - `bluegui`: a test client for blueapi
 - `bluedev`: another test client for blueapi
+- `gda-scan-definition`: various pages for daq spectroscopy
+- `roi-demo`: demo for the UI component 'range picker'
 - `TEMPLATE-nextjs-app`: a template for making NEXTjs apps
 - `TEMPLATE-vite-app`: a template for making vite apps
 - `TEMPLATE-express-app`: a template for making express apis for websockets and Rest
 - `TEMPLATE-next-safe-action`: a test of the next safe action setup
+- `visr`: a vite app to control the demos at the ViSR beamline
+- `xraylib`: a [deployed page](https://xraylib.diamond.ac.uk/) to display elements and their spectroscopy parameters 
+
 
 Packages:
 - `@repo/eslint-config`: ESLint presets

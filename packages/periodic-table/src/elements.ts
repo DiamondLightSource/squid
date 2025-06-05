@@ -1,4 +1,22 @@
 
+// TODO sortout for potential use
+type Isotope = {
+  nominal: number;
+  mass: number;
+  abundance?: number;
+};
+
+// https://github.com/cheminfo/mass-tools/blob/main/packages/chemical-elements/src/elementsAndIsotopes.js
+// from there
+export type ChemicalElement = {
+  number: number;
+  isotopes: Isotope[];
+  symbol: string;
+  mass: number | null;
+  name: string;
+  monoisotopicMass?: number | null;
+};
+
 export type ElementType = {
   'Number': string;
   'Type': string;
