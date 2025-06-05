@@ -29,53 +29,53 @@ export function handleWebSocketConnection(ws: any) {
 }
 
 function handleRasterClientConnection(ws: WebSocket): any {
-    console.log("Raster WebSocket connected");
+  console.log("Raster WebSocket connected");
 
-    let x = 0, y = 0, z = 0;
-    let direction = 1;
+  let x = 0, y = 0, z = 0;
+  let direction = 1;
 
-    const sendNext = () => {
+  const sendNext = () => {
 
-        // if (y > 10) return ws.close();
-        if (y > 10) {
-          // restart the count
-          x = 0; y = 0; z = 0;
-          direction = 1;
-        }
+    // if (y > 10) return ws.close();
+    if (y > 10) {
+      // restart the count
+      x = 0; y = 0; z = 0;
+      direction = 1;
+    }
 
-        ws.send(JSON.stringify({ value: x, pv: "x" }));
-        ws.send(JSON.stringify({ value: y, pv: "y" }));
-        ws.send(JSON.stringify({ value: z, pv: "z" }));
+    ws.send(JSON.stringify({ value: x, pv: "x" }));
+    ws.send(JSON.stringify({ value: y, pv: "y" }));
+    ws.send(JSON.stringify({ value: z, pv: "z" }));
 
-        if (direction === 1) {
-            x++;
-            if (x > 10) {
-                x = 10;
-                y++;
-                direction = -1;
-            }
-        } else {
-            x--;
-            if (x < 0) {
-                x = 0;
-                y++;
-                direction = 1;
-            }
-        }
-    };
+    if (direction === 1) {
+      x++;
+      if (x > 10) {
+        x = 10;
+        y++;
+        direction = -1;
+      }
+    } else {
+      x--;
+      if (x < 0) {
+        x = 0;
+        y++;
+        direction = 1;
+      }
+    }
+  };
 
-    const interval = setInterval(() => {
-        sendNext();
-        if (y > 10) {
-            clearInterval(interval);
-            x = 0, y = 0, z = 0;
-        }
-    }, 300); // faster updates
+  const interval = setInterval(() => {
+    sendNext();
+    if (y > 10) {
+      clearInterval(interval);
+      x = 0, y = 0, z = 0;
+    }
+  }, 300); // faster updates
 
-    ws.on("close", () => {
-        clearInterval(interval);
-        console.log("Raster client disconnected");
-    });
+  ws.on("close", () => {
+    clearInterval(interval);
+    console.log("Raster client disconnected");
+  });
 }
 
 const createExpress = (): Express => {
@@ -103,13 +103,13 @@ const app = createExpress();
 const server = http.createServer(app);
 const wss = new WebSocketServer({ server });
 
-wss.on("connection", (ws, req)=>{
+wss.on("connection", (ws, req) => {
 
   if (req.url === "/raster") {
     console.log("Raster WebSocket connection established");
     handleRasterClientConnection(ws);
     return;
-  } 
+  }
 
   handleWebSocketConnection(ws);
 

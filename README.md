@@ -6,19 +6,23 @@ To start a particular application go to its readme in `/apps/[app of interest]`.
 
 ## Apps and Packages
 
-- `web`: a [Next.js](https://nextjs.org/) app
-- `api`: an [Express](https://expressjs.com/) server
 - `b18-csv-generator`: a config generator for a beamline
 - `bluegui`: a test client for blueapi
+- `bluedev`: another test client for blueapi
 - `TEMPLATE-nextjs-app`: a template for making NEXTjs apps
 - `TEMPLATE-vite-app`: a template for making vite apps
-- `test-next-safe-action`: a test of the next safe action setup
-- `trpc-test`: a test of trpc (next safe action won)
-- `@repo/ui`: a React component library
-- `@repo/logger`: Isomorphic logger (a small wrapper around console.log)
+- `TEMPLATE-express-app`: a template for making express apis for websockets and Rest
+- `TEMPLATE-next-safe-action`: a test of the next safe action setup
+
+Packages:
 - `@repo/eslint-config`: ESLint presets
-- `@repo/typescript-config`: tsconfig.json's used throughout the monorepo
 - `@repo/jest-presets`: Jest configurations
+- `@repo/logger`: Isomorphic logger (a small wrapper around console.log)
+- `@repo/periodic-table`: One location for periodic tables
+- `@repo/test-add`: Example package, can be used as template
+- `@repo/typescript-config`: tsconfig.json's used throughout the monorepo
+- `@repo/ui`: a React component library for generic components
+- `@repo/vite-config`: vite config setups used throughout the monorepo
 
 Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
 
